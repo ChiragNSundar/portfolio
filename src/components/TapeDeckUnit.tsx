@@ -33,7 +33,6 @@ export const TapeDeckUnit: React.FC<TapeDeckUnitProps> = ({
   const [vuRight, setVuRight] = useState(0);
   const animationRef = useRef<number | null>(null);
 
-  // Animate spinning reels and VU meters
   useEffect(() => {
     let lastTime = performance.now();
     
@@ -42,33 +41,26 @@ export const TapeDeckUnit: React.FC<TapeDeckUnitProps> = ({
       lastTime = time;
 
       if (isPlaying) {
-        // Spin reels (approx 120 deg per second)
-        setReelAngle((prev) => (prev + (0.12 * delta)) % 360);
+        setReelAngle((prev) => (prev + (0.15 * delta)) % 360);
 
-        // Bouncing VU meters based on real time domain data
         const data = audioEngine.getAnalyserData();
         if (data.length > 0) {
-          // Calculate RMS (Root Mean Square) for volume level
           let sum = 0;
           for (let i = 0; i < data.length; i++) {
             sum += data[i] * data[i];
           }
           const rms = Math.sqrt(sum / data.length);
-          // Normalize and scale level to degrees (-20 to +30 deg needle range)
-          const targetNeedle = Math.min(1.0, rms * 4.5);
+          const targetNeedle = Math.min(1.0, rms * 4.8);
           
-          // Add some analog needle bounce / inertia
-          setVuLeft((prev) => prev + (targetNeedle - prev) * 0.25);
-          setVuRight((prev) => prev + (targetNeedle * (0.9 + Math.random() * 0.2) - prev) * 0.25);
+          setVuLeft((prev) => prev + (targetNeedle - prev) * 0.22);
+          setVuRight((prev) => prev + (targetNeedle * (0.85 + Math.random() * 0.3) - prev) * 0.22);
         } else {
-          // Subtle resting rumble
-          setVuLeft((prev) => prev + (0.02 * Math.random() - prev) * 0.15);
-          setVuRight((prev) => prev + (0.02 * Math.random() - prev) * 0.15);
+          setVuLeft((prev) => prev + (0.015 * Math.random() - prev) * 0.1);
+          setVuRight((prev) => prev + (0.015 * Math.random() - prev) * 0.1);
         }
       } else {
-        // Slowly settle VU needles back to zero
-        setVuLeft((prev) => prev * 0.85);
-        setVuRight((prev) => prev * 0.85);
+        setVuLeft((prev) => prev * 0.8);
+        setVuRight((prev) => prev * 0.8);
       }
 
       animationRef.current = requestAnimationFrame(animate);
@@ -97,120 +89,145 @@ export const TapeDeckUnit: React.FC<TapeDeckUnitProps> = ({
 
   return (
     <div 
+      className="console-panel"
       style={{
         display: "flex",
         flexDirection: "column",
-        background: "linear-gradient(180deg, #252528, #18181a)",
-        border: "5px solid #2d2d30",
-        borderRadius: "8px",
-        padding: "20px",
-        boxShadow: "inset 0 0 15px rgba(0,0,0,0.8), 0 4px 10px rgba(0,0,0,0.5)",
-        gap: "20px"
+        padding: "16px",
+        gap: "14px",
+        border: "1px solid var(--color-gold-dark)",
+        boxShadow: "inset 0 0 15px rgba(0,0,0,0.95)"
       }}
     >
-      {/* Top Section: Reels & VU Meters */}
-      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-        
-        {/* Left Reel */}
-        <div style={{ position: "relative", width: "120px", height: "120px" }}>
+      {/* Dynamic Header */}
+      <div 
+        style={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          borderBottom: "1px solid #2d2d32",
+          paddingBottom: "6px"
+        }}
+      >
+        <span style={{ fontFamily: "var(--font-display)", fontSize: "0.75rem", color: "var(--color-gold)", letterSpacing: "1.5px", fontWeight: "bold" }}>
+          BAY 01 // ANALOG AUDIO TRANSLATION
+        </span>
+        <span style={{ fontFamily: "var(--font-lcd)", fontSize: "0.65rem", color: "#666" }}>
+          SYSTEM READY
+        </span>
+      </div>
+
+      {/* Reel-to-Reel Mechanics Panel */}
+      <div 
+        style={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          background: "#080809",
+          border: "1px solid #1f1f22",
+          padding: "12px 16px",
+          borderRadius: "4px"
+        }}
+      >
+        {/* Left Reel (Supply Reel) */}
+        <div style={{ position: "relative", width: "95px", height: "95px" }}>
           <svg 
             width="100%" 
             height="100%" 
             viewBox="0 0 100 100" 
-            style={{ transform: `rotate(${reelAngle}deg)`, transition: isPlaying ? "none" : "transform 1.5s cubic-bezier(0.1, 0.8, 0.2, 1)" }}
+            style={{ transform: `rotate(${reelAngle}deg)`, transition: isPlaying ? "none" : "transform 1s ease-out" }}
           >
-            {/* Reel base plate */}
-            <circle cx="50" cy="50" r="46" fill="#121214" stroke="#c5a059" strokeWidth="2" />
-            <circle cx="50" cy="50" r="28" fill="none" stroke="#3a3a40" strokeWidth="6" />
+            {/* Skeuomorphic open-spoke design */}
+            <circle cx="50" cy="50" r="47" fill="#18181c" stroke="#555" strokeWidth="1" />
+            <circle cx="50" cy="50" r="46" fill="none" stroke="var(--color-gold)" strokeWidth="1.5" />
             
-            {/* 3 spokes */}
-            <path d="M 50 4 L 50 96 M 4 50 L 96 50" stroke="#c5a059" strokeWidth="3" />
-            <path d="M 17.5 17.5 L 82.5 82.5" stroke="#c5a059" strokeWidth="3" />
-            <path d="M 17.5 82.5 L 82.5 17.5" stroke="#c5a059" strokeWidth="3" />
+            {/* Magnetic tape wrapping around the center spokes */}
+            <circle cx="50" cy="50" r="32" fill="none" stroke="#251205" strokeWidth="8" opacity="0.9" />
 
-            <circle cx="50" cy="50" r="10" fill="#2d2d30" stroke="#c5a059" strokeWidth="1" />
+            {/* spokes */}
+            <path d="M 50 4 L 50 96 M 4 50 L 96 50" stroke="#777" strokeWidth="1" />
+            <circle cx="50" cy="50" r="14" fill="#111" stroke="var(--color-gold)" strokeWidth="1" />
+            
+            {/* Hub structure */}
+            <polygon points="50,42 58,55 42,55" fill="var(--color-gold-dark)" />
+            <polygon points="50,58 42,45 58,45" fill="var(--color-gold-dark)" />
             <circle cx="50" cy="50" r="4" fill="#000" />
           </svg>
-          <div style={{ position: "absolute", bottom: "-18px", width: "100%", textAlign: "center", fontFamily: "var(--font-lcd)", fontSize: "0.6rem", color: "var(--color-gold)" }}>
+          <div style={{ position: "absolute", bottom: "-15px", width: "100%", textAlign: "center", fontFamily: "var(--font-lcd)", fontSize: "0.5rem", color: "#666" }}>
             SUPPLY REEL
           </div>
         </div>
 
-        {/* Center: VU Meters & Volume */}
-        <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "10px" }}>
-          <div style={{ display: "flex", gap: "12px" }}>
-            
-            {/* Left VU Meter */}
+        {/* Center: VU Indicators and volume */}
+        <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "6px" }}>
+          <span style={{ fontFamily: "var(--font-display)", fontSize: "0.55rem", color: "var(--color-gold)", letterSpacing: "1px" }}>
+            OUTPUT LEVEL
+          </span>
+
+          <div style={{ display: "flex", gap: "8px" }}>
+            {/* VU Meter A */}
             <div 
               style={{
-                width: "80px", 
-                height: "50px", 
-                background: "radial-gradient(circle at 50% 100%, #3e2008 20%, #1f0d00 80%)",
-                border: "2px solid var(--color-gold-dark)",
-                borderRadius: "4px 4px 0 0",
+                width: "60px", 
+                height: "38px", 
+                background: "radial-gradient(circle at 50% 100%, #442a12 0%, #170a01 100%)",
+                border: "1px solid var(--color-gold-dark)",
+                borderRadius: "3px",
                 position: "relative",
-                overflow: "hidden"
+                overflow: "hidden",
+                boxShadow: "inset 0 0 8px rgba(0,0,0,0.9)"
               }}
             >
-              {/* Dial markings */}
-              <div style={{ position: "absolute", top: "4px", width: "100%", textAlign: "center", fontFamily: "var(--font-lcd)", fontSize: "0.45rem", color: "rgba(255,155,0,0.6)" }}>
-                -20  -10  -5  0  +3 VU
-              </div>
-              {/* Needle pivot */}
+              {/* Backlight glow */}
+              <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, top: 0, background: "rgba(255,140,0,0.15)", pointerEvents: "none" }} />
               <div 
                 style={{
                   position: "absolute",
                   bottom: "0",
                   left: "50%",
                   width: "1.5px",
-                  height: "36px",
-                  backgroundColor: "#ff5500",
+                  height: "28px",
+                  backgroundColor: "#e53e3e",
                   transformOrigin: "bottom center",
-                  transform: `translateX(-50%) rotate(${(vuLeft * 50) - 25}deg)`,
-                  transition: "transform 0.05s ease-out",
-                  boxShadow: "0 0 3px rgba(255,85,0,0.8)"
+                  transform: `translateX(-50%) rotate(${(vuLeft * 60) - 30}deg)`,
+                  transition: "transform 0.05s ease-out"
                 }}
               />
-              <div style={{ position: "absolute", bottom: "2px", left: "6px", fontFamily: "var(--font-lcd)", fontSize: "0.45rem", color: "#888" }}>CH A</div>
+              <span style={{ position: "absolute", bottom: "1px", left: "3px", fontFamily: "var(--font-lcd)", fontSize: "0.4rem", color: "rgba(255,255,255,0.3)" }}>CH A</span>
             </div>
 
-            {/* Right VU Meter */}
+            {/* VU Meter B */}
             <div 
               style={{
-                width: "80px", 
-                height: "50px", 
-                background: "radial-gradient(circle at 50% 100%, #3e2008 20%, #1f0d00 80%)",
-                border: "2px solid var(--color-gold-dark)",
-                borderRadius: "4px 4px 0 0",
+                width: "60px", 
+                height: "38px", 
+                background: "radial-gradient(circle at 50% 100%, #442a12 0%, #170a01 100%)",
+                border: "1px solid var(--color-gold-dark)",
+                borderRadius: "3px",
                 position: "relative",
-                overflow: "hidden"
+                overflow: "hidden",
+                boxShadow: "inset 0 0 8px rgba(0,0,0,0.9)"
               }}
             >
-              <div style={{ position: "absolute", top: "4px", width: "100%", textAlign: "center", fontFamily: "var(--font-lcd)", fontSize: "0.45rem", color: "rgba(255,155,0,0.6)" }}>
-                -20  -10  -5  0  +3 VU
-              </div>
+              <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, top: 0, background: "rgba(255,140,0,0.15)", pointerEvents: "none" }} />
               <div 
                 style={{
                   position: "absolute",
                   bottom: "0",
                   left: "50%",
                   width: "1.5px",
-                  height: "36px",
-                  backgroundColor: "#ff5500",
+                  height: "28px",
+                  backgroundColor: "#e53e3e",
                   transformOrigin: "bottom center",
-                  transform: `translateX(-50%) rotate(${(vuRight * 50) - 25}deg)`,
-                  transition: "transform 0.05s ease-out",
-                  boxShadow: "0 0 3px rgba(255,85,0,0.8)"
+                  transform: `translateX(-50%) rotate(${(vuRight * 60) - 30}deg)`,
+                  transition: "transform 0.05s ease-out"
                 }}
               />
-              <div style={{ position: "absolute", bottom: "2px", right: "6px", fontFamily: "var(--font-lcd)", fontSize: "0.45rem", color: "#888" }}>CH B</div>
+              <span style={{ position: "absolute", bottom: "1px", right: "3px", fontFamily: "var(--font-lcd)", fontSize: "0.4rem", color: "rgba(255,255,255,0.3)" }}>CH B</span>
             </div>
-
           </div>
 
-          {/* Master Output Level Volume Knobs */}
-          <div style={{ display: "flex", gap: "10px", alignItems: "center" }}>
-            <span style={{ fontFamily: "var(--font-lcd)", fontSize: "0.6rem", color: "#777" }}>OUTPUT LEVEL</span>
+          <div style={{ display: "flex", gap: "6px", alignItems: "center", marginTop: "2px" }}>
             <input 
               type="range"
               min="0"
@@ -220,148 +237,119 @@ export const TapeDeckUnit: React.FC<TapeDeckUnitProps> = ({
               onChange={(e) => onVolumeChange(parseFloat(e.target.value))}
               style={{
                 accentColor: "var(--color-gold)",
-                width: "90px",
+                width: "70px",
+                height: "4px",
                 cursor: "pointer"
               }}
             />
-            <span style={{ fontFamily: "var(--font-lcd)", fontSize: "0.65rem", color: "var(--color-gold)", width: "30px" }}>
+            <span style={{ fontFamily: "var(--font-lcd)", fontSize: "0.55rem", color: "var(--color-gold-light)", minWidth: "22px" }}>
               {Math.round(volume * 100)}%
             </span>
           </div>
         </div>
 
-        {/* Right Reel */}
-        <div style={{ position: "relative", width: "120px", height: "120px" }}>
+        {/* Right Reel (Takeup Reel) */}
+        <div style={{ position: "relative", width: "95px", height: "95px" }}>
           <svg 
             width="100%" 
             height="100%" 
             viewBox="0 0 100 100" 
-            style={{ transform: `rotate(${reelAngle}deg)`, transition: isPlaying ? "none" : "transform 1.5s cubic-bezier(0.1, 0.8, 0.2, 1)" }}
+            style={{ transform: `rotate(${reelAngle}deg)`, transition: isPlaying ? "none" : "transform 1s ease-out" }}
           >
-            <circle cx="50" cy="50" r="46" fill="#121214" stroke="#c5a059" strokeWidth="2" />
-            <circle cx="50" cy="50" r="28" fill="none" stroke="#3a3a40" strokeWidth="6" />
-            
-            <path d="M 50 4 L 50 96 M 4 50 L 96 50" stroke="#c5a059" strokeWidth="3" />
-            <path d="M 17.5 17.5 L 82.5 82.5" stroke="#c5a059" strokeWidth="3" />
-            <path d="M 17.5 82.5 L 82.5 17.5" stroke="#c5a059" strokeWidth="3" />
+            <circle cx="50" cy="50" r="47" fill="#18181c" stroke="#555" strokeWidth="1" />
+            <circle cx="50" cy="50" r="46" fill="none" stroke="var(--color-gold)" strokeWidth="1.5" />
+            <circle cx="50" cy="50" r="32" fill="none" stroke="#251205" strokeWidth="8" opacity="0.9" />
 
-            <circle cx="50" cy="50" r="10" fill="#2d2d30" stroke="#c5a059" strokeWidth="1" />
+            <path d="M 50 4 L 50 96 M 4 50 L 96 50" stroke="#777" strokeWidth="1" />
+            <circle cx="50" cy="50" r="14" fill="#111" stroke="var(--color-gold)" strokeWidth="1" />
+            
+            <polygon points="50,42 58,55 42,55" fill="var(--color-gold-dark)" />
+            <polygon points="50,58 42,45 58,45" fill="var(--color-gold-dark)" />
             <circle cx="50" cy="50" r="4" fill="#000" />
           </svg>
-          <div style={{ position: "absolute", bottom: "-18px", width: "100%", textAlign: "center", fontFamily: "var(--font-lcd)", fontSize: "0.6rem", color: "var(--color-gold)" }}>
+          <div style={{ position: "absolute", bottom: "-15px", width: "100%", textAlign: "center", fontFamily: "var(--font-lcd)", fontSize: "0.5rem", color: "#666" }}>
             TAKEUP REEL
           </div>
         </div>
-
       </div>
 
-      {/* Bottom Section: Tape Track Controls & Sycned Before/After Crossfader */}
+      {/* BEFORE / AFTER Synced Mixing Fader Panel */}
       <div 
         style={{
           display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-          marginTop: "10px",
-          gap: "24px",
-          background: "#121214",
-          border: "2px solid var(--color-gold-dark)",
-          borderRadius: "6px",
-          padding: "16px"
+          flexDirection: "column",
+          gap: "8px",
+          background: "#080809",
+          border: "1px solid #1d1d20",
+          borderRadius: "4px",
+          padding: "12px 16px"
         }}
       >
-        
-        {/* A/B Crossfader / Toggle Slider */}
-        <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "8px", flexGrow: 1 }}>
-          <div style={{ display: "flex", justifyContent: "space-between", width: "100%", fontFamily: "var(--font-lcd)", fontSize: "0.75rem", fontWeight: "bold" }}>
-            <span style={{ color: mixRatio === 0 ? "var(--color-gold-light)" : "#666", textShadow: mixRatio === 0 ? "var(--glow-amber)" : "none" }}>[A] BEFORE (RAW)</span>
-            <span style={{ color: mixRatio === 1 ? "var(--color-green-glow)" : "#666", textShadow: mixRatio === 1 ? "var(--glow-green)" : "none" }}>[B] AFTER (MIXED)</span>
-          </div>
-
-          <div style={{ display: "flex", alignItems: "center", width: "100%", gap: "8px" }}>
-            <input 
-              type="range"
-              min="0"
-              max="1"
-              step="0.01"
-              value={mixRatio}
-              onChange={(e) => onMixRatioChange(parseFloat(e.target.value))}
-              style={{
-                accentColor: mixRatio > 0.5 ? "rgb(0, 255, 100)" : "var(--color-gold)",
-                width: "100%",
-                height: "8px",
-                cursor: "pointer",
-                borderRadius: "4px"
-              }}
-            />
-          </div>
-          
-          <div style={{ fontFamily: "var(--font-lcd)", fontSize: "0.6rem", color: "#555" }}>
-            SLIDE THE CROSSFADER IN REAL-TIME TO INSTANTLY COMPARE RAW RECORDINGS WITH FINAL POLISHED MIXES
-          </div>
+        <div style={{ display: "flex", justifyContent: "space-between", fontFamily: "var(--font-lcd)", fontSize: "0.7rem", fontWeight: "bold" }}>
+          <span style={{ color: mixRatio === 0 ? "var(--color-gold-light)" : "#666", textShadow: mixRatio === 0 ? "var(--glow-gold)" : "none" }}>
+            [A] BEFORE (RAW)
+          </span>
+          <span style={{ color: mixRatio === 1 ? "var(--color-green-glow)" : "#666", textShadow: mixRatio === 1 ? "var(--glow-green)" : "none" }}>
+            [B] AFTER (MIXED)
+          </span>
         </div>
 
-        {/* Tactile Push Buttons (Play, Stop, Prev, Next) */}
-        <div style={{ display: "flex", gap: "10px", alignItems: "center" }}>
-          
-          {/* PREV */}
-          <button 
-            className="analog-btn" 
-            onClick={handlePrev}
-            style={{ width: "45px", height: "45px", display: "flex", alignItems: "center", justifyContent: "center", borderRadius: "4px" }}
-            title="Previous Track"
-          >
-            ⏮
-          </button>
-
-          {/* PLAY / PAUSE */}
-          <button 
-            className={`analog-btn ${isPlaying ? "active" : ""}`} 
-            onClick={onPlayToggle}
-            style={{ 
-              width: "55px", 
-              height: "55px", 
-              display: "flex", 
-              alignItems: "center", 
-              justifyContent: "center", 
-              borderRadius: "4px",
-              borderColor: isPlaying ? "rgb(0, 255, 100)" : "var(--color-gold-dark)",
-              color: isPlaying ? "rgb(0,255,100)" : "var(--color-gold)"
+        {/* Skeuomorphic track fader rail */}
+        <div style={{ display: "flex", alignItems: "center", width: "100%", gap: "8px", position: "relative", height: "24px" }}>
+          <input 
+            type="range"
+            min="0"
+            max="1"
+            step="0.01"
+            value={mixRatio}
+            onChange={(e) => onMixRatioChange(parseFloat(e.target.value))}
+            style={{
+              accentColor: mixRatio > 0.5 ? "rgb(0, 255, 120)" : "var(--color-gold)",
+              width: "100%",
+              cursor: "pointer"
             }}
-            title={isPlaying ? "Pause Tape" : "Play Tape"}
-          >
-            {isPlaying ? "⏸" : "▶"}
-          </button>
-
-          {/* STOP */}
-          <button 
-            className="analog-btn" 
-            onClick={onStop}
-            style={{ width: "45px", height: "45px", display: "flex", alignItems: "center", justifyContent: "center", borderRadius: "4px" }}
-            title="Stop & Rewind"
-          >
-            ⏹
-          </button>
-
-          {/* NEXT */}
-          <button 
-            className="analog-btn" 
-            onClick={handleNext}
-            style={{ width: "45px", height: "45px", display: "flex", alignItems: "center", justifyContent: "center", borderRadius: "4px" }}
-            title="Next Track"
-          >
-            ⏭
-          </button>
-
+          />
         </div>
-
       </div>
 
-      {/* Track Selector Bar (Tape Selector Slots) */}
+      {/* Tape Transport Buttons */}
+      <div style={{ display: "flex", justifyContent: "center", gap: "10px" }}>
+        <button className="analog-btn" onClick={handlePrev} style={{ padding: "6px 14px" }} title="Previous">
+          ⏮
+        </button>
+        <button 
+          className={`analog-btn ${isPlaying ? "active" : ""}`} 
+          onClick={onPlayToggle} 
+          style={{ 
+            padding: "6px 16px",
+            borderColor: isPlaying ? "rgb(0, 255, 120)" : "#4a4a50",
+            color: isPlaying ? "rgb(0, 255, 120)" : "#a0a0ab"
+          }}
+          title={isPlaying ? "Pause" : "Play"}
+        >
+          {isPlaying ? "⏸" : "▶"}
+        </button>
+        <button className="analog-btn" onClick={onStop} style={{ padding: "6px 14px" }} title="Stop">
+          ⏹
+        </button>
+        <button className="analog-btn" onClick={handleNext} style={{ padding: "6px 14px" }} title="Next">
+          ⏭
+        </button>
+      </div>
+
+      {/* 12-Slot Cassette Track Matrix Grid */}
       <div style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
-        <div style={{ fontFamily: "var(--font-lcd)", fontSize: "0.7rem", color: "var(--color-gold)", letterSpacing: "1px" }}>
+        <span style={{ fontFamily: "var(--font-lcd)", fontSize: "0.65rem", color: "var(--color-gold)", letterSpacing: "1px", fontWeight: "bold" }}>
           SELECT CASSETTE TRACK:
-        </div>
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: "8px" }}>
+        </span>
+        
+        <div 
+          style={{ 
+            display: "grid", 
+            gridTemplateColumns: "repeat(6, 1fr)", 
+            gap: "6px" 
+          }}
+        >
           {mixAndOriginalTracks.map((track) => {
             const isActive = currentTrack?.id === track.id;
             return (
@@ -371,18 +359,41 @@ export const TapeDeckUnit: React.FC<TapeDeckUnitProps> = ({
                   onTrackSelect(track);
                   if (onInteract) onInteract();
                 }}
-                className={`analog-btn ${isActive ? "active" : ""}`}
                 style={{
-                  padding: "8px 12px",
-                  fontSize: "0.75rem",
-                  justifyContent: "flex-start",
-                  textAlign: "left"
+                  background: isActive 
+                    ? `radial-gradient(circle at center, rgba(${parseInt(track.color.slice(1,3), 16)}, ${parseInt(track.color.slice(3,5), 16)}, ${parseInt(track.color.slice(5,7), 16)}, 0.15) 0%, #151518 100%)` 
+                    : "#0a0a0c",
+                  border: isActive ? `1.5px solid ${track.color}` : "1px solid #202024",
+                  borderRadius: "3px",
+                  padding: "6px 2px",
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  cursor: "pointer",
+                  boxShadow: isActive ? `0 0 8px ${track.color}40` : "none",
+                  transition: "all 0.15s ease",
+                  height: "55px"
                 }}
               >
-                <span style={{ fontSize: "0.55rem", opacity: 0.6, marginRight: "6px" }}>
-                  {track.type === "mix" ? "🎚️ MIX" : "🎵 ORIG"}
+                <span style={{ fontSize: "1.1rem", marginBottom: "2px" }}>
+                  {track.icon}
                 </span>
-                {track.title}
+                <span 
+                  style={{ 
+                    fontFamily: "var(--font-lcd)", 
+                    fontSize: "0.45rem", 
+                    color: isActive ? "#ffffff" : "#666",
+                    textAlign: "center",
+                    whiteSpace: "nowrap",
+                    overflow: "hidden",
+                    textTransform: "uppercase",
+                    width: "100%",
+                    display: "block"
+                  }}
+                >
+                  {track.title.split(" ")[0]}
+                </span>
               </button>
             );
           })}

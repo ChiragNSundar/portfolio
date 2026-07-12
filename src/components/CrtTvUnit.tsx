@@ -9,7 +9,9 @@ export const CrtTvUnit: React.FC<CrtTvUnitProps> = ({ onInteract }) => {
   const [powerOn, setPowerOn] = useState(false);
   const [currentIdx, setCurrentIdx] = useState(0);
   const [isFlickering, setIsFlickering] = useState(false);
-  const [dialRotation, setDialRotation] = useState(0);
+  const [volumeRotation, setVolumeRotation] = useState(120);
+  const [channelRotation, setChannelRotation] = useState(45);
+  const [fineTuneRotation, setFineTuneRotation] = useState(180);
 
   const activeVideo = coverVideos[currentIdx];
 
@@ -31,53 +33,55 @@ export const CrtTvUnit: React.FC<CrtTvUnitProps> = ({ onInteract }) => {
     if (!powerOn) return;
     playDialClickSound();
     setCurrentIdx((prev) => (prev + 1) % coverVideos.length);
-    setDialRotation((prev) => prev + 45); // rotate dial knob 45 degrees
+    setChannelRotation((prev) => (prev + 45) % 360);
     if (onInteract) onInteract();
   };
 
-  // Synthesize mechanical slide/switch click
+  const handleRotateVolume = () => {
+    if (!powerOn) return;
+    playDialClickSound();
+    setVolumeRotation((prev) => (prev + 30) % 360);
+  };
+
+  const handleRotateFineTune = () => {
+    if (!powerOn) return;
+    playDialClickSound();
+    setFineTuneRotation((prev) => (prev + 20) % 360);
+  };
+
+  // Synthesize switch mechanical click
   const playSwitchSound = () => {
     try {
       const AudioContextClass = window.AudioContext || (window as any).webkitAudioContext;
       const ctx = new AudioContextClass();
-      
       const osc = ctx.createOscillator();
       const gain = ctx.createGain();
-      
       osc.type = "sawtooth";
-      osc.frequency.setValueAtTime(100, ctx.currentTime);
-      osc.frequency.exponentialRampToValueAtTime(1, ctx.currentTime + 0.05);
-      
+      osc.frequency.setValueAtTime(120, ctx.currentTime);
+      osc.frequency.exponentialRampToValueAtTime(1, ctx.currentTime + 0.04);
       gain.gain.setValueAtTime(0.04, ctx.currentTime);
-      gain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + 0.05);
-      
+      gain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + 0.04);
       osc.connect(gain);
       gain.connect(ctx.destination);
-      
       osc.start();
-      osc.stop(ctx.currentTime + 0.06);
+      osc.stop(ctx.currentTime + 0.05);
     } catch (e) {}
   };
 
-  // Synthesize dial rotary click
+  // Synthesize dial mechanical click
   const playDialClickSound = () => {
     try {
       const AudioContextClass = window.AudioContext || (window as any).webkitAudioContext;
       const ctx = new AudioContextClass();
-      
       const osc = ctx.createOscillator();
       const gain = ctx.createGain();
-      
-      osc.type = "square";
-      osc.frequency.setValueAtTime(800, ctx.currentTime);
-      osc.frequency.exponentialRampToValueAtTime(300, ctx.currentTime + 0.03);
-      
+      osc.type = "triangle";
+      osc.frequency.setValueAtTime(600, ctx.currentTime);
+      osc.frequency.exponentialRampToValueAtTime(100, ctx.currentTime + 0.03);
       gain.gain.setValueAtTime(0.02, ctx.currentTime);
       gain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + 0.03);
-      
       osc.connect(gain);
       gain.connect(ctx.destination);
-      
       osc.start();
       osc.stop(ctx.currentTime + 0.04);
     } catch (e) {}
@@ -85,15 +89,14 @@ export const CrtTvUnit: React.FC<CrtTvUnitProps> = ({ onInteract }) => {
 
   return (
     <div 
+      className="console-panel"
       style={{
         display: "flex",
-        background: "#1c1c1f",
-        border: "5px solid #2d2d30",
-        borderRadius: "8px",
-        boxShadow: "inset 0 0 15px rgba(0,0,0,0.8), 0 4px 10px rgba(0,0,0,0.5)",
-        height: "380px",
-        padding: "16px",
-        gap: "16px"
+        height: "360px",
+        padding: "12px",
+        gap: "12px",
+        border: "1px solid var(--color-gold-dark)",
+        boxShadow: "inset 0 0 15px rgba(0,0,0,0.95)"
       }}
     >
       {/* Left Column: Curved CRT Screen */}
@@ -102,9 +105,9 @@ export const CrtTvUnit: React.FC<CrtTvUnitProps> = ({ onInteract }) => {
         style={{
           flexGrow: 1,
           position: "relative",
-          backgroundColor: "#08080a",
-          border: "4px solid #141416",
-          borderRadius: "12px",
+          backgroundColor: "#050608",
+          border: "4px solid #1a1a1c",
+          borderRadius: "4px",
           height: "100%",
           overflow: "hidden"
         }}
@@ -112,20 +115,17 @@ export const CrtTvUnit: React.FC<CrtTvUnitProps> = ({ onInteract }) => {
         {/* Curved reflection mask overlay */}
         <div className="tv-glass-overlay" />
 
-        {/* Screen State Rendering */}
+        {/* Screen Rendering */}
         {!powerOn ? (
-          /* Blank dark tube screen when off */
           <div style={{ width: "100%", height: "100%", backgroundColor: "#020203" }} />
         ) : isFlickering ? (
-          /* TV Static Noise between channels */
           <div className="tv-static" style={{ width: "100%", height: "100%" }} />
         ) : (
-          /* Embedded Video Iframe */
           <div className="tv-iframe-container" style={{ width: "100%", height: "100%" }}>
             <iframe
               width="100%"
               height="100%"
-              src={`https://www.youtube.com/embed/${activeVideo.youtubeId}?autoplay=1&mute=0`}
+              src={`https://www.youtube.com/embed/${activeVideo.youtubeId}?autoplay=1&mute=0&modestbranding=1&autohide=1`}
               title={activeVideo.title}
               frameBorder="0"
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
@@ -136,126 +136,161 @@ export const CrtTvUnit: React.FC<CrtTvUnitProps> = ({ onInteract }) => {
         )}
       </div>
 
-      {/* Right Column: Physical Controls Panel (Wood & Gold) */}
+      {/* Right Column: Physical Controls Panel (Skeuomorphic Tele-Tuner) */}
       <div 
         style={{
-          width: "120px",
-          background: "linear-gradient(135deg, var(--color-wood-light), var(--color-wood-dark))",
-          border: "3px solid var(--color-gold-dark)",
-          borderRadius: "6px",
-          padding: "12px 6px",
+          width: "115px",
+          background: "linear-gradient(135deg, #1b1b1e, #101012)",
+          border: "2px solid var(--color-gold-dark)",
+          borderRadius: "4px",
+          padding: "8px 6px",
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
           justifyContent: "space-between",
-          boxShadow: "0 4px 8px rgba(0,0,0,0.5)"
+          boxShadow: "0 4px 10px rgba(0,0,0,0.8)"
         }}
       >
+        {/* Header */}
         <div style={{ textAlign: "center", width: "100%" }}>
           <div 
             style={{
               fontFamily: "var(--font-display)",
               fontSize: "0.65rem",
               color: "var(--color-gold)",
-              fontWeight: "bold",
-              letterSpacing: "1px",
+              fontWeight: "800",
+              letterSpacing: "1.5px",
               borderBottom: "1px solid var(--color-gold-dark)",
-              paddingBottom: "4px",
-              marginBottom: "12px"
+              paddingBottom: "2px",
+              marginBottom: "8px"
             }}
           >
             TELE-TUNER
           </div>
 
-          {/* Rotary Dial Container */}
-          <div style={{ margin: "16px 0", position: "relative" }}>
-            <div 
-              onClick={handleNextChannel}
-              style={{
-                width: "60px",
-                height: "60px",
-                borderRadius: "50%",
-                background: "radial-gradient(circle, #2d2d30 40%, #151517 90%)",
-                border: "2px solid var(--color-gold-dark)",
-                margin: "0 auto",
-                cursor: powerOn ? "pointer" : "not-allowed",
-                position: "relative",
-                transform: `rotate(${dialRotation}deg)`,
-                transition: "transform 0.25s ease-out",
-                boxShadow: "0 4px 6px rgba(0,0,0,0.6)"
-              }}
-            >
-              {/* Dial tick indicators */}
+          {/* Three golden knobs */}
+          <div style={{ display: "flex", flexDirection: "column", gap: "8px", margin: "6px 0", alignItems: "center" }}>
+            
+            {/* Knob 1: Channel Selector */}
+            <div style={{ textAlign: "center" }}>
               <div 
+                onClick={handleNextChannel}
                 style={{
-                  position: "absolute",
-                  top: "2px",
-                  left: "50%",
-                  width: "4px",
-                  height: "12px",
-                  backgroundColor: "var(--color-gold)",
-                  transform: "translateX(-50%)"
+                  width: "36px",
+                  height: "36px",
+                  borderRadius: "50%",
+                  background: "radial-gradient(circle, #e6c587 0%, #aa823a 100%)",
+                  border: "2.5px solid #202024",
+                  margin: "0 auto",
+                  cursor: powerOn ? "pointer" : "not-allowed",
+                  position: "relative",
+                  transform: `rotate(${channelRotation}deg)`,
+                  transition: "transform 0.2s cubic-bezier(0.1, 0.8, 0.2, 1)",
+                  boxShadow: "0 2px 5px rgba(0,0,0,0.7)"
                 }}
-              />
+              >
+                {/* Tick pointer */}
+                <div style={{ position: "absolute", top: "1px", left: "50%", width: "2px", height: "8px", backgroundColor: "#000", transform: "translateX(-50%)" }} />
+              </div>
+              <div style={{ fontFamily: "var(--font-lcd)", fontSize: "0.45rem", color: "#666", marginTop: "1px" }}>TUNER</div>
             </div>
-            <div 
-              style={{
-                fontFamily: "var(--font-lcd)",
-                fontSize: "0.65rem",
-                color: powerOn ? "var(--color-gold-light)" : "rgba(223, 194, 136, 0.3)",
-                marginTop: "8px",
-                textShadow: powerOn ? "0 0 4px var(--color-gold)" : "none"
-              }}
-            >
-              CH: {powerOn ? `0${currentIdx + 1}` : "--"}
+
+            {/* Knob 2: Volume */}
+            <div style={{ textAlign: "center" }}>
+              <div 
+                onClick={handleRotateVolume}
+                style={{
+                  width: "30px",
+                  height: "30px",
+                  borderRadius: "50%",
+                  background: "radial-gradient(circle, #e6c587 0%, #aa823a 100%)",
+                  border: "2px solid #202024",
+                  margin: "0 auto",
+                  cursor: powerOn ? "pointer" : "not-allowed",
+                  position: "relative",
+                  transform: `rotate(${volumeRotation}deg)`,
+                  transition: "transform 0.15s ease-out",
+                  boxShadow: "0 2px 4px rgba(0,0,0,0.7)"
+                }}
+              >
+                <div style={{ position: "absolute", top: "1px", left: "50%", width: "2px", height: "6px", backgroundColor: "#000", transform: "translateX(-50%)" }} />
+              </div>
+              <div style={{ fontFamily: "var(--font-lcd)", fontSize: "0.45rem", color: "#666", marginTop: "1px" }}>VOLUME</div>
             </div>
+
+            {/* Knob 3: Fine Tune */}
+            <div style={{ textAlign: "center" }}>
+              <div 
+                onClick={handleRotateFineTune}
+                style={{
+                  width: "26px",
+                  height: "26px",
+                  borderRadius: "50%",
+                  background: "radial-gradient(circle, #e6c587 0%, #aa823a 100%)",
+                  border: "2px solid #202024",
+                  margin: "0 auto",
+                  cursor: powerOn ? "pointer" : "not-allowed",
+                  position: "relative",
+                  transform: `rotate(${fineTuneRotation}deg)`,
+                  transition: "transform 0.15s ease-out",
+                  boxShadow: "0 2px 4px rgba(0,0,0,0.7)"
+                }}
+              >
+                <div style={{ position: "absolute", top: "1px", left: "50%", width: "1.5px", height: "5px", backgroundColor: "#000", transform: "translateX(-50%)" }} />
+              </div>
+              <div style={{ fontFamily: "var(--font-lcd)", fontSize: "0.45rem", color: "#666", marginTop: "1px" }}>FINE-TUNE</div>
+            </div>
+
           </div>
         </div>
 
-        {/* Video Metadata Panel on Cabinet */}
+        {/* Video Info Display */}
         <div 
           style={{
             background: "#000",
-            border: "1px solid var(--color-gold-dark)",
+            border: "1.5px solid var(--color-gold-dark)",
             borderRadius: "2px",
             width: "100%",
-            height: "110px",
-            padding: "6px",
+            height: "75px",
+            padding: "4px",
             overflow: "hidden",
             fontFamily: "var(--font-lcd)",
-            fontSize: "0.55rem",
-            color: powerOn ? "rgb(0, 255, 100)" : "rgba(0,255,100,0.1)",
-            textShadow: powerOn ? "0 0 3px rgba(0,255,100,0.8)" : "none"
+            fontSize: "0.5rem",
+            color: powerOn ? "rgb(0, 255, 120)" : "rgba(0,255,120,0.1)",
+            textShadow: powerOn ? "0 0 3px rgba(0,255,120,0.8)" : "none"
           }}
         >
           {powerOn ? (
             <div style={{ display: "flex", flexDirection: "column", gap: "2px" }}>
-              <div style={{ color: "#fff", fontWeight: "bold" }}>COVER ACTIVE:</div>
-              <div style={{ height: "42px", overflow: "hidden" }}>{activeVideo.title}</div>
-              <div style={{ color: "#aaa" }}>GENRE: {activeVideo.genre}</div>
+              <div style={{ color: "#fff", fontWeight: "bold" }}>CHANNEL ACTIVE:</div>
+              <div style={{ height: "30px", overflow: "hidden" }}>{activeVideo.title}</div>
+              <div style={{ color: "#888" }}>SIGNAL: STRONG</div>
             </div>
           ) : (
-            <div>[SCREEN POWER TERMINATED]</div>
+            <div>[STANDBY]</div>
           )}
         </div>
 
-        {/* Power Push Button */}
-        <button 
-          onClick={togglePower}
-          style={{
-            width: "32px",
-            height: "32px",
-            borderRadius: "50%",
-            background: powerOn ? "radial-gradient(circle, #e53e3e, #9b2c2c)" : "radial-gradient(circle, #4a5568, #2d3748)",
-            border: "2px solid #000",
-            cursor: "pointer",
-            outline: "none",
-            boxShadow: "0 2px 4px rgba(0,0,0,0.5), inset 0 2px 2px rgba(255,255,255,0.2)",
-            transform: powerOn ? "translateY(1px)" : "none",
-            transition: "all 0.1s"
-          }}
-          title="TV Power"
-        />
+        {/* Power Switch (Red push button) */}
+        <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
+          <button 
+            onClick={togglePower}
+            style={{
+              width: "24px",
+              height: "24px",
+              borderRadius: "50%",
+              background: powerOn ? "radial-gradient(circle, #f56565, #c53030)" : "radial-gradient(circle, #4a5568, #2d3748)",
+              border: "1.5px solid #000",
+              cursor: "pointer",
+              boxShadow: "0 2px 4px rgba(0,0,0,0.6), inset 0 2px 2px rgba(255,255,255,0.2)",
+              transform: powerOn ? "translateY(1px)" : "none",
+              transition: "all 0.1s"
+            }}
+            title="TV Power"
+          />
+          <div style={{ fontFamily: "var(--font-lcd)", fontSize: "0.45rem", color: "#666", marginTop: "2px" }}>POWER</div>
+        </div>
+
       </div>
     </div>
   );
