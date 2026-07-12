@@ -53,16 +53,16 @@ export const PolaroidCertificates: React.FC = () => {
         </span>
       </div>
 
-      {/* Polaroid fan container */}
+      {/* Polaroid side-by-side container */}
       <div 
         style={{
-          height: "220px",
-          position: "relative",
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
-          overflow: "hidden",
-          margin: "15px 0"
+          flexWrap: "wrap",
+          gap: "24px",
+          margin: "15px 0",
+          padding: "10px"
         }}
       >
         {resumeData.certifications.map((cert, idx) => {
@@ -77,28 +77,24 @@ export const PolaroidCertificates: React.FC = () => {
             <div
               key={idx}
               style={{
-                width: "155px",
-                height: "185px",
+                width: "145px",
+                height: "180px",
                 backgroundColor: "#ffffff",
                 border: "2px solid #18181b",
                 boxShadow: "4px 4px 0px #18181b",
-                padding: "8px 8px 24px 8px", // typical thick Polaroid bottom margin
-                position: "absolute",
-                transform: `rotate(${rotation}deg) translateY(${Math.abs(rotation) * 1.5}px)`,
+                padding: "8px 8px 20px 8px", // typical thick Polaroid bottom margin
+                transform: `rotate(${rotation}deg)`,
                 transition: "all 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275)",
-                cursor: "pointer",
-                zIndex: idx + 1
+                cursor: "pointer"
               }}
               onMouseEnter={(e) => {
                 const el = e.currentTarget;
-                el.style.transform = "scale(1.15) rotate(0deg) translateY(-15px)";
-                el.style.zIndex = "20";
-                el.style.boxShadow = "8px 8px 0px var(--color-rose-accent), 8px 8px 0px #18181b";
+                el.style.transform = "scale(1.12) rotate(0deg) translateY(-8px)";
+                el.style.boxShadow = "6px 6px 0px var(--color-rose-accent), 6px 6px 0px #18181b";
               }}
               onMouseLeave={(e) => {
                 const el = e.currentTarget;
-                el.style.transform = `rotate(${rotation}deg) translateY(${Math.abs(rotation) * 1.5}px)`;
-                el.style.zIndex = `${idx + 1}`;
+                el.style.transform = `rotate(${rotation}deg)`;
                 el.style.boxShadow = "4px 4px 0px #18181b";
               }}
             >
@@ -106,7 +102,7 @@ export const PolaroidCertificates: React.FC = () => {
               <div 
                 style={{
                   width: "100%",
-                  height: "115px",
+                  height: "110px",
                   background: bg,
                   borderRadius: "6px",
                   border: "1.5px solid #18181b",
@@ -114,14 +110,14 @@ export const PolaroidCertificates: React.FC = () => {
                   flexDirection: "column",
                   justifyContent: "center",
                   alignItems: "center",
-                  padding: "8px",
+                  padding: "6px",
                   textAlign: "center",
                   color: "#18181b",
                   boxShadow: "inset 0 2px 4px rgba(255,255,255,0.2)"
                 }}
               >
-                <div style={{ fontSize: "1.8rem", marginBottom: "4px" }}>🥇</div>
-                <div style={{ fontSize: "0.6rem", fontWeight: "900", fontFamily: "var(--font-body)", letterSpacing: "0.2px", textTransform: "uppercase", lineHeight: 1.2 }}>
+                <div style={{ fontSize: "1.6rem", marginBottom: "2px" }}>🥇</div>
+                <div style={{ fontSize: "0.58rem", fontWeight: "900", fontFamily: "var(--font-body)", letterSpacing: "0.2px", textTransform: "uppercase", lineHeight: 1.15 }}>
                   {name}
                 </div>
               </div>
@@ -129,10 +125,10 @@ export const PolaroidCertificates: React.FC = () => {
               {/* Polaroid Handwritten Caption */}
               <div 
                 style={{
-                  marginTop: "10px",
+                  marginTop: "8px",
                   textAlign: "center",
                   fontFamily: "var(--font-retro)",
-                  fontSize: "1.2rem",
+                  fontSize: "1.15rem",
                   color: "#18181b",
                   lineHeight: 1.1,
                   transform: "rotate(-1deg)",
