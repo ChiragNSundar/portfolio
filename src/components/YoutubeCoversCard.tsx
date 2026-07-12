@@ -66,6 +66,7 @@ export const YoutubeCoversCard: React.FC<YoutubeCoversCardProps> = ({ onInteract
 
       {/* Main Split Layout */}
       <div 
+        className="flex-row-mobile-stack"
         style={{
           display: "flex",
           gap: "20px",
@@ -75,6 +76,7 @@ export const YoutubeCoversCard: React.FC<YoutubeCoversCardProps> = ({ onInteract
       >
         {/* Left Column: Video Embed Screen */}
         <div 
+          className="full-width-mobile"
           style={{
             flexGrow: 2,
             flexBasis: "0",
@@ -107,8 +109,10 @@ export const YoutubeCoversCard: React.FC<YoutubeCoversCardProps> = ({ onInteract
 
         {/* Right Column: Folder Directory Selector */}
         <div 
+          className="full-width-mobile"
           style={{
-            width: "220px",
+            width: "100%",
+            maxWidth: "220px",
             background: "var(--card-bg-muted)",
             border: "1.5px solid var(--border-color)",
             borderRadius: "16px",

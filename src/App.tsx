@@ -319,8 +319,8 @@ export const App: React.FC = () => {
           <div style={{ textAlign: "center", display: "flex", flexDirection: "column", alignItems: "center", marginBottom: "12px" }}>
             <div 
               style={{
-                background: "#ffffff",
-                border: "1.5px solid #18181b",
+                background: "var(--card-bg)",
+                border: "1.5px solid var(--border-color)",
                 borderRadius: "12px",
                 padding: "6px 14px",
                 fontFamily: "var(--font-lcd)",
@@ -328,7 +328,7 @@ export const App: React.FC = () => {
                 color: "var(--color-amber-accent)",
                 fontWeight: "bold",
                 marginBottom: "16px",
-                boxShadow: "3px 3px 0px #18181b"
+                boxShadow: "3px 3px 0px var(--card-shadow)"
               }}
             >
               PORTFOLIO WEBSITE: ACTIVE CONSOLE <span className="bouncy-emoji">👋</span>
@@ -363,6 +363,7 @@ export const App: React.FC = () => {
 
           {/* Cards Split Wrapper */}
           <div 
+            className="flex-row-mobile-stack"
             style={{
               display: "flex",
               flexDirection: "row",
@@ -375,7 +376,7 @@ export const App: React.FC = () => {
           >
             {/* Split 1: Software Engineer */}
             <div 
-              className="creative-card"
+              className="creative-card splash-card full-width-mobile"
               onClick={() => { playBipSound(); setMode('engineer'); }}
               style={{
                 flex: "1 1 350px",
@@ -386,8 +387,8 @@ export const App: React.FC = () => {
                 flexDirection: "column",
                 justifyContent: "space-between",
                 cursor: "pointer",
-                borderColor: "#18181b",
-                boxShadow: "10px 10px 0px rgba(245, 159, 0, 0.15), 10px 10px 0px #18181b"
+                borderColor: "var(--border-color)",
+                boxShadow: "10px 10px 0px rgba(245, 159, 0, 0.15), 10px 10px 0px var(--card-shadow)"
               }}
             >
               <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
@@ -407,7 +408,7 @@ export const App: React.FC = () => {
 
             {/* Split 2: Music Producer */}
             <div 
-              className="creative-card"
+              className="creative-card splash-card full-width-mobile"
               onClick={() => { playBipSound(); setMode('producer'); }}
               style={{
                 flex: "1 1 350px",
@@ -418,8 +419,8 @@ export const App: React.FC = () => {
                 flexDirection: "column",
                 justifyContent: "space-between",
                 cursor: "pointer",
-                borderColor: "#18181b",
-                boxShadow: "10px 10px 0px rgba(147, 51, 234, 0.15), 10px 10px 0px #18181b"
+                borderColor: "var(--border-color)",
+                boxShadow: "10px 10px 0px rgba(147, 51, 234, 0.15), 10px 10px 0px var(--card-shadow)"
               }}
             >
               <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
@@ -586,6 +587,7 @@ export const App: React.FC = () => {
 
           {/* Main Content Sections Wrapper */}
           <div 
+            className="main-content-wrapper"
             style={{
               width: "100%",
               display: "flex",

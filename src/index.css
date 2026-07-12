@@ -193,3 +193,65 @@ body {
   0%, 100% { transform: translateY(0); }
   50% { transform: translateY(-4px); }
 }
+
+/* Responsive media queries */
+@media (max-width: 768px) {
+  .sidebar-nav {
+    display: none !important;
+  }
+  .mobile-nav {
+    display: flex !important;
+  }
+  
+  /* Shrink large hero heading */
+  h1 {
+    font-size: 3rem !important;
+  }
+  
+  /* Section gaps */
+  .main-content-wrapper {
+    gap: 80px !important;
+    padding: 60px 12px 120px 12px !important;
+  }
+  
+  /* Flex items stack vertically */
+  .flex-row-mobile-stack {
+    flex-direction: column !important;
+  }
+  
+  /* Force full width on layout components */
+  .full-width-mobile {
+    width: 100% !important;
+    max-width: 100% !important;
+    flex-basis: auto !important;
+  }
+}
+
+@media (max-width: 480px) {
+  /* Smaller hero title for mobile phones */
+  h1 {
+    font-size: 2.2rem !important;
+  }
+  .creative-card {
+    padding: 16px !important;
+    border-radius: 16px !important;
+  }
+  
+  /* Simplify splash screen cards */
+  .splash-card {
+    height: auto !important;
+    min-height: 380px !important;
+    padding: 24px 16px !important;
+  }
+}
+
+/* Hover dynamic lift for tech stack deck badges */
+.tech-badge {
+  transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.2s ease !important;
+  display: inline-block;
+  cursor: default;
+}
+.tech-badge:hover {
+  transform: translateY(-3px) scale(1.04) !important;
+  box-shadow: 4px 4px 0px var(--card-shadow) !important;
+}

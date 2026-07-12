@@ -274,10 +274,16 @@ export const DeveloperResumeCard: React.FC<DeveloperResumeCardProps> = ({ onInte
       <div style={{ display: "flex", gap: "28px", flexDirection: "column" }}>
         
         {/* ROW 1: CV Intro & Project Explorer */}
-        <div style={{ display: "flex", gap: "24px", flexDirection: "row", flexWrap: "wrap" }}>
+        <div 
+          className="flex-row-mobile-stack"
+          style={{ display: "flex", gap: "24px", flexDirection: "row", flexWrap: "wrap" }}
+        >
           
           {/* Left Column: Education & Intern Info */}
-          <div style={{ flex: "1 1 350px", display: "flex", flexDirection: "column", gap: "20px" }}>
+          <div 
+            className="full-width-mobile"
+            style={{ flex: "1 1 350px", display: "flex", flexDirection: "column", gap: "20px" }}
+          >
             <div style={{ background: "var(--card-bg-muted)", border: "1.5px solid var(--border-color)", borderRadius: "16px", padding: "20px" }}>
               <h3 style={{ fontSize: "1.1rem", fontWeight: "900", marginBottom: "12px", borderBottom: "1.5px solid var(--border-color)", paddingBottom: "4px" }}>
                 EDUCATION & PROFESSIONAL TIMELINE
@@ -406,7 +412,10 @@ export const DeveloperResumeCard: React.FC<DeveloperResumeCardProps> = ({ onInte
           </div>
 
           {/* Right Column: Project Explorer cards */}
-          <div style={{ flex: "1.2 1 400px", display: "flex", flexDirection: "column", gap: "12px" }}>
+          <div 
+            className="full-width-mobile"
+            style={{ flex: "1.2 1 400px", display: "flex", flexDirection: "column", gap: "12px" }}
+          >
             <div style={{ background: "var(--card-bg)", border: "1.5px solid var(--border-color)", borderRadius: "16px", padding: "20px", display: "flex", flexDirection: "column", gap: "10px" }}>
               <h3 style={{ fontSize: "1.1rem", fontWeight: "900", borderBottom: "1.5px solid var(--border-color)", paddingBottom: "4px" }}>
                 DETAILED PROJECT EXPLORER
@@ -496,10 +505,14 @@ export const DeveloperResumeCard: React.FC<DeveloperResumeCardProps> = ({ onInte
         </div>
 
         {/* ROW 2: ASK CHIRAG AI CHATBOT & SKILLS DATA */}
-        <div style={{ display: "flex", gap: "24px", flexDirection: "row", flexWrap: "wrap" }}>
+        <div 
+          className="flex-row-mobile-stack"
+          style={{ display: "flex", gap: "24px", flexDirection: "row", flexWrap: "wrap" }}
+        >
           
           {/* Chatbot Console (60%) */}
           <div 
+            className="full-width-mobile"
             style={{
               flex: "1.5 1 450px",
               background: "var(--card-bg)",
@@ -664,7 +677,10 @@ export const DeveloperResumeCard: React.FC<DeveloperResumeCardProps> = ({ onInte
           </div>
 
           {/* GitHub Activity & Tech Stack Panel (40%) */}
-          <div style={{ flex: "1.2 1 300px", display: "flex", flexDirection: "column", gap: "18px" }}>
+          <div 
+            className="full-width-mobile"
+            style={{ flex: "1.2 1 300px", display: "flex", flexDirection: "column", gap: "18px" }}
+          >
             
             {/* Tech Stack Deck */}
             <div style={{ background: "var(--card-bg)", border: "1.5px solid var(--border-color)", borderRadius: "16px", padding: "16px" }}>
@@ -703,6 +719,7 @@ export const DeveloperResumeCard: React.FC<DeveloperResumeCardProps> = ({ onInte
                 ].map((tech, idx) => (
                   <span
                     key={idx}
+                    className="tech-badge"
                     style={{
                       fontSize: "0.62rem",
                       fontWeight: "bold",
