@@ -16,28 +16,39 @@ Live Vercel Site: [portfolio-one-blue-asoaj8ivp3.vercel.app](https://portfolio-o
 
 ### 1. Dual-Mode Landing Portal
 * Splitted skeuomorphic splash screen allowing visitors to select their target role path immediately upon loading.
-* Floating navigational switch button (`🔄 Switch Role`) inside both views for dynamic mode swapping.
+* Dynamic switch button with animation transforming the layout instantly.
+* Animated hero greetings displaying **HazardChirag** with a custom scrambler text transition when loading the engineer dossier.
 
-### 2. Software Engineering Dossier Console
-* **"Ask Chirag AI" Chatbot**: Zero-latency interactive local query chatbot loaded with developer QA details (RAG models, YOLOv8 vision, Streamlit dashboards, internship specs, and strengths/weaknesses). Includes a typing indicator animation (`...`), auto-scrolling focus, and a clear logs tool (`🗑️`).
-* **GitHub Stats & Commit Heatmap**: Displays your custom bio summary, commit counters (610 total commits, 10-day streak), and a CSS-drawn green contribution grid.
-* **Tech Stack Badge Deck**: A colorful, flat neobrutalist grid showing all 27 technical tools/libraries matching their official brand colors.
-* **Interactive Certificates Lightbox**: A stacked Polaroid display of credentials (Infosys, freeCodeCamp) that opens in a high-resolution preview modal with glassmorphic backdrop blur on click. Handles Esc-key close events.
+### 2. Software Engineer Dossier & Timeline
+* **Professional Timeline**: Fully detailed work experience including B.E. Computer Science & Engineering (RNSIT), Data Science & AI Intern (WhatDigital Technologies, `Nov 2025 - Apr 2026`), and AI Operations Specialist (Rural Bank of Calbayog City, Inc. - RBCCI).
+* **Micro-Interactions**: Custom hover-lift transitions (`transform: translateY(-4px)`) on CV sections and project card components.
+* **"Ask Chirag AI" Chatbot**: Zero-latency local representative chatbot loaded with developer QA details. Includes custom typing loaders, scroll triggers, and clear history tools.
+* **GitHub stats & tech badging**: Commit contribution grids and neobrutalist color-themed library badges.
 
-### 3. Music Production Stems Studio
-* **Bouncy Equalizer Waveform**: An animated SVG equalizer visualizer that dances to the stems playback in real time, and snaps back to static when paused.
-* **Stems Crossfader**: Real-time Web Audio API comparison between "Before Mix" (raw multitracks) and "After Mix Master" (finished master).
-* **Covers Catalog**: Displays your 20 performance videos from YouTube in bottom-up order, with video details and direct stream buttons.
+### 3. Fullscreen Detailed Project Explorer Console
+Clicking a project card launches a fullscreen console overlay modal (via React Portal) with tabs to swap between all projects:
+* 🏍️ **RoadWatch**: Real-time motorcycle helmet detection (YOLOv8 + FastAPI + CLAHE normalization) showing text-based directory structure trees and `bike.gif` stream crops.
+* 🧠 **Harmony Hub**: Streamlit-based mental wellness assistant (Gemini Pro + RAG) showing mood calculators and Plotly statistics graphs.
+* 📊 **Job Portal BI Dashboard**: Interactive Dash dashboard querying SQL/Mongo backends, showing a text-based ASCII system flow diagram.
+* 🤖 **AI JD Bot**: Job description assistant (Flask + Gemini/Gemma + 12 MongoDB collection tables). Set to text-only mode where visuals column auto-compresses to full width.
+* 🎤 **VibeLyrics**: Professional hip-hop writing suite (React 19 + Zustand 5 + FastAPI + Librosa + LoRA DPO continual training), showing detailed directory structure trees and system layout charts.
+
+### 4. Realigned Supabase Guestbook Footer
+* Removed inline guestbook widgets to clear CV clutter.
+* Mounted a full-width neobrutalist guestbook signature log card at the very bottom of the page, acting as the layout footer.
+* Submits signatures dynamically to Supabase databases with fallback offline demo caches inside local storage.
 
 ---
 
 ## 🛠️ Technology Stack
 
-- **Framework & Core**: React + TypeScript + Vite
-- **3D Effects**: Pure CSS 3D Perspective Parallax (Cabinet shifts relative to cursor position)
-- **Audio Processing**: Web Audio API (oscilloscope analyzer, gain-fading, dynamic audio nodes, key sound synthesis)
-- **Database Backend**: Supabase (PostgreSQL, Row Level Security)
-- **Hosting Platform**: Vercel (Continuous deployment from GitHub)
+- **Frontend & Core**: React 19 + TypeScript + Vite 7 + Zustand 5 + Framer Motion 12
+- **Styling**: Vanilla CSS (Cream & pastel neobrutalist design system, locked in Light Mode)
+- **Audio Processing**: Web Audio API (gain-fading, dynamic audio nodes, key sound synthesizers)
+- **AI/ML & NLP Orchestration**: Gemini 2.0/2.5 Pro & Flash, Gemma 2, Spacy, NLTK, Librosa
+- **Database & Persistence**: Supabase (PostgreSQL, RLS), MongoDB (JSON Schema validation), SQLite (WAL Mode parallel backup queues), IndexedDB
+- **APM & Observability**: OpenTelemetry distributed tracing, circuit breaker patterns (pybreaker), health check pipelines
+- **Testing Suites**: Pytest, Vitest, Playwright (E2E browser testing), Chaos engineering simulations
 
 ---
 

@@ -10,9 +10,9 @@
     "semantic_hash": "8ed076f12307df065e9ee2514196ec54"
   },
   "src/App.tsx": {
-    "mtime": 1783855475.0419357,
-    "ast_hash": "c28161271a3f4db5a28fd0ea2d22aa24",
-    "semantic_hash": "c28161271a3f4db5a28fd0ea2d22aa24"
+    "mtime": 1783871877.7537875,
+    "ast_hash": "22e2aa7a85aefa0a2a12420fad9325d3",
+    "semantic_hash": ""
   },
   "src/audio/audioEngine.ts": {
     "mtime": 1783850719.9510758,
@@ -20,24 +20,24 @@
     "semantic_hash": "b770eae6bcbfa933312792f5e5888f93"
   },
   "src/components/AudioEngineCard.tsx": {
-    "mtime": 1783855736.073953,
-    "ast_hash": "4bc60884f393d686a20ae24ceb88ff0e",
-    "semantic_hash": "4bc60884f393d686a20ae24ceb88ff0e"
+    "mtime": 1783868804.2369628,
+    "ast_hash": "e44699b04cbcf47901c5f89de49e548c",
+    "semantic_hash": ""
   },
   "src/components/DeveloperResumeCard.tsx": {
-    "mtime": 1783855778.6340892,
-    "ast_hash": "ce1f66ab7fc22674f62e7426349f6c8f",
-    "semantic_hash": "ce1f66ab7fc22674f62e7426349f6c8f"
+    "mtime": 1783871816.5364802,
+    "ast_hash": "aa46284f72770bfda25b52826c8b8a6e",
+    "semantic_hash": ""
   },
   "src/components/PolaroidCertificates.tsx": {
-    "mtime": 1783855728.7666657,
-    "ast_hash": "52811ecda9c0a9cc6f75d61904d9625d",
-    "semantic_hash": "52811ecda9c0a9cc6f75d61904d9625d"
+    "mtime": 1783869021.163054,
+    "ast_hash": "698abd4300f59a94325f75efe269f875",
+    "semantic_hash": ""
   },
   "src/components/YoutubeCoversCard.tsx": {
-    "mtime": 1783855453.261675,
-    "ast_hash": "395b77e91311ec780cf3b392868c3c7f",
-    "semantic_hash": "395b77e91311ec780cf3b392868c3c7f"
+    "mtime": 1783869094.295309,
+    "ast_hash": "d00ce46879ce5958fecbca76e17ea0fd",
+    "semantic_hash": ""
   },
   "src/data/resume.ts": {
     "mtime": 1783850585.805855,
@@ -90,14 +90,14 @@
     "semantic_hash": "345f26b6694848ff7c336ed6c890efd4"
   },
   "index.html": {
-    "mtime": 1783854499.5702887,
-    "ast_hash": "4dd5276046a11ffec027a3a6789ec395",
-    "semantic_hash": "4dd5276046a11ffec027a3a6789ec395"
+    "mtime": 1783868681.08531,
+    "ast_hash": "c9907cd67755ab7bf5be9ba44b02f536",
+    "semantic_hash": ""
   },
   "public/favicon.svg": {
-    "mtime": 1783850528.0346792,
-    "ast_hash": "7e840862161341271697daa99a40d76b",
-    "semantic_hash": "7e840862161341271697daa99a40d76b"
+    "mtime": 1783868699.3145664,
+    "ast_hash": "bd4c7f37c0cad9aaae77de2fcb31406e",
+    "semantic_hash": ""
   },
   "public/icons.svg": {
     "mtime": 1783850528.0613422,
@@ -118,5 +118,120 @@
     "mtime": 1783850528.1032512,
     "ast_hash": "9960a24288958394ac50e57ff638b036",
     "semantic_hash": "9960a24288958394ac50e57ff638b036"
+  },
+  "public/aijd/image copy.png": {
+    "mtime": 1783871250.312925,
+    "ast_hash": "7f8338c0463fea5b3a0714a052a0919c",
+    "semantic_hash": ""
+  },
+  "public/aijd/image.png": {
+    "mtime": 1783871210.5397131,
+    "ast_hash": "7cd8e7cd63ff0c1f89c6a8a1b4d27ce7",
+    "semantic_hash": ""
+  },
+  "public/hm/Chat2.jpeg": {
+    "mtime": 1783869916.844867,
+    "ast_hash": "1b231c3a2ae723db93e95bc515752b13",
+    "semantic_hash": ""
+  },
+  "public/hm/GenAI AssistantChat.jpeg": {
+    "mtime": 1783869929.7913983,
+    "ast_hash": "c6b3bde77b19ee4422bc57b5b63a032d",
+    "semantic_hash": ""
+  },
+  "public/hm/HabitTracker.jpeg": {
+    "mtime": 1783869936.4851065,
+    "ast_hash": "56e97d6bd48ed14214b667e0f4a2d52a",
+    "semantic_hash": ""
+  },
+  "public/hm/PlotlyGraphData.png": {
+    "mtime": 1783869951.0208156,
+    "ast_hash": "b423c007ec815245a2ac5bfecf4d55bb",
+    "semantic_hash": ""
+  },
+  "public/hm/UserAuthPage.jpeg": {
+    "mtime": 1783869962.8326197,
+    "ast_hash": "0945b6690f3c8356b109477e64e08aa2",
+    "semantic_hash": ""
+  },
+  "public/jp/Screenshot 2026-07-12 205812.png": {
+    "mtime": 1783870093.043211,
+    "ast_hash": "7270c85f5c76ca8371c6966fdd63989d",
+    "semantic_hash": ""
+  },
+  "public/jp/image copy 2.png": {
+    "mtime": 1783870177.0947855,
+    "ast_hash": "79f3f0f4b508cc86924e18a5a0dd38a2",
+    "semantic_hash": ""
+  },
+  "public/jp/image copy 3.png": {
+    "mtime": 1783870182.703497,
+    "ast_hash": "905ee907474193ddfa456dffeef5a6f3",
+    "semantic_hash": ""
+  },
+  "public/jp/image copy 4.png": {
+    "mtime": 1783870196.3896556,
+    "ast_hash": "794211545bcc4387ef5c2dd16db19a58",
+    "semantic_hash": ""
+  },
+  "public/jp/image copy 5.png": {
+    "mtime": 1783870210.0669138,
+    "ast_hash": "a16cba98423bbf64b715148c6d719b6c",
+    "semantic_hash": ""
+  },
+  "public/jp/image copy.png": {
+    "mtime": 1783870152.708405,
+    "ast_hash": "136634e50e1c48e3ae21ab96b6f07a77",
+    "semantic_hash": ""
+  },
+  "public/jp/image.png": {
+    "mtime": 1783870141.072291,
+    "ast_hash": "566c22701ea2a6a72bfcc4cc518b16a0",
+    "semantic_hash": ""
+  },
+  "public/rw/bike.gif": {
+    "mtime": 1783869646.0824525,
+    "ast_hash": "a77979332bf15609cf58f36f6c0ace0d",
+    "semantic_hash": ""
+  },
+  "public/rw/image.png": {
+    "mtime": 1783870316.75051,
+    "ast_hash": "91d0795651d38e01a6300974187bbf4b",
+    "semantic_hash": ""
+  },
+  "public/vbl/image copy 2.png": {
+    "mtime": 1783871733.348132,
+    "ast_hash": "9e27f067f8403630afb88b442ef5193a",
+    "semantic_hash": ""
+  },
+  "public/vbl/image copy 3.png": {
+    "mtime": 1783871743.0121331,
+    "ast_hash": "2914658424a8f25db0de8cf5b61b8ca4",
+    "semantic_hash": ""
+  },
+  "public/vbl/image copy 4.png": {
+    "mtime": 1783871757.6585667,
+    "ast_hash": "1da3f7192272e6f8bead341c7f75c5c4",
+    "semantic_hash": ""
+  },
+  "public/vbl/image copy 5.png": {
+    "mtime": 1783871766.0265605,
+    "ast_hash": "8d0b8f4967241a29a6403f203b45a912",
+    "semantic_hash": ""
+  },
+  "public/vbl/image copy 6.png": {
+    "mtime": 1783871776.76333,
+    "ast_hash": "69d82e0d07aaff18501e8b2201b19cbd",
+    "semantic_hash": ""
+  },
+  "public/vbl/image copy.png": {
+    "mtime": 1783871725.6457663,
+    "ast_hash": "6728623bc548ee01844a5b832cb56730",
+    "semantic_hash": ""
+  },
+  "public/vbl/image.png": {
+    "mtime": 1783871714.0201316,
+    "ast_hash": "014d8856bf6166e6d5791439628bafc0",
+    "semantic_hash": ""
   }
 }
