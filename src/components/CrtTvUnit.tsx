@@ -137,160 +137,145 @@ export const CrtTvUnit: React.FC<CrtTvUnitProps> = ({ onInteract, active }) => {
         )}
       </div>
 
-      {/* Right Column: Physical Controls Panel (Skeuomorphic Tele-Tuner) */}
+      {/* Right Column: Side Folder Directory & Power */}
       <div 
         style={{
-          width: "115px",
+          width: "185px",
           background: "linear-gradient(135deg, #1b1b1e, #101012)",
           border: "2px solid var(--color-gold-dark)",
           borderRadius: "4px",
-          padding: "8px 6px",
+          padding: "8px",
           display: "flex",
           flexDirection: "column",
-          alignItems: "center",
           justifyContent: "space-between",
-          boxShadow: "0 4px 10px rgba(0,0,0,0.8)"
+          boxShadow: "0 4px 10px rgba(0,0,0,0.8)",
+          gap: "8px"
         }}
       >
         {/* Header */}
-        <div style={{ textAlign: "center", width: "100%" }}>
+        <div style={{ textAlign: "left", width: "100%" }}>
           <div 
             style={{
-              fontFamily: "var(--font-display)",
-              fontSize: "0.65rem",
+              fontFamily: "var(--font-lcd)",
+              fontSize: "0.6rem",
               color: "var(--color-gold)",
-              fontWeight: "800",
-              letterSpacing: "1.5px",
-              borderBottom: "1px solid var(--color-gold-dark)",
-              paddingBottom: "2px",
+              fontWeight: "bold",
+              letterSpacing: "1px",
+              borderBottom: "1.5px solid var(--color-gold-dark)",
+              paddingBottom: "3px",
               marginBottom: "8px"
             }}
           >
-            TELE-TUNER
+            DIR: C:\COVERS\*.*
           </div>
 
-          {/* Three golden knobs */}
-          <div style={{ display: "flex", flexDirection: "column", gap: "8px", margin: "6px 0", alignItems: "center" }}>
-            
-            {/* Knob 1: Channel Selector */}
-            <div style={{ textAlign: "center" }}>
-              <div 
-                onClick={handleNextChannel}
-                style={{
-                  width: "36px",
-                  height: "36px",
-                  borderRadius: "50%",
-                  background: "radial-gradient(circle, #e6c587 0%, #aa823a 100%)",
-                  border: "2.5px solid #202024",
-                  margin: "0 auto",
-                  cursor: powerOn ? "pointer" : "not-allowed",
-                  position: "relative",
-                  transform: `rotate(${channelRotation}deg)`,
-                  transition: "transform 0.2s cubic-bezier(0.1, 0.8, 0.2, 1)",
-                  boxShadow: "0 2px 5px rgba(0,0,0,0.7)"
-                }}
-              >
-                {/* Tick pointer */}
-                <div style={{ position: "absolute", top: "1px", left: "50%", width: "2px", height: "8px", backgroundColor: "#000", transform: "translateX(-50%)" }} />
-              </div>
-              <div style={{ fontFamily: "var(--font-lcd)", fontSize: "0.45rem", color: "#666", marginTop: "1px" }}>TUNER</div>
-            </div>
-
-            {/* Knob 2: Volume */}
-            <div style={{ textAlign: "center" }}>
-              <div 
-                onClick={handleRotateVolume}
-                style={{
-                  width: "30px",
-                  height: "30px",
-                  borderRadius: "50%",
-                  background: "radial-gradient(circle, #e6c587 0%, #aa823a 100%)",
-                  border: "2px solid #202024",
-                  margin: "0 auto",
-                  cursor: powerOn ? "pointer" : "not-allowed",
-                  position: "relative",
-                  transform: `rotate(${volumeRotation}deg)`,
-                  transition: "transform 0.15s ease-out",
-                  boxShadow: "0 2px 4px rgba(0,0,0,0.7)"
-                }}
-              >
-                <div style={{ position: "absolute", top: "1px", left: "50%", width: "2px", height: "6px", backgroundColor: "#000", transform: "translateX(-50%)" }} />
-              </div>
-              <div style={{ fontFamily: "var(--font-lcd)", fontSize: "0.45rem", color: "#666", marginTop: "1px" }}>VOLUME</div>
-            </div>
-
-            {/* Knob 3: Fine Tune */}
-            <div style={{ textAlign: "center" }}>
-              <div 
-                onClick={handleRotateFineTune}
-                style={{
-                  width: "26px",
-                  height: "26px",
-                  borderRadius: "50%",
-                  background: "radial-gradient(circle, #e6c587 0%, #aa823a 100%)",
-                  border: "2px solid #202024",
-                  margin: "0 auto",
-                  cursor: powerOn ? "pointer" : "not-allowed",
-                  position: "relative",
-                  transform: `rotate(${fineTuneRotation}deg)`,
-                  transition: "transform 0.15s ease-out",
-                  boxShadow: "0 2px 4px rgba(0,0,0,0.7)"
-                }}
-              >
-                <div style={{ position: "absolute", top: "1px", left: "50%", width: "1.5px", height: "5px", backgroundColor: "#000", transform: "translateX(-50%)" }} />
-              </div>
-              <div style={{ fontFamily: "var(--font-lcd)", fontSize: "0.45rem", color: "#666", marginTop: "1px" }}>FINE-TUNE</div>
-            </div>
-
+          {/* Directory Folder File Tree List */}
+          <div 
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              gap: "4px",
+              maxHeight: "185px",
+              overflowY: "auto",
+              paddingRight: "2px"
+            }}
+          >
+            {coverVideos.map((video, idx) => {
+              const isActive = currentIdx === idx && powerOn;
+              return (
+                <div
+                  key={video.id}
+                  onClick={() => {
+                    if (powerOn) {
+                      setCurrentIdx(idx);
+                      playTunerClick();
+                      setChannelRotation((prev) => (prev + 30) % 360);
+                      if (onInteract) onInteract();
+                    }
+                  }}
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "4px",
+                    padding: "3px 4px",
+                    borderRadius: "2px",
+                    background: isActive ? "var(--color-gold)" : "transparent",
+                    color: isActive ? "#000000" : (powerOn ? "#d8d8e2" : "#44444c"),
+                    cursor: powerOn ? "pointer" : "not-allowed",
+                    fontFamily: "var(--font-retro)",
+                    fontSize: "0.95rem",
+                    whiteSpace: "nowrap",
+                    overflow: "hidden",
+                    textOverflow: "ellipsis",
+                    border: isActive ? "1px solid #fff" : "1px solid transparent",
+                    transition: "all 0.1s"
+                  }}
+                  title={video.title}
+                >
+                  <span style={{ fontSize: "0.8rem" }}>{isActive ? "🟢" : "📄"}</span>
+                  <span style={{ textTransform: "uppercase" }}>
+                    {video.title.length > 20 ? `${video.title.substring(0, 18)}..` : video.title}
+                  </span>
+                </div>
+              );
+            })}
           </div>
         </div>
 
-        {/* Video Info Display */}
+        {/* Bottom Panel: Volume Knob & Power Button Side-by-Side */}
         <div 
-          style={{
-            background: "#000",
-            border: "1.5px solid var(--color-gold-dark)",
-            borderRadius: "2px",
-            width: "100%",
-            height: "75px",
-            padding: "4px",
-            overflow: "hidden",
-            fontFamily: "var(--font-lcd)",
-            fontSize: "0.5rem",
-            color: powerOn ? "rgb(0, 255, 120)" : "rgba(0,255,120,0.1)",
-            textShadow: powerOn ? "0 0 3px rgba(0,255,120,0.8)" : "none"
+          style={{ 
+            display: "flex", 
+            justifyContent: "space-between", 
+            alignItems: "center",
+            borderTop: "1px solid #2d2d32",
+            paddingTop: "8px",
+            marginTop: "auto"
           }}
         >
-          {powerOn ? (
-            <div style={{ display: "flex", flexDirection: "column", gap: "2px" }}>
-              <div style={{ color: "#fff", fontWeight: "bold" }}>CHANNEL ACTIVE:</div>
-              <div style={{ height: "30px", overflow: "hidden" }}>{activeVideo.title}</div>
-              <div style={{ color: "#888" }}>SIGNAL: STRONG</div>
+          {/* Volume Control */}
+          <div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
+            <div 
+              onClick={handleRotateVolume}
+              style={{
+                width: "24px",
+                height: "24px",
+                borderRadius: "50%",
+                background: "radial-gradient(circle, #e6c587 0%, #aa823a 100%)",
+                border: "1.5px solid #202024",
+                cursor: powerOn ? "pointer" : "not-allowed",
+                position: "relative",
+                transform: `rotate(${volumeRotation}deg)`,
+                transition: "transform 0.15s ease-out",
+                boxShadow: "0 2px 4px rgba(0,0,0,0.5)"
+              }}
+            >
+              <div style={{ position: "absolute", top: "1px", left: "50%", width: "1.5px", height: "5px", backgroundColor: "#000", transform: "translateX(-50%)" }} />
             </div>
-          ) : (
-            <div>[STANDBY]</div>
-          )}
-        </div>
+            <div style={{ fontFamily: "var(--font-lcd)", fontSize: "0.45rem", color: "#666" }}>VOL</div>
+          </div>
 
-        {/* Power Switch (Red push button) */}
-        <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
-          <button 
-            onClick={togglePower}
-            style={{
-              width: "24px",
-              height: "24px",
-              borderRadius: "50%",
-              background: powerOn ? "radial-gradient(circle, #f56565, #c53030)" : "radial-gradient(circle, #4a5568, #2d3748)",
-              border: "1.5px solid #000",
-              cursor: "pointer",
-              boxShadow: "0 2px 4px rgba(0,0,0,0.6), inset 0 2px 2px rgba(255,255,255,0.2)",
-              transform: powerOn ? "translateY(1px)" : "none",
-              transition: "all 0.1s"
-            }}
-            title="TV Power"
-          />
-          <div style={{ fontFamily: "var(--font-lcd)", fontSize: "0.45rem", color: "#666", marginTop: "2px" }}>POWER</div>
+          {/* Power Button */}
+          <div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
+            <button 
+              onClick={togglePower}
+              style={{
+                width: "22px",
+                height: "22px",
+                borderRadius: "50%",
+                background: powerOn ? "radial-gradient(circle, #f56565, #c53030)" : "radial-gradient(circle, #4a5568, #2d3748)",
+                border: "1.5px solid #000",
+                cursor: "pointer",
+                boxShadow: "0 2px 4px rgba(0,0,0,0.6), inset 0 2px 2px rgba(255,255,255,0.2)",
+                transform: powerOn ? "translateY(1px)" : "none",
+                transition: "all 0.1s"
+              }}
+              title="TV Power"
+            />
+            <div style={{ fontFamily: "var(--font-lcd)", fontSize: "0.45rem", color: powerOn ? "#f56565" : "#666" }}>POWER</div>
+          </div>
         </div>
+      </div>
 
       </div>
     </div>
