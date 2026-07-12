@@ -14,7 +14,7 @@ interface DeveloperResumeCardProps {
   active?: boolean;
 }
 
-export const DeveloperResumeCard: React.FC<DeveloperResumeCardProps> = ({ onInteract, active }) => {
+export const DeveloperResumeCard: React.FC<DeveloperResumeCardProps> = ({ onInteract }) => {
   const [entries, setEntries] = useState<GuestbookEntry[]>([]);
   const [name, setName] = useState("");
   const [message, setMessage] = useState("");
@@ -23,12 +23,12 @@ export const DeveloperResumeCard: React.FC<DeveloperResumeCardProps> = ({ onInte
 
   // Fetch guestbook signatures from Supabase
   const fetchSignatures = async () => {
-    if (!isSupabaseConfigured()) {
+    if (!isSupabaseConfigured) {
       setFetchError("Database configuration incomplete.");
       return;
     }
     try {
-      const { data, error } = await supabase
+      const { data, error } = await supabase!
         .from("guestbook")
         .select("*")
         .order("created_at", { ascending: false })
@@ -52,7 +52,7 @@ export const DeveloperResumeCard: React.FC<DeveloperResumeCardProps> = ({ onInte
 
     setIsSubmitting(true);
     try {
-      const { error } = await supabase.from("guestbook").insert([
+      const { error } = await supabase!.from("guestbook").insert([
         { name: name.trim(), message: message.trim() }
       ]);
       if (error) throw error;
@@ -112,7 +112,7 @@ export const DeveloperResumeCard: React.FC<DeveloperResumeCardProps> = ({ onInte
               PROFILE OVERVIEW
             </h3>
             <p style={{ fontSize: "0.85rem", color: "#3f3f46", lineHeight: 1.4, marginBottom: "16px" }}>
-              {resumeData.summary}
+              {resumeData.about}
             </p>
 
             <h4 style={{ fontSize: "0.9rem", fontWeight: "700", marginBottom: "6px" }}>PROFESSIONAL TIMELINE</h4>
