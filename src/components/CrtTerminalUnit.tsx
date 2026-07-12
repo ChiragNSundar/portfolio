@@ -349,8 +349,15 @@ export const CrtTerminalUnit: React.FC<CrtTerminalUnitProps> = ({ onInteract }) 
             }}
           >
             {history.map((line, idx) => (
-              <div key={idx} style={{ minHeight: "1.1rem", whiteSpace: "pre-wrap" }}>
-                {line}
+              <div 
+                key={idx} 
+                style={{ 
+                  whiteSpace: "pre-wrap",
+                  lineHeight: "1.3",
+                  marginBottom: "2px"
+                }}
+              >
+                {line === "" ? "\u00A0" : line}
               </div>
             ))}
             
