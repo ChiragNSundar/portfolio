@@ -67,6 +67,36 @@ export const AudioEngineCard: React.FC<AudioEngineCardProps> = ({
     32, 26, 20, 16, 12, 10, 15, 28, 42, 48, 45, 38, 30, 22, 15
   ];
 
+  const [visualizerHeights, setVisualizerHeights] = useState<number[]>(waveformHeights);
+
+  useEffect(() => {
+    if (!isPlaying) {
+      setVisualizerHeights(waveformHeights);
+      return;
+    }
+
+    let animationFrameId: number;
+    let time = 0;
+
+    const animate = () => {
+      time += 0.25;
+      setVisualizerHeights(() => {
+        return waveformHeights.map((h, i) => {
+          // Bouncy sine wave offset for dynamic audio wave look
+          const bounce = Math.sin(time + i * 0.45) * (h * 0.45);
+          const newHeight = Math.max(4, h + bounce);
+          return newHeight;
+        });
+      });
+      animationFrameId = requestAnimationFrame(animate);
+    };
+
+    animationFrameId = requestAnimationFrame(animate);
+    return () => {
+      cancelAnimationFrame(animationFrameId);
+    };
+  }, [isPlaying]);
+
   return (
     <div 
       className="creative-card"
@@ -254,8 +284,8 @@ export const AudioEngineCard: React.FC<AudioEngineCardProps> = ({
 
           <div style={{ flexGrow: 1, display: "flex", flexDirection: "column", gap: "4px" }}>
             <svg width="100%" height="30" viewBox="0 0 380 40">
-              {waveformHeights.map((h, i) => {
-                const barPercent = (i / waveformHeights.length) * 100;
+              {visualizerHeights.map((h, i) => {
+                const barPercent = (i / visualizerHeights.length) * 100;
                 const elapsedPercent = (trackProgress / 19) * 100;
                 const isPassed = barPercent <= elapsedPercent;
 

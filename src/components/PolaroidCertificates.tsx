@@ -3,6 +3,7 @@ import { resumeData } from "../data/resume";
 
 export const PolaroidCertificates: React.FC = () => {
   const [emailCopied, setEmailCopied] = useState(false);
+  const [selectedCert, setSelectedCert] = useState<{ name: string; provider: string; bg: string } | null>(null);
 
   const handleEmailClick = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -13,6 +14,16 @@ export const PolaroidCertificates: React.FC = () => {
       setEmailCopied(false);
     }, 2000);
   };
+
+  // Close lightbox modal on Escape press
+  React.useEffect(() => {
+    if (!selectedCert) return;
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setSelectedCert(null);
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [selectedCert]);
   // A curated color palette for the polaroid inner backgrounds
   const colors = [
     "linear-gradient(135deg, #f8bbd0, #f06292)", // rose pastels
@@ -87,6 +98,7 @@ export const PolaroidCertificates: React.FC = () => {
           return (
             <div
               key={idx}
+              onClick={() => setSelectedCert({ name, provider, bg })}
               style={{
                 width: "145px",
                 height: "180px",
@@ -240,6 +252,110 @@ export const PolaroidCertificates: React.FC = () => {
           LINKEDIN
         </a>
       </div>
+
+      {/* Lightbox Modal Overlay */}
+      {selectedCert && (
+        <div 
+          onClick={() => setSelectedCert(null)}
+          style={{
+            position: "fixed",
+            top: 0,
+            left: 0,
+            width: "100vw",
+            height: "100vh",
+            background: "rgba(24, 24, 27, 0.4)",
+            backdropFilter: "blur(12px)",
+            WebkitBackdropFilter: "blur(12px)",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            zIndex: 9999,
+            padding: "20px"
+          }}
+        >
+          {/* Polaroid card content */}
+          <div 
+            onClick={(e) => e.stopPropagation()}
+            style={{
+              position: "relative",
+              width: "320px",
+              backgroundColor: "#ffffff",
+              border: "3px solid #18181b",
+              borderRadius: "4px",
+              boxShadow: "12px 12px 0px #18181b",
+              padding: "16px 16px 40px 16px",
+              display: "flex",
+              flexDirection: "column",
+              gap: "12px"
+            }}
+          >
+            {/* Close button inside card */}
+            <button
+              onClick={() => setSelectedCert(null)}
+              style={{
+                position: "absolute",
+                top: "10px",
+                right: "10px",
+                width: "28px",
+                height: "28px",
+                borderRadius: "50%",
+                background: "#fafafa",
+                border: "2px solid #18181b",
+                fontWeight: "900",
+                fontSize: "0.8rem",
+                cursor: "pointer",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                boxShadow: "2px 2px 0px #18181b",
+                zIndex: 10
+              }}
+            >
+              ✕
+            </button>
+
+            {/* Polaroid image container (high-res display) */}
+            <div 
+              style={{
+                width: "100%",
+                height: "220px",
+                background: selectedCert.bg,
+                border: "2.5px solid #18181b",
+                borderRadius: "8px",
+                display: "flex",
+                flexDirection: "column",
+                justifyContent: "center",
+                alignItems: "center",
+                padding: "20px",
+                color: "#18181b",
+                textAlign: "center"
+              }}
+            >
+              <span style={{ fontSize: "3.5rem", marginBottom: "10px" }}>🏆</span>
+              <span style={{ fontSize: "1rem", fontWeight: "900", fontFamily: "var(--font-body)", textTransform: "uppercase", lineHeight: 1.2 }}>
+                {selectedCert.name}
+              </span>
+            </div>
+
+            {/* Handwritten caption */}
+            <div 
+              style={{
+                marginTop: "12px",
+                textAlign: "center",
+                fontFamily: "var(--font-lcd)",
+                fontSize: "1.1rem",
+                color: "#18181b"
+              }}
+            >
+              {selectedCert.provider}
+            </div>
+
+            <div style={{ fontSize: "0.65rem", color: "var(--text-muted)", textAlign: "center", marginTop: "4px" }}>
+              STATE: VERIFIED &middot; SECURITY LOCK: ACTIVE
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
