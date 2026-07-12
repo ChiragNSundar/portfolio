@@ -1,31 +1,33 @@
-# 📻 Warm 70s Analog Studio Rack Portfolio
+# 📻 Dual-Role Analog Console Portfolio & Stems Studio
 
-An immersive, highly graphical, and interactive developer portfolio website styled as a **1970s analog studio rack unit** in 3D. This project combines tactile skeuomorphic interfaces (wood cabinet, gold faceplates, rotating tape reels, bouncing VU needles) with high-performance modern web technologies (React, TypeScript, Canvas API, and Web Audio API) to showcase both **music production** and **software engineering** credentials.
+[![Live Website](https://img.shields.io/badge/Live-Vercel-blue?style=for-the-badge)](https://portfolio-one-blue-asoaj8ivp3.vercel.app/)
+
+An immersive, skeuomorphic, and interactive developer portfolio website styled as a **1970s analog studio rack unit** in 3D. 
+
+This project features a **Dual-Role Entry Portal** that custom-tailors the portfolio layout for different audiences:
+* **💻 Software Engineering Dossier**: Focuses on computer science credentials, internship metrics, a neobrutalist tech stack deck, a simulated GitHub contributions heatmap, and an interactive representative chatbot.
+* **🎚️ Music Production & Stems Studio**: Focuses on multitrack audio mixing comparison players, interactive performance covers, and music social channels.
+
+Live Vercel Site: [portfolio-one-blue-asoaj8ivp3.vercel.app](https://portfolio-one-blue-asoaj8ivp3.vercel.app/)
 
 ---
 
-## 🕹️ Interface Modules
+## 🕹️ Interface & Key Features
 
-### 1. Supply & Takeup Tape Deck
-- **Tactile Transport**: Giant metal controls for `PLAY/PAUSE`, `STOP`, `PREV`, and `NEXT` track navigation.
-- **Spinning Tape Reels**: SVG-rendered tape reels that dynamically accelerate and decelerate matching audio status.
-- **Dual Needle VU Meters**: Bouncing CH A and CH B volume meters responsive to active wave levels.
-- **Before/After Crossfader**: A custom Web Audio fader letting visitors compare raw recordings with final polished tracks in real-time.
+### 1. Dual-Mode Landing Portal
+* Splitted skeuomorphic splash screen allowing visitors to select their target role path immediately upon loading.
+* Floating navigational switch button (`🔄 Switch Role`) inside both views for dynamic mode swapping.
 
-### 2. CRT Oscilloscope Screen
-- **Phosphor Reticle Visualizer**: Canvas-drawn real-time frequency sine wave analyser showing audio oscillations.
-- **LCD Status Bar**: Monospace indicator showing track titles, genres, and mix notes.
+### 2. Software Engineering Dossier Console
+* **"Ask Chirag AI" Chatbot**: Zero-latency interactive local query chatbot loaded with developer QA details (RAG models, YOLOv8 vision, Streamlit dashboards, internship specs, and strengths/weaknesses). Includes a typing indicator animation (`...`), auto-scrolling focus, and a clear logs tool (`🗑️`).
+* **GitHub Stats & Commit Heatmap**: Displays your custom bio summary, commit counters (610 total commits, 10-day streak), and a CSS-drawn green contribution grid.
+* **Tech Stack Badge Deck**: A colorful, flat neobrutalist grid showing all 27 technical tools/libraries matching their official brand colors.
+* **Interactive Certificates Lightbox**: A stacked Polaroid display of credentials (Infosys, freeCodeCamp) that opens in a high-resolution preview modal with glassmorphic backdrop blur on click. Handles Esc-key close events.
 
-### 3. Cathode-Ray Cover TV
-- **Curved Glass CRT Frame**: Displays embedded YouTube covers with custom curved scanlines, glass curvature, and tube grids.
-- **Tuner Rotary Dial**: Clickable channel selector knob that rotates to cycle covers, triggering screen static and channels flicker.
-- **Power Button**: Retro red push button to toggle monitor grid on/off.
-
-### 4. MS-DOS Developer Resume Terminal
-- **Retro Phosphor Console**: MS-DOS interface housing the complete developer resume.
-- **F-Key Hotkeys & CLI Command Prompt**: Browse sections using physical console buttons (`F1` - `F5`) or type interactive terminal commands (`help`, `experience`, `projects`, `skills`, `education`, `certifications`, `about`, `clear`).
-- **Interactive Supabase Guestbook**: Command module enabling visitors to fetch guestbook logs from a database or run the interactive signing wizard (`guestbook sign`).
-- **Tactile Key Clicks**: Synthesizes real-time terminal key-down clicks dynamically via the browser's Web Audio API.
+### 3. Music Production Stems Studio
+* **Bouncy Equalizer Waveform**: An animated SVG equalizer visualizer that dances to the stems playback in real time, and snaps back to static when paused.
+* **Stems Crossfader**: Real-time Web Audio API comparison between "Before Mix" (raw multitracks) and "After Mix Master" (finished master).
+* **Covers Catalog**: Displays your 20 performance videos from YouTube in bottom-up order, with video details and direct stream buttons.
 
 ---
 
@@ -61,6 +63,7 @@ VITE_SUPABASE_ANON_KEY=your-anon-key-here
 Install dependencies and run the Vite local development server:
 ```bash
 npm install
+# start the dev server
 npm run dev
 ```
 
