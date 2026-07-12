@@ -63,7 +63,8 @@ const PROJECT_DETAILS_DATA = {
 ├── best.pt                     # Trained custom weights (.pt weights)
 ├── requirements.txt            # Python dependencies configuration
 └── .env.example                # Server & SMTP email alert templates`,
-    architecture: undefined
+    architecture: undefined,
+    databaseSchema: undefined
   },
   harmony: {
     title: "Harmony Hub: Mental Health & Wellness Assistant",
@@ -106,7 +107,8 @@ const PROJECT_DETAILS_DATA = {
 │   ├── pdf_parser.py           # Text extraction pipeline
 │   └── plot_helper.py          # Custom Plotly data visuals
 └── requirements.txt            # Project python pack list`,
-    architecture: undefined
+    architecture: undefined,
+    databaseSchema: undefined
   },
   jobportal: {
     title: "Job Portal Business Intelligence Dashboard",
@@ -175,7 +177,202 @@ const PROJECT_DETAILS_DATA = {
 +---------------------v-----+           +-----v-------------------+
 |      MONGODB SERVER       |           |      MYSQL SERVER       |
 | (db_connection_config doc)|           |    (jobseeker_data)     |
-+---------------------------+           +-------------------------+`
++---------------------------+           +-------------------------+`,
+    databaseSchema: undefined
+  },
+  aijdbot: {
+    title: "AI JD Bot: Job Description Assistant",
+    github: "https://github.com/ChiragNSundar/ai-jd-bot",
+    images: [
+      "/aijd/image.png",
+      "/aijd/image copy.png"
+    ],
+    pitch: "An AI-powered job description chatbot built with Flask and Gemini & Gemma Models. It features a modular architecture, parallel SQLite backup storage, and Pydantic validation, with zero-tolerance for unhandled exceptions.",
+    techStack: [
+      { component: "Core Logic", tech: "Python 3.9+" },
+      { component: "AI / LLM Orchestration", tech: "Google Gemini 2.0 Flash (Primary), Gemma 2 (Fallback)" },
+      { component: "Backend Framework", tech: "Flask (Blueprints architecture)" },
+      { component: "Primary Database", tech: "MongoDB (12 Collections with JSON Schema validation)" },
+      { component: "Backup Database", tech: "SQLite (WAL Mode parallel backup queue)" },
+      { component: "Reliability & APM", tech: "OpenTelemetry, Circuit Breaker, rate limiters, security headers" },
+      { component: "Testing Coverage", tech: "Pytest (490+ tests), Playwright E2E, Chaos Engineering" }
+    ],
+    features: [
+      "Job Details Collection: Interactive chatbot interface with a smart address dialog flow.",
+      "Interactive Map Service: Location selection using Leaflet (OpenStreetMap) with Google Maps fallback.",
+      "AI-Assisted Generation: Create professional JDs. Supports PDF/DOCX resume upload & text extraction.",
+      "Flexible Document Exports: Download JDs in PDF, Word (.docx), or Markdown formats.",
+      "Location Extraction: Automates full address details (Street, City, State, Zip) parsing.",
+      "MongoDB Connection Pool: Upgraded connections to support 100 concurrent pools, auto-reconnect, and health checks.",
+      "Audit Trail & Versions: Immutable history of job post changes, security events, and rotations.",
+      "SQLite Backup Queue: Parallel SQLite logging with async write queue & WAL Mode.",
+      "Circuit Breaker & Fallback: Automatic fallback pool routing (Gemma -> Gemini Flash -> Pro)."
+    ],
+    coreIntelligence: [
+      "Fault-Tolerant Circuit Breakers: Trips after 15 AI request failures, auto-resetting after 60s to prevent server lockups.",
+      "API Key Load Balancer: Smart rate-balancer rotating between free/paid key pools to avoid 429 quota exhaustion.",
+      "Token Tracking Heuristics: Accurate prompt and response token counter for both streaming and batch requests."
+    ],
+    challenges: "Handling transient LLM rate-limits and synchronizing concurrent state modifications. Solved using Tenacity auto-retries, pybreaker circuits, and continuous SQLite background session syncing.",
+    projectStructure: `ai-jd-bot/
+├── app/
+│   ├── routes/                  # Route Blueprints (chat, job, helpers)
+│   ├── services/                # Business Logic (ai, audit, key_manager, db)
+│   ├── utils/                   # Shared Utilities (telemetry, input_sanitizer, schemas)
+│   ├── templates/               # Jinja2 HTML Templates
+│   └── static/                  # Vanilla JS controllers & modern CSS
+├── tests/                       # Comprehensive Pytest & Playwright E2E Suite
+├── data/                        # SQLite managed backup stores
+├── run.py                       # App Entry Point
+└── Dockerfile                   # Deployment container settings`,
+    architecture: `                                 +-------------------------+
+                                 |     USER BROWSER /      |
+                                 |    PLAYWRIGHT CLIENTS   |
+                                 +------------+------------+
+                                              | (HTTP requests / Jinja2 pages / Map inputs)
+                                 +------------v------------+
+                                 |    FLASK APPLICATION    |
+                                 |  (routes/ chat/ job/    |
+                                 |      helper blueprints) |
+                                 +------------+------------+
+                                              |
+                       +----------------------+----------------------+
+                       |                                             |
+            +----------v----------+                       +----------v----------+
+            |  AI SERVICE ENGINE  |                       |  SERVICES LAYER     |
+            | (CircuitBreaker /   |                       | (Progress/ Address/ |
+            |  KeyManager/ Cache) |                       |  Salary/ Export)    |
+            +----------+----------+                       +----------+----------+
+                       |                                             |
+           +-----------+-----------+                     +-----------+-----------+
+           |                       |                     |                       |
+     +-----v-----+           +-----v-----+         +-----v-----+           +-----v-----+
+     |  GEMINI   |           |   GEMMA   |         |  MONGODB  |           |  SQLITE   |
+     | 2.0 FLASH |           |   2 MODEL |         | (12 colls |           | (Parallel |
+     | (Primary) |           | (Fallback)|         |  validated|           |  WAL queue|
+     +-----------+           +-----------+         +-----------+           +-----------+`,
+    databaseSchema: [
+      {
+        collection: "job_posts (Core Data)",
+        fields: [
+          { field: "job_id", type: "UUID", desc: "Unique identifier (Primary Key)" },
+          { field: "session_id", type: "UUID", desc: "Linked user session ID" },
+          { field: "status", type: "String", desc: "final, edited" },
+          { field: "job_details", type: "Object", desc: "Structured map of all job fields (title, company, salary)" },
+          { field: "job_description", type: "String", desc: "The final generated markdown description" },
+          { field: "version", type: "Int", desc: "Current version number (increments only on changes)" },
+          { field: "flags", type: "Object", desc: "State flags (is_seeded, address_complete, saved)" },
+          { field: "ai_meta", type: "Object", desc: "Model used, temperature, and generation latency" },
+          { field: "created_at", type: "Date", desc: "Creation timestamp" }
+        ]
+      },
+      {
+        collection: "job_versions (Audit Trail)",
+        fields: [
+          { field: "job_id", type: "UUID", desc: "Reference to job_posts" },
+          { field: "version", type: "Int", desc: "Version number of this snapshot" },
+          { field: "changeset", type: "Object", desc: "List of updated_fields and target changes" },
+          { field: "job_details", type: "Object", desc: "Full snapshot of job details at this version" },
+          { field: "actor", type: "Object", desc: "session_id, ip_hash (who changed)" },
+          { field: "created_at", type: "Date", desc: "Timestamp of change" }
+        ]
+      },
+      {
+        collection: "conversation_messages",
+        fields: [
+          { field: "session_id", type: "UUID", desc: "User session identifier" },
+          { field: "role", type: "String", desc: "user or bot" },
+          { field: "text", type: "String", desc: "The message content" },
+          { field: "meta", type: "Object", desc: "Context like detected_question_key, input_method" },
+          { field: "ai_meta", type: "Object", desc: "Token usage, latency, model version (for bot responses)" }
+        ]
+      },
+      {
+        collection: "ai_events (LLM Logs)",
+        fields: [
+          { field: "event_type", type: "String", desc: "generate_content, stream_chat, salary_suggestion" },
+          { field: "prompt_tokens", type: "Int", desc: "Input token count (from API usage_metadata)" },
+          { field: "response_tokens", type: "Int", desc: "Output token count (from candidates_token_count)" },
+          { field: "latency_ms", type: "Int", desc: "Time taken for generation" },
+          { field: "cache_hit", type: "Bool", desc: "Whether response was served from cache" },
+          { field: "outcome", type: "String", desc: "success or error" }
+        ]
+      },
+      {
+        collection: "conversation_sessions",
+        fields: [
+          { field: "session_id", type: "UUID", desc: "Unique session identifier" },
+          { field: "job_id", type: "UUID", desc: "Linked job ID (if any)" },
+          { field: "state_flags", type: "Object", desc: "seeded, description_generated" },
+          { field: "progress", type: "Object", desc: "current_step, mandatory_fields_completed" },
+          { field: "error_counts", type: "Int", desc: "Number of errors encountered" },
+          { field: "expires_at", type: "Date", desc: "Time when session expires (TTL)" }
+        ]
+      },
+      {
+        collection: "salary_suggestions",
+        fields: [
+          { field: "job_id", type: "UUID", desc: "Linked job ID" },
+          { field: "source", type: "String", desc: "ai or static_fallback" },
+          { field: "input", type: "Object", desc: "Criteria used (title, location, etc.)" },
+          { field: "output", type: "Object", desc: "minimum_salary, maximum_salary, currency" },
+          { field: "model_meta", type: "Object", desc: "AI model used and latency" }
+        ]
+      },
+      {
+        collection: "address_extractions",
+        fields: [
+          { field: "user_input", type: "String", desc: "Raw address text from user" },
+          { field: "ai_result", type: "Object", desc: "Address parts extracted by AI" },
+          { field: "rule_based_result", type: "Object", desc: "Address parts extracted by regex" },
+          { field: "final_used", type: "Object", desc: "The actual address data used" },
+          { field: "geo_meta", type: "Object", desc: "Geocoding results (lat, lng, confidence)" }
+        ]
+      },
+      {
+        collection: "uploads",
+        fields: [
+          { field: "file", type: "Object", desc: "name, size_bytes, extension, mime_type" },
+          { field: "parse_result", type: "Object", desc: "Status of parsing and extracted fields" },
+          { field: "seeded_job_details", type: "Object", desc: "Data extracted from resume" }
+        ]
+      },
+      {
+        collection: "exports",
+        fields: [
+          { field: "format", type: "String", desc: "pdf, docx, markdown" },
+          { field: "file_meta", type: "Object", desc: "filename, byte_size, duration_ms" },
+          { field: "job_snapshot_version", type: "Int", desc: "Version of job used for export" }
+        ]
+      },
+      {
+        collection: "analytics_events",
+        fields: [
+          { field: "event_name", type: "String", desc: "e.g., chat_response, description_generated" },
+          { field: "properties", type: "Object", desc: "Custom event data" },
+          { field: "expires_at", type: "Date", desc: "TTL for auto-deletion" }
+        ]
+      },
+      {
+        collection: "error_logs",
+        fields: [
+          { field: "route", type: "String", desc: "API endpoint or service method" },
+          { field: "error_type", type: "String", desc: "Exception class name" },
+          { field: "message", type: "String", desc: "Error message" },
+          { field: "severity", type: "String", desc: "error, warning, info" }
+        ]
+      },
+      {
+        collection: "audit_logs",
+        fields: [
+          { field: "timestamp", type: "Date", desc: "UTC timestamp of event" },
+          { field: "action", type: "String", desc: "e.g. key_rotation, config_change" },
+          { field: "actor", type: "Object", desc: "session_id, ip_hash" },
+          { field: "severity", type: "String", desc: "info, warning, critical" },
+          { field: "details", type: "Object", desc: "Event-specific metadata" }
+        ]
+      }
+    ]
   }
 };
 
@@ -237,7 +434,7 @@ const TypewriterText: React.FC<{ text: string }> = ({ text }) => {
 export const App: React.FC = () => {
   // Console Role Mode: 'select' = Decision screen, 'engineer' = Coding portfolio, 'producer' = Audio mixing portfolio
   const [mode, setMode] = useState<'select' | 'engineer' | 'producer'>('select');
-  const [activeDetailProject, setActiveDetailProject] = useState<"roadwatch" | "harmony" | "jobportal" | null>(null);
+  const [activeDetailProject, setActiveDetailProject] = useState<"roadwatch" | "harmony" | "jobportal" | "aijdbot" | null>(null);
 
   // Guestbook Footer states & handlers
   const [entries, setEntries] = useState<GuestbookEntry[]>([]);
@@ -1209,10 +1406,10 @@ export const App: React.FC = () => {
                 overflowX: "auto"
               }}
             >
-              {(["roadwatch", "harmony", "jobportal"] as const).map((key) => {
+              {(["roadwatch", "harmony", "jobportal", "aijdbot"] as const).map((key) => {
                 const isActive = activeDetailProject === key;
-                const icon = key === "roadwatch" ? "🏍️" : key === "harmony" ? "🧠" : "📊";
-                const label = key === "roadwatch" ? "ROADWATCH" : key === "harmony" ? "HARMONY HUB" : "JOB PORTAL";
+                const icon = key === "roadwatch" ? "🏍️" : key === "harmony" ? "🧠" : key === "jobportal" ? "📊" : "🤖";
+                const label = key === "roadwatch" ? "ROADWATCH" : key === "harmony" ? "HARMONY HUB" : key === "jobportal" ? "JOB PORTAL" : "AI JD BOT";
                 return (
                   <button
                     key={key}
@@ -1357,6 +1554,43 @@ export const App: React.FC = () => {
                         >
                           {data.architecture}
                         </pre>
+                      </div>
+                    )}
+                    {/* Database Schemas */}
+                    {data.databaseSchema && (
+                      <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
+                        <h3 style={{ fontSize: "0.85rem", fontWeight: "bold", textTransform: "uppercase", marginBottom: "4px" }}>
+                          🗄️ Database Schema Collections
+                        </h3>
+                        <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
+                          {data.databaseSchema.map((col: { collection: string; fields: { field: string; type: string; desc: string }[] }, cIdx: number) => (
+                            <div key={cIdx} style={{ background: "var(--card-bg)", border: "1.5px solid var(--border-color)", borderRadius: "10px", padding: "14px", boxShadow: "4px 4px 0px var(--card-shadow)" }}>
+                              <h4 style={{ fontSize: "0.8rem", fontWeight: "bold", color: "var(--color-amber-accent)", marginBottom: "8px", borderBottom: "1.5px solid var(--border-color)", paddingBottom: "4px" }}>
+                                Collection: {col.collection}
+                              </h4>
+                              <div style={{ overflowX: "auto" }}>
+                                <table style={{ width: "100%", borderCollapse: "collapse", fontSize: "0.72rem", textAlign: "left" }}>
+                                  <thead>
+                                    <tr style={{ borderBottom: "1.5px solid var(--border-color)" }}>
+                                      <th style={{ padding: "4px 8px", fontWeight: "bold" }}>Field</th>
+                                      <th style={{ padding: "4px 8px", fontWeight: "bold" }}>Type</th>
+                                      <th style={{ padding: "4px 8px", fontWeight: "bold" }}>Description</th>
+                                    </tr>
+                                  </thead>
+                                  <tbody>
+                                    {col.fields.map((f: { field: string; type: string; desc: string }, fIdx: number) => (
+                                      <tr key={fIdx} style={{ borderBottom: "1px dashed var(--border-color)" }}>
+                                        <td style={{ padding: "4px 8px", fontFamily: "monospace", fontWeight: "bold" }}>{f.field}</td>
+                                        <td style={{ padding: "4px 8px", color: "var(--color-amber-accent)", fontWeight: "600" }}>{f.type}</td>
+                                        <td style={{ padding: "4px 8px", opacity: 0.9 }}>{f.desc}</td>
+                                      </tr>
+                                    ))}
+                                  </tbody>
+                                </table>
+                              </div>
+                            </div>
+                          ))}
+                        </div>
                       </div>
                     )}
 

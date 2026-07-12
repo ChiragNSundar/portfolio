@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 
 interface DeveloperResumeCardProps {
   onInteract?: () => void;
-  onLaunchDetails?: (projectKey: "roadwatch" | "harmony" | "jobportal") => void;
+  onLaunchDetails?: (projectKey: "roadwatch" | "harmony" | "jobportal" | "aijdbot") => void;
 }
 
 // Chatbot Knowledge Base
@@ -454,6 +454,73 @@ export const DeveloperResumeCard: React.FC<DeveloperResumeCardProps> = ({ onInte
                       </button>
                       <a
                         href="https://github.com/ChiragNSundar/JobPortalDashboard"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        onClick={(e) => e.stopPropagation()}
+                        style={{
+                          flex: 1,
+                          display: "flex",
+                          justifyContent: "center",
+                          alignItems: "center",
+                          background: "var(--card-bg)",
+                          border: "1.5px solid var(--border-color)",
+                          borderRadius: "8px",
+                          padding: "6px 12px",
+                          fontSize: "0.75rem",
+                          fontWeight: "bold",
+                          textDecoration: "none",
+                          color: "var(--text-dark)",
+                          cursor: "pointer",
+                          boxShadow: "2px 2px 0px var(--card-shadow)"
+                        }}
+                      >
+                        GITHUB REPO 🔗
+                      </a>
+                    </div>
+                  </div>
+                )}
+              </div>
+
+              {/* Project 4: AI JD Bot */}
+              <div 
+                onClick={() => setActiveProject(activeProject === "aijdbot" ? null : "aijdbot")}
+                style={{
+                  border: "1.5px solid var(--border-color)",
+                  borderRadius: "12px",
+                  padding: "12px",
+                  cursor: "pointer",
+                  backgroundColor: activeProject === "aijdbot" ? "var(--color-amber)" : "var(--card-bg-muted)",
+                  transition: "background-color 0.2s",
+                  marginTop: "8px"
+                }}
+              >
+                <div style={{ display: "flex", justifyContent: "space-between", fontWeight: "bold", fontSize: "0.85rem" }}>
+                  <span>🤖 AI JD Bot: Job Description Assistant</span>
+                  <span>{activeProject === "aijdbot" ? "▼" : "▶"}</span>
+                </div>
+                {activeProject === "aijdbot" && (
+                  <div style={{ marginTop: "10px", fontSize: "0.78rem", color: "var(--text-dark)", display: "flex", flexDirection: "column", gap: "8px", borderTop: "1px dashed var(--border-color)", paddingTop: "8px" }}>
+                    <div><strong>Pitch:</strong> AI-powered job description chatbot built with Flask and Gemini/Gemma models. Supports smart address collection, interactive OpenStreetMap rendering, resume PDF parsing, and document exports.</div>
+                    <div><strong>Testing and Coverage:</strong> Strictly validated with Pydantic V2 and 490+ tests, including unit, Playwright E2E, chaos engineering database outages, and prompt injection filters.</div>
+                    <div style={{ display: "flex", gap: "10px", marginTop: "8px" }}>
+                      <button
+                        onClick={(e) => { e.stopPropagation(); if (onLaunchDetails) onLaunchDetails("aijdbot"); }}
+                        style={{
+                          flex: 1,
+                          background: "var(--color-amber-accent)",
+                          border: "1.5px solid var(--border-color)",
+                          borderRadius: "8px",
+                          padding: "6px 12px",
+                          fontSize: "0.75rem",
+                          fontWeight: "bold",
+                          cursor: "pointer",
+                          boxShadow: "2px 2px 0px var(--card-shadow)"
+                        }}
+                      >
+                        LAUNCH DETAILED PANEL 🚀
+                      </button>
+                      <a
+                        href="https://github.com/ChiragNSundar/ai-jd-bot"
                         target="_blank"
                         rel="noopener noreferrer"
                         onClick={(e) => e.stopPropagation()}
