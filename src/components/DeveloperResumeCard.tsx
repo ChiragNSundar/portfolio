@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 
 interface DeveloperResumeCardProps {
   onInteract?: () => void;
-  onLaunchDetails?: (projectKey: "roadwatch" | "harmony" | "jobportal" | "aijdbot") => void;
+  onLaunchDetails?: (projectKey: "roadwatch" | "harmony" | "jobportal" | "aijdbot" | "vibelyrics") => void;
 }
 
 // Chatbot Knowledge Base
@@ -521,6 +521,73 @@ export const DeveloperResumeCard: React.FC<DeveloperResumeCardProps> = ({ onInte
                       </button>
                       <a
                         href="https://github.com/ChiragNSundar/ai-jd-bot"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        onClick={(e) => e.stopPropagation()}
+                        style={{
+                          flex: 1,
+                          display: "flex",
+                          justifyContent: "center",
+                          alignItems: "center",
+                          background: "var(--card-bg)",
+                          border: "1.5px solid var(--border-color)",
+                          borderRadius: "8px",
+                          padding: "6px 12px",
+                          fontSize: "0.75rem",
+                          fontWeight: "bold",
+                          textDecoration: "none",
+                          color: "var(--text-dark)",
+                          cursor: "pointer",
+                          boxShadow: "2px 2px 0px var(--card-shadow)"
+                        }}
+                      >
+                        GITHUB REPO 🔗
+                      </a>
+                    </div>
+                  </div>
+                )}
+              </div>
+
+              {/* Project 5: VibeLyrics */}
+              <div 
+                onClick={() => setActiveProject(activeProject === "vibelyrics" ? null : "vibelyrics")}
+                style={{
+                  border: "1.5px solid var(--border-color)",
+                  borderRadius: "12px",
+                  padding: "12px",
+                  cursor: "pointer",
+                  backgroundColor: activeProject === "vibelyrics" ? "var(--color-amber)" : "var(--card-bg-muted)",
+                  transition: "background-color 0.2s",
+                  marginTop: "8px"
+                }}
+              >
+                <div style={{ display: "flex", justifyContent: "space-between", fontWeight: "bold", fontSize: "0.85rem" }}>
+                  <span>🎤 VibeLyrics: Hip-Hop Writing Assistant</span>
+                  <span>{activeProject === "vibelyrics" ? "▼" : "▶"}</span>
+                </div>
+                {activeProject === "vibelyrics" && (
+                  <div style={{ marginTop: "10px", fontSize: "0.78rem", color: "var(--text-dark)", display: "flex", flexDirection: "column", gap: "8px", borderTop: "1px dashed var(--border-color)", paddingTop: "8px" }}>
+                    <div><strong>Pitch:</strong> Professional-grade hip-hop lyric writing assistant and analysis suite combining distraction-free workspace interfaces, real-time assonance highlighting, and Continual DPO adapter retraining pipelines.</div>
+                    <div><strong>Key Infrastructure:</strong> Powered by React 19, Zustand 5 atomic state, FastAPI, SQLAlchemy async DB pools, and Librosa audio processing tools. Fully packaged as a dreamy, glassmorphic offline PWA.</div>
+                    <div style={{ display: "flex", gap: "10px", marginTop: "8px" }}>
+                      <button
+                        onClick={(e) => { e.stopPropagation(); if (onLaunchDetails) onLaunchDetails("vibelyrics"); }}
+                        style={{
+                          flex: 1,
+                          background: "var(--color-amber-accent)",
+                          border: "1.5px solid var(--border-color)",
+                          borderRadius: "8px",
+                          padding: "6px 12px",
+                          fontSize: "0.75rem",
+                          fontWeight: "bold",
+                          cursor: "pointer",
+                          boxShadow: "2px 2px 0px var(--card-shadow)"
+                        }}
+                      >
+                        LAUNCH DETAILED PANEL 🚀
+                      </button>
+                      <a
+                        href="https://github.com/ChiragNSundar/VibeLyrics"
                         target="_blank"
                         rel="noopener noreferrer"
                         onClick={(e) => e.stopPropagation()}

@@ -183,10 +183,7 @@ const PROJECT_DETAILS_DATA = {
   aijdbot: {
     title: "AI JD Bot: Job Description Assistant",
     github: "https://github.com/ChiragNSundar/ai-jd-bot",
-    images: [
-      "/aijd/image.png",
-      "/aijd/image copy.png"
-    ],
+    images: [],
     pitch: "An AI-powered job description chatbot built with Flask and Gemini & Gemma Models. It features a modular architecture, parallel SQLite backup storage, and Pydantic validation, with zero-tolerance for unhandled exceptions.",
     techStack: [
       { component: "Core Logic", tech: "Python 3.9+" },
@@ -373,6 +370,96 @@ const PROJECT_DETAILS_DATA = {
         ]
       }
     ]
+  },
+  vibelyrics: {
+    title: "VibeLyrics: Hip-Hop Lyric Writing Assistant & Suite",
+    github: "https://github.com/ChiragNSundar/VibeLyrics",
+    images: [
+      "/vbl/image.png",
+      "/vbl/image copy.png",
+      "/vbl/image copy 2.png",
+      "/vbl/image copy 3.png",
+      "/vbl/image copy 4.png",
+      "/vbl/image copy 5.png",
+      "/vbl/image copy 6.png"
+    ],
+    pitch: "A professional-grade hip-hop lyric writing assistant and analysis suite. It combines a distraction-free writing environment with real-time rhyme highlighting, multi-LoRA continual DPO training pipelines, and interactive 3D theme networks.",
+    techStack: [
+      { component: "Frontend Language", tech: "React 19 + TypeScript + Vite 7" },
+      { component: "Styling & UI", tech: "Tailwind CSS 4 + clsx + tailwind-merge" },
+      { component: "State Engine", tech: "Zustand 5 (Atomic state)" },
+      { component: "Animations & Motion", tech: "Framer Motion 12" },
+      { component: "Backend API Framework", tech: "FastAPI (Python 3.11+)" },
+      { component: "Database ORM Engine", tech: "SQLAlchemy 2.0 (Async) + AIOSQLite" },
+      { component: "NLP & Rhyme Pipeline", tech: "NLTK / Spacy / CMU Pronouncing Dictionary" },
+      { component: "Audio Extraction Engine", tech: "Librosa + NumPy" }
+    ],
+    features: [
+      "Rhyme Engine & Highlights: Real-time assonance, consonance, and internal rhyme visual highlights.",
+      "AI Ghostwriter ('Vibe'): Personalized assistant matching user headspace, journal emotions, and banned words.",
+      "Multi-Language Rhymes: Phonetic dictionaries for English, Hindi (Hinglish), and Kannada (Kanglish).",
+      "Syllable stress timeline: Syllable stress indicators collapsible with flow-aligned rhyme matching.",
+      "PWA Offline Mode: Service worker assets caching & IndexedDB sync queues.",
+      "Learning Center: Lyrics web scraper (BeautifulSoup), PDF parser, and 3D theme network visualization.",
+      "Training Pipeline: Score-gated DPO training, multi-LoRA profiles (Aggressive, Melodic), and LM Studio GGUF exports."
+    ],
+    coreIntelligence: [
+      "Continual DPO learning: Background buffer compiles high-complexity lines to auto-trigger model retraining.",
+      "Doppelreim alignment: Syllable stress templates matching candidate rhymes with target syllable counts.",
+      "RAG-Augmented Callbacks: Indexes historical sessions to suggest thematic self-referential adlibs."
+    ],
+    challenges: "Synchronizing state updates offline and optimizing rendering for thousands of lyrics lines. Solved via IndexedDB write queues, atomic Zustand state blocks, and react-window virtualization.",
+    projectStructure: `vibelyrics/
+├── backend/                # FastAPI Application
+│   ├── models/             # SQLAlchemy Database Models
+│   ├── routers/            # API Route Handlers (ai, scraper, stats)
+│   ├── schemas/            # Pydantic schemas
+│   └── services/           # Core Logic (ai_provider, rhyme_detector)
+├── frontend/               # React 19 + Vite 7 Frontend
+│   ├── src/
+│   │   ├── components/     # UI Components (session, stats)
+│   │   ├── styles/         # Global Styles (Dreamy Theme)
+│   │   └── main.tsx        # App entry & service worker setup
+│   └── public/             # Static PWA assets & manifest.json
+├── data/                   # Local Persistence (sqlite db, indices)
+├── scripts/                # Dict seeder & icon generator
+└── requirements.txt        # Python Dependencies`,
+    architecture: `                                +-------------------+
+                                |    USER SYSTEM    |
+                                +---------+---------+
+                                          | (Interaction)
+                                +---------v---------+
+                                |  REACT FRONTEND   |
+                                +---------+---------+
+                                          | (REST / SSE / WebSockets)
+  +---------------------------------------v---------------------------------------+
+  |                               BACKEND (FastAPI)                               |
+  |  +-------------------------------------------------------------------------+  |
+  |  |                            SERVICES LAYER                               |  |
+  |  |  +-------------------------------------------------------------------+  |  |
+  |  |  |                            Core Services                          |  |  |
+  |  |  | [Rhyme Engine]  [Audio Analyzer]  [NLP Analysis]  [Lyrics Scraper] |  |  |
+  |  |  | [Training & Auto-Train]   [AI Arena/RLHF]   [Continual Learning]  |  |  |
+  |  |  +-----------------------------------+-------------------------------+  |  |
+  |  |                                      |                                  |  |
+  |  |                              +-------v-------+                          |  |
+  |  |                              |  AI PROVIDER  |                          |  |
+  |  |                              +-------+-------+                          |  |
+  |  +--------------------------------------+----------------------------------+  |
+  |                                         | (Async DB Session)                  |
+  |                                 +-------v-------+                             |
+  |                                 |   SQLITE DB   |                             |
+  |                                 +---------------+                             |
+  +-----------------------------------------+-------------------------------------+
+                                            |
+                         +------------------+------------------+
+                         |                                     |
+               +---------v---------+                 +---------v---------+
+               | EXTERNAL PROVIDERS|                 |    PERSISTENCE    |
+               | (DuckDuckGo /     |                 | (Training ZIP /   |
+               |  Gemini / GPT)    |                 |  DPO Logs JSON)   |
+               +-------------------+                 +-------------------+`,
+    databaseSchema: undefined
   }
 };
 
