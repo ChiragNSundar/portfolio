@@ -153,7 +153,27 @@ const PROJECT_DETAILS_DATA = {
 │   └── sql_connector.py        # MySQL database helper connection
 ├── .env.example                # Env settings configuration
 ├── requirements.txt            # Requirements python list
-└── README.md                   # Setup documentation`
+└── README.md                   # Setup documentation`,
+    architecture: `           +---------------------------------------------+
+           |               BROWSER CLIENTS               |
+           +----------------------+----------------------+
+                                  | (HTTP / Dash events)
+           +----------------------+----------------------+
+           |         DASH BOOTSTRAP DASHBOARDS           |
+           |   (Daily, Monthly, Location, Source Pages)  |
+           +----------------------+----------------------+
+                                  | (Queries Data)
+           +----------------------+----------------------+
+           |               DATA CONTROLLER               |
+           |             (datasetsql.py)                 |
+           +----------+-----------------------+-----------+
+                      |                       |
+      (Pull Config if |                       | (Fallbacks to
+       Mongo online)  |                       |  local .env credentials)
++---------------------v-----+           +-----v-------------------+
+|      MONGODB SERVER       |           |      MYSQL SERVER       |
+| (db_connection_config doc)|           |    (jobseeker_data)     |
++---------------------------+           +-------------------------+`
   }
 };
 
