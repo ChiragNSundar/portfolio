@@ -157,13 +157,13 @@ export const mixAndOriginalTracks: Track[] = [
   },
   {
     id: "track-12",
-    title: "Solar Flare",
-    artist: "Chirag N Sundar",
-    genre: "Trance / Acid Synth",
+    title: "No Bitches",
+    artist: "Hazard Chirag",
+    genre: "Trap / Comedy Synth",
     type: "original",
-    icon: "☀️",
-    color: "#e67e22",
-    description: "Original Track. Acid basslines modulated dynamically with high-energy trance synth lines and building kick drum sweeps.",
+    icon: "🔥",
+    color: "#e64980",
+    description: "Original Track by Hazard Chirag. Focus: Aggressive sub-bass layering, detuned lead synths, and punchy 808 transient saturation.",
     spotifyUrl: "https://spotify.com",
     soundCloudUrl: "https://soundcloud.com"
   }

@@ -153,6 +153,56 @@ export const PolaroidCertificates: React.FC = () => {
       >
         HOVER OVER A CREDENTIAL FILE TO FAN AND ROTATE THE POLAROIDS FOR ANALYSIS
       </div>
+
+      {/* Playful Contact Panel */}
+      <div 
+        style={{ 
+          display: "flex", 
+          gap: "12px", 
+          flexWrap: "wrap", 
+          justifyContent: "center", 
+          marginTop: "16px", 
+          paddingTop: "16px", 
+          borderTop: "1.5px dashed #e4e4e7" 
+        }}
+      >
+        <a 
+          href="mailto:chiragns12@gmail.com"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="analog-btn"
+          style={{ padding: "8px 16px", fontSize: "0.78rem", textDecoration: "none", color: "#18181b" }}
+        >
+          📧 EMAIL: chiragns12@gmail.com
+        </a>
+        <a 
+          href="https://github.com/ChiragNS"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="analog-btn"
+          style={{ padding: "8px 16px", fontSize: "0.78rem", textDecoration: "none", color: "#18181b" }}
+        >
+          💻 GITHUB: github.com/ChiragNS
+        </a>
+        <a 
+          href="https://instagram.com/chirag.localhost"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="analog-btn"
+          style={{ padding: "8px 16px", fontSize: "0.78rem", textDecoration: "none", color: "#18181b" }}
+        >
+          📸 INSTA: @chirag.localhost
+        </a>
+        <a 
+          href="https://www.youtube.com/@HazardChirag"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="analog-btn"
+          style={{ padding: "8px 16px", fontSize: "0.78rem", textDecoration: "none", color: "#18181b" }}
+        >
+          🎵 YOUTUBE: @HazardChirag
+        </a>
+      </div>
     </div>
   );
 };

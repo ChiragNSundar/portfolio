@@ -119,11 +119,38 @@ export const YoutubeCoversCard: React.FC<YoutubeCoversCardProps> = ({ onInteract
                 paddingBottom: "6px",
                 marginBottom: "10px",
                 display: "flex",
-                alignItems: "center",
+                flexDirection: "column",
                 gap: "4px"
               }}
             >
-              📂 C:\VOL\COVERS\
+              <div style={{ display: "flex", alignItems: "center", gap: "4px" }}>
+                <span>📂</span> C:\VOL\COVERS\
+              </div>
+              <a 
+                href="https://www.youtube.com/@HazardChirag" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                style={{
+                  background: "#ff0000",
+                  border: "1.5px solid #18181b",
+                  borderRadius: "8px",
+                  color: "#ffffff",
+                  fontFamily: "var(--font-body)",
+                  fontSize: "0.58rem",
+                  fontWeight: "bold",
+                  padding: "4px 8px",
+                  cursor: "pointer",
+                  boxShadow: "2px 2px 0px #18181b",
+                  display: "inline-flex",
+                  alignItems: "center",
+                  gap: "4px",
+                  marginTop: "4px",
+                  textDecoration: "none",
+                  width: "fit-content"
+                }}
+              >
+                📺 VISIT HAZARD CHANNEL
+              </a>
             </div>
 
             {/* List */}
