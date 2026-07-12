@@ -1,17 +1,33 @@
 import React, { useState } from "react";
-import { coverVideos } from "../data/tracks";
+import { coverVideos, originalVideos } from "../data/tracks";
 
 interface YoutubeCoversCardProps {
   onInteract?: () => void;
 }
 
+// Inline SVG YouTube play-button logo component
+const YoutubeLogo: React.FC<{ size?: number; color?: string; style?: React.CSSProperties }> = ({ size = 20, color = "#ff0000", style }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" style={style}>
+    <rect x="1" y="4" width="22" height="16" rx="4" ry="4" fill={color} />
+    <polygon points="10,8.5 16,12 10,15.5" fill="#fff" />
+  </svg>
+);
+
 export const YoutubeCoversCard: React.FC<YoutubeCoversCardProps> = ({ onInteract }) => {
+  const [activeTab, setActiveTab] = useState<"originals" | "covers">("originals");
+  const videoList = activeTab === "originals" ? originalVideos : coverVideos;
   const [currentIdx, setCurrentIdx] = useState(0);
-  const activeVideo = coverVideos[currentIdx];
+  const activeVideo = videoList[currentIdx];
 
   const [emailCopied, setEmailCopied] = useState(false);
 
-  const handleSelectCover = (idx: number) => {
+  const handleTabSwitch = (tab: "originals" | "covers") => {
+    setActiveTab(tab);
+    setCurrentIdx(0);
+    if (onInteract) onInteract();
+  };
+
+  const handleSelectVideo = (idx: number) => {
     setCurrentIdx(idx);
     if (onInteract) onInteract();
   };
@@ -35,11 +51,24 @@ export const YoutubeCoversCard: React.FC<YoutubeCoversCardProps> = ({ onInteract
         flexDirection: "column",
         gap: "24px",
         borderColor: "var(--border-color)",
-        boxShadow: "8px 8px 0px rgba(12, 166, 120, 0.15), 8px 8px 0px var(--card-shadow)"
+        boxShadow: "8px 8px 0px rgba(12, 166, 120, 0.15), 8px 8px 0px var(--card-shadow)",
+        position: "relative",
+        overflow: "hidden"
       }}
     >
+      {/* YouTube logo border decorations */}
+      <div style={{ position: "absolute", top: "10px", right: "12px", opacity: 0.08, pointerEvents: "none" }}>
+        <YoutubeLogo size={64} color="var(--text-dark)" />
+      </div>
+      <div style={{ position: "absolute", bottom: "10px", left: "12px", opacity: 0.06, pointerEvents: "none", transform: "rotate(-15deg)" }}>
+        <YoutubeLogo size={48} color="var(--text-dark)" />
+      </div>
+      <div style={{ position: "absolute", top: "50%", right: "-8px", opacity: 0.04, pointerEvents: "none", transform: "translateY(-50%) rotate(12deg)" }}>
+        <YoutubeLogo size={80} color="var(--text-dark)" />
+      </div>
+
       {/* Category Tag & Title */}
-      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", position: "relative", zIndex: 1 }}>
         <div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
           <span className="bouncy-emoji" style={{ fontSize: "1.2rem" }}>📺</span>
           <span 
@@ -51,7 +80,7 @@ export const YoutubeCoversCard: React.FC<YoutubeCoversCardProps> = ({ onInteract
               letterSpacing: "1px" 
             }}
           >
-            COVERS & PRODUCTIONS
+            ORIGINALS & COVERS
           </span>
         </div>
         <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-end" }}>
@@ -59,9 +88,63 @@ export const YoutubeCoversCard: React.FC<YoutubeCoversCardProps> = ({ onInteract
             [YOUTUBE PERFORMANCE CATALOG]
           </span>
           <span style={{ fontSize: "0.6rem", color: "var(--color-mint-accent)", fontWeight: "bold", marginTop: "2px" }}>
-            Note: These covers showcase my mixing & production capabilities
+            Originals & covers showcasing mixing & production
           </span>
         </div>
+      </div>
+
+      {/* Originals / Covers Tab Switcher */}
+      <div style={{ display: "flex", gap: "0", position: "relative", zIndex: 1 }}>
+        <button
+          onClick={() => handleTabSwitch("originals")}
+          style={{
+            flex: 1,
+            padding: "10px 16px",
+            fontFamily: "var(--font-lcd)",
+            fontSize: "0.75rem",
+            fontWeight: "bold",
+            letterSpacing: "1px",
+            cursor: "pointer",
+            border: "1.5px solid var(--border-color)",
+            borderRadius: "12px 0 0 12px",
+            background: activeTab === "originals" ? "var(--color-mint)" : "var(--card-bg-muted)",
+            color: activeTab === "originals" ? "var(--color-mint-accent)" : "var(--text-muted)",
+            borderRight: activeTab === "originals" ? "1.5px solid var(--color-mint-accent)" : "none",
+            boxShadow: activeTab === "originals" ? "inset 0 -3px 0 var(--color-mint-accent)" : "none",
+            transition: "all 0.2s ease",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            gap: "6px"
+          }}
+        >
+          🎤 ORIGINALS
+        </button>
+        <button
+          onClick={() => handleTabSwitch("covers")}
+          style={{
+            flex: 1,
+            padding: "10px 16px",
+            fontFamily: "var(--font-lcd)",
+            fontSize: "0.75rem",
+            fontWeight: "bold",
+            letterSpacing: "1px",
+            cursor: "pointer",
+            border: "1.5px solid var(--border-color)",
+            borderRadius: "0 12px 12px 0",
+            background: activeTab === "covers" ? "var(--color-mint)" : "var(--card-bg-muted)",
+            color: activeTab === "covers" ? "var(--color-mint-accent)" : "var(--text-muted)",
+            borderLeft: activeTab === "covers" ? "1.5px solid var(--color-mint-accent)" : "none",
+            boxShadow: activeTab === "covers" ? "inset 0 -3px 0 var(--color-mint-accent)" : "none",
+            transition: "all 0.2s ease",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            gap: "6px"
+          }}
+        >
+          🎧 COVERS
+        </button>
       </div>
 
       {/* Main Split Layout */}
@@ -71,7 +154,9 @@ export const YoutubeCoversCard: React.FC<YoutubeCoversCardProps> = ({ onInteract
           display: "flex",
           gap: "20px",
           alignItems: "stretch",
-          flexDirection: "row"
+          flexDirection: "row",
+          position: "relative",
+          zIndex: 1
         }}
       >
         {/* Left Column: Video Embed Screen */}
@@ -141,7 +226,7 @@ export const YoutubeCoversCard: React.FC<YoutubeCoversCardProps> = ({ onInteract
               }}
             >
               <div style={{ display: "flex", alignItems: "center", gap: "4px" }}>
-                <span>📂</span> C:\VOL\COVERS\
+                <span>📂</span> C:\VOL\{activeTab === "originals" ? "ORIGINALS" : "COVERS"}\
               </div>
               <a 
                 href="https://www.youtube.com/@HazardChirag" 
@@ -166,7 +251,7 @@ export const YoutubeCoversCard: React.FC<YoutubeCoversCardProps> = ({ onInteract
                   width: "fit-content"
                 }}
               >
-                📺 VISIT HAZARD CHANNEL
+                <YoutubeLogo size={14} color="#fff" /> VISIT YOUTUBE
               </a>
             </div>
 
@@ -180,12 +265,12 @@ export const YoutubeCoversCard: React.FC<YoutubeCoversCardProps> = ({ onInteract
                 overflowY: "auto"
               }}
             >
-              {coverVideos.map((video, idx) => {
+              {videoList.map((video, idx) => {
                 const isActive = currentIdx === idx;
                 return (
                   <div
                     key={video.id}
-                    onClick={() => handleSelectCover(idx)}
+                    onClick={() => handleSelectVideo(idx)}
                     style={{
                       display: "flex",
                       alignItems: "center",
@@ -227,7 +312,7 @@ export const YoutubeCoversCard: React.FC<YoutubeCoversCardProps> = ({ onInteract
               textAlign: "center"
             }}
           >
-            ITEMS LOADED: {coverVideos.length} // STATE: STABLE
+            ITEMS LOADED: {videoList.length} // MODE: {activeTab.toUpperCase()}
           </div>
         </div>
       </div>
@@ -241,7 +326,9 @@ export const YoutubeCoversCard: React.FC<YoutubeCoversCardProps> = ({ onInteract
           justifyContent: "center", 
           marginTop: "16px", 
           paddingTop: "16px", 
-          borderTop: "1.5px dashed var(--border-color)" 
+          borderTop: "1.5px dashed var(--border-color)",
+          position: "relative",
+          zIndex: 1
         }}
       >
         <a 
@@ -301,10 +388,7 @@ export const YoutubeCoversCard: React.FC<YoutubeCoversCardProps> = ({ onInteract
             gap: "8px"
           }}
         >
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" style={{ display: "block" }}>
-            <path d="M22.54 6.42a2.78 2.78 0 0 0-1.95-1.96C18.88 4 12 4 12 4s-6.88 0-8.59.46a2.78 2.78 0 0 0-1.95 1.96A29 29 0 0 0 1 12a29 29 0 0 0 .46 5.58 2.78 2.78 0 0 0 1.95 1.96C5.12 20 12 20 12 20s6.88 0 8.59-.46a2.78 2.78 0 0 0 1.95-1.96A29 29 0 0 0 23 12a29 29 0 0 0-.46-5.58z"/>
-            <polyline points="9.75 15.02 15.5 12 9.75 8.98 9.75 15.02"/>
-          </svg>
+          <YoutubeLogo size={16} />
           YOUTUBE
         </a>
       </div>
