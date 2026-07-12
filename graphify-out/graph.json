@@ -517,7 +517,7 @@
       "label": "App()",
       "file_type": "code",
       "source_file": "src/App.tsx",
-      "source_location": "L568",
+      "source_location": "L580",
       "_origin": "ast",
       "id": "src_app_app",
       "community": 4,
@@ -1969,9 +1969,9 @@
       "source_file": "public/manifest.json",
       "source_location": "L12",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "public_manifest",
-      "target": "public_manifest_background_color",
-      "confidence_score": 1.0
+      "target": "public_manifest_background_color"
     },
     {
       "relation": "contains",
@@ -1979,9 +1979,9 @@
       "source_file": "public/manifest.json",
       "source_location": "L14",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "public_manifest",
-      "target": "public_manifest_display",
-      "confidence_score": 1.0
+      "target": "public_manifest_display"
     },
     {
       "relation": "contains",
@@ -1989,9 +1989,9 @@
       "source_file": "public/manifest.json",
       "source_location": "L4",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "public_manifest",
-      "target": "public_manifest_icons",
-      "confidence_score": 1.0
+      "target": "public_manifest_icons"
     },
     {
       "relation": "contains",
@@ -1999,9 +1999,9 @@
       "source_file": "public/manifest.json",
       "source_location": "L3",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "public_manifest",
-      "target": "public_manifest_name",
-      "confidence_score": 1.0
+      "target": "public_manifest_name"
     },
     {
       "relation": "contains",
@@ -2009,9 +2009,9 @@
       "source_file": "public/manifest.json",
       "source_location": "L15",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "public_manifest",
-      "target": "public_manifest_orientation",
-      "confidence_score": 1.0
+      "target": "public_manifest_orientation"
     },
     {
       "relation": "contains",
@@ -2019,9 +2019,9 @@
       "source_file": "public/manifest.json",
       "source_location": "L2",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "public_manifest",
-      "target": "public_manifest_short_name",
-      "confidence_score": 1.0
+      "target": "public_manifest_short_name"
     },
     {
       "relation": "contains",
@@ -2029,9 +2029,9 @@
       "source_file": "public/manifest.json",
       "source_location": "L11",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "public_manifest",
-      "target": "public_manifest_start_url",
-      "confidence_score": 1.0
+      "target": "public_manifest_start_url"
     },
     {
       "relation": "contains",
@@ -2039,9 +2039,9 @@
       "source_file": "public/manifest.json",
       "source_location": "L13",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "public_manifest",
-      "target": "public_manifest_theme_color",
-      "confidence_score": 1.0
+      "target": "public_manifest_theme_color"
     },
     {
       "relation": "contains",
@@ -2049,9 +2049,9 @@
       "source_file": "public/service-worker.js",
       "source_location": "L4",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "public_service_worker",
-      "target": "public_service_worker_precache_assets",
-      "confidence_score": 1.0
+      "target": "public_service_worker_precache_assets"
     },
     {
       "relation": "imports_from",
@@ -2263,9 +2263,9 @@
       "source_file": "src/App.tsx",
       "source_location": "L522",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "src_app",
-      "target": "src_app_screenshotwithskeleton",
-      "confidence_score": 1.0
+      "target": "src_app_screenshotwithskeleton"
     },
     {
       "relation": "contains",
@@ -3655,5 +3655,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "eed2ad3db3efc053df2a6a52b03548a7f03a4574"
+  "built_at_commit": "088be8f5957dc78058278062e9f13df2b68eb337"
 }

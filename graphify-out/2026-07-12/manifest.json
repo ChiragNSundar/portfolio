@@ -10,8 +10,8 @@
     "semantic_hash": "8ed076f12307df065e9ee2514196ec54"
   },
   "src/App.tsx": {
-    "mtime": 1783871877.7537875,
-    "ast_hash": "22e2aa7a85aefa0a2a12420fad9325d3",
+    "mtime": 1783872504.6861928,
+    "ast_hash": "ce62262476d5dc04eb2394eaa83b0ebc",
     "semantic_hash": ""
   },
   "src/audio/audioEngine.ts": {
@@ -25,8 +25,8 @@
     "semantic_hash": ""
   },
   "src/components/DeveloperResumeCard.tsx": {
-    "mtime": 1783871816.5364802,
-    "ast_hash": "aa46284f72770bfda25b52826c8b8a6e",
+    "mtime": 1783872498.1443777,
+    "ast_hash": "54e4f57e671a94b6e6c8f957998dd7d6",
     "semantic_hash": ""
   },
   "src/components/PolaroidCertificates.tsx": {
@@ -90,8 +90,8 @@
     "semantic_hash": ""
   },
   "index.html": {
-    "mtime": 1783868681.08531,
-    "ast_hash": "c9907cd67755ab7bf5be9ba44b02f536",
+    "mtime": 1783872328.0052972,
+    "ast_hash": "d47989e22d7018fb3ef54fc7aec7b510",
     "semantic_hash": ""
   },
   "public/favicon.svg": {
@@ -232,6 +232,16 @@
   "public/vbl/image.png": {
     "mtime": 1783871714.0201316,
     "ast_hash": "014d8856bf6166e6d5791439628bafc0",
+    "semantic_hash": ""
+  },
+  "public/manifest.json": {
+    "mtime": 1783872319.774343,
+    "ast_hash": "231587b50154986099ae14618ae2f929",
+    "semantic_hash": ""
+  },
+  "public/service-worker.js": {
+    "mtime": 1783872361.2131844,
+    "ast_hash": "66d297aff635c3128ae8dbb9f65b6944",
     "semantic_hash": ""
   }
 }

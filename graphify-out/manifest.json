@@ -10,8 +10,8 @@
     "semantic_hash": "8ed076f12307df065e9ee2514196ec54"
   },
   "src/App.tsx": {
-    "mtime": 1783872504.6861928,
-    "ast_hash": "ce62262476d5dc04eb2394eaa83b0ebc",
+    "mtime": 1783872663.8645077,
+    "ast_hash": "5b1ed76c18d492eb50bb14ae321052ea",
     "semantic_hash": ""
   },
   "src/audio/audioEngine.ts": {

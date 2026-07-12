@@ -526,6 +526,17 @@ const ScreenshotWithSkeleton: React.FC<{
   onEnlarge: (src: string) => void;
 }> = ({ imgSrc, title, idx, onEnlarge }) => {
   const [loaded, setLoaded] = useState(false);
+  const imgRef = useRef<HTMLImageElement>(null);
+
+  useEffect(() => {
+    // Reset load state on image switch
+    setLoaded(false);
+    
+    // Check if browser has already cached/completed loading this image
+    if (imgRef.current && imgRef.current.complete) {
+      setLoaded(true);
+    }
+  }, [imgSrc]);
 
   return (
     <div 
@@ -548,6 +559,7 @@ const ScreenshotWithSkeleton: React.FC<{
         <div className="skeleton-shimmer" style={{ height: "180px", width: "100%" }} />
       )}
       <img 
+        ref={imgRef}
         src={imgSrc} 
         alt={`${title} Asset ${idx + 1}`}
         onLoad={() => setLoaded(true)}
