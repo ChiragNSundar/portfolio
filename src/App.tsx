@@ -609,8 +609,43 @@ export const App: React.FC = () => {
   // Guestbook Footer states & handlers
   const [entries, setEntries] = useState<GuestbookEntry[]>([]);
   const [guestName, setGuestName] = useState("");
+  const [guestEmail, setGuestEmail] = useState("");
   const [guestMessage, setGuestMessage] = useState("");
   const [isGuestbookSubmitting, setIsGuestbookSubmitting] = useState(false);
+  const [moderationError, setModerationError] = useState<string | null>(null);
+
+  // FL Studio splash overlay state
+  const [showFlSplash, setShowFlSplash] = useState(false);
+
+  // Community guidelines moderation — blocks spam, NSFW, gibberish
+  const moderateContent = (name: string, message: string): string | null => {
+    const blocked = [
+      "fuck","shit","ass","damn","bitch","dick","pussy","cock","cunt","nigger","nigga",
+      "faggot","retard","slut","whore","porn","xxx","nsfw","sex","nude","naked",
+      "viagra","casino","crypto","buy now","click here","free money","subscribe",
+      "follow me","check out my","onlyfans","telegram"
+    ];
+    const combined = (name + " " + message).toLowerCase();
+    for (const word of blocked) {
+      if (combined.includes(word)) {
+        return "Your message was flagged by community guidelines. Please keep it clean and respectful.";
+      }
+    }
+    // Block gibberish: message too short or all same character
+    if (message.length < 3) return "Message is too short. Please write at least 3 characters.";
+    if (/^(.)\1+$/.test(message.replace(/\s/g, ""))) return "Please write a meaningful message.";
+    // Block excessive caps
+    const upper = message.replace(/[^A-Z]/g, "").length;
+    if (message.length > 10 && upper / message.length > 0.8) return "Please avoid excessive caps.";
+    // Block repeated submissions (same name+message within 2 minutes)
+    const recentKey = `gb_last_${name.toLowerCase().replace(/\s/g, "")}`;
+    const lastSubmit = localStorage.getItem(recentKey);
+    if (lastSubmit && Date.now() - Number(lastSubmit) < 120000) {
+      return "You signed recently. Please wait a couple of minutes before signing again.";
+    }
+    return null;
+  };
+
 
   const fetchSignatures = async () => {
     if (!isSupabaseConfigured) {
@@ -674,14 +709,41 @@ export const App: React.FC = () => {
 
   const handleGuestbookSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!guestName.trim() || !guestMessage.trim()) return;
+    if (!guestName.trim() || !guestEmail.trim() || !guestMessage.trim()) return;
+    setModerationError(null);
     unlockAudioContext();
 
+    // Email validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(guestEmail.trim())) {
+      setModerationError("Please enter a valid email address.");
+      return;
+    }
+
+    // Content moderation
+    const modResult = moderateContent(guestName.trim(), guestMessage.trim());
+    if (modResult) {
+      setModerationError(modResult);
+      return;
+    }
+
     setIsGuestbookSubmitting(true);
+
+    // Record throttle timestamp
+    const recentKey = `gb_last_${guestName.trim().toLowerCase().replace(/\s/g, "")}`;
+    localStorage.setItem(recentKey, String(Date.now()));
+
     const entryData = {
       name: guestName.trim(),
+      email: guestEmail.trim(),
       message: guestMessage.trim(),
       created_at: new Date().toISOString()
+    };
+
+    const clearFields = () => {
+      setGuestName("");
+      setGuestEmail("");
+      setGuestMessage("");
     };
 
     if (!isSupabaseConfigured) {
@@ -690,8 +752,7 @@ export const App: React.FC = () => {
       list.unshift(entryData);
       localStorage.setItem("local_signatures", JSON.stringify(list));
       setEntries(prev => [entryData as any, ...prev.slice(0, 5)]);
-      setGuestName("");
-      setGuestMessage("");
+      clearFields();
       setIsGuestbookSubmitting(false);
       return;
     }
@@ -703,8 +764,7 @@ export const App: React.FC = () => {
       localStorage.setItem("offline_signatures", JSON.stringify(signaturesList));
 
       setEntries(prev => [entryData as any, ...prev.slice(0, 5)]);
-      setGuestName("");
-      setGuestMessage("");
+      clearFields();
       setIsGuestbookSubmitting(false);
       console.log("Offline: Queued guestbook signature locally.");
       return;
@@ -712,12 +772,11 @@ export const App: React.FC = () => {
 
     try {
       const { error } = await supabase!.from("guestbook").insert([
-        { name: guestName.trim(), message: guestMessage.trim() }
+        { name: guestName.trim(), email: guestEmail.trim(), message: guestMessage.trim() }
       ]);
       if (error) throw error;
       
-      setGuestName("");
-      setGuestMessage("");
+      clearFields();
       await fetchSignatures();
     } catch (err: any) {
       const queued = localStorage.getItem("offline_signatures");
@@ -726,8 +785,7 @@ export const App: React.FC = () => {
       localStorage.setItem("offline_signatures", JSON.stringify(signaturesList));
 
       setEntries(prev => [entryData as any, ...prev.slice(0, 5)]);
-      setGuestName("");
-      setGuestMessage("");
+      clearFields();
       console.warn("Connection lost. Queued locally.");
     } finally {
       setIsGuestbookSubmitting(false);
@@ -1054,7 +1112,33 @@ export const App: React.FC = () => {
             {/* Split 2: Music Producer */}
             <div 
               className="creative-card splash-card full-width-mobile"
-              onClick={() => { playBipSound(); setMode('producer'); }}
+              onClick={() => {
+                playBipSound();
+                setShowFlSplash(true);
+                // Play FL Studio iconic startup sound (short synth chord)
+                try {
+                  const AudioCtx = window.AudioContext || (window as any).webkitAudioContext;
+                  const ctx = new AudioCtx();
+                  const notes = [261.63, 329.63, 392.00, 523.25]; // C4, E4, G4, C5 major chord
+                  notes.forEach((freq, i) => {
+                    const osc = ctx.createOscillator();
+                    const gain = ctx.createGain();
+                    osc.type = i === 3 ? "triangle" : "sine";
+                    osc.frequency.setValueAtTime(freq, ctx.currentTime);
+                    gain.gain.setValueAtTime(0, ctx.currentTime);
+                    gain.gain.linearRampToValueAtTime(0.12, ctx.currentTime + 0.05);
+                    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 1.8);
+                    osc.connect(gain);
+                    gain.connect(ctx.destination);
+                    osc.start(ctx.currentTime + i * 0.08);
+                    osc.stop(ctx.currentTime + 2.0);
+                  });
+                } catch (e) {}
+                setTimeout(() => {
+                  setShowFlSplash(false);
+                  setMode('producer');
+                }, 2200);
+              }}
               style={{
                 flex: "1 1 350px",
                 maxWidth: "440px",
@@ -1429,18 +1513,70 @@ export const App: React.FC = () => {
                 marginBottom: "40px"
               }}
             >
-              <h3 style={{ fontSize: "1.2rem", fontWeight: "900", color: "var(--text-dark)", marginBottom: "12px", display: "flex", alignItems: "center", gap: "8px" }}>
+              <h3 style={{ fontSize: "1.2rem", fontWeight: "900", color: "var(--text-dark)", marginBottom: "6px", display: "flex", alignItems: "center", gap: "8px" }}>
                 ✍️ Guestbook Signature Log
               </h3>
+
+              {/* Community Guidelines */}
+              <div style={{
+                fontSize: "0.65rem",
+                color: "var(--text-muted)",
+                marginBottom: "14px",
+                padding: "8px 12px",
+                background: "rgba(255,255,255,0.5)",
+                borderRadius: "8px",
+                border: "1px solid var(--border-color)",
+                lineHeight: 1.5
+              }}>
+                <strong style={{ color: "var(--text-dark)" }}>📋 Community Guidelines:</strong> Be respectful & constructive. No spam, NSFW content, promotions, or gibberish. Your email is required for accountability but will not be displayed publicly. Repeat submissions are rate-limited.
+              </div>
+
+              {/* Moderation error banner */}
+              {moderationError && (
+                <div style={{
+                  fontSize: "0.75rem",
+                  color: "#b91c1c",
+                  fontWeight: "bold",
+                  background: "#fef2f2",
+                  border: "1.5px solid #fca5a5",
+                  borderRadius: "8px",
+                  padding: "8px 12px",
+                  marginBottom: "12px",
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "6px"
+                }}>
+                  ⚠️ {moderationError}
+                </div>
+              )}
               
-              <form onSubmit={handleGuestbookSubmit} style={{ display: "flex", flexWrap: "wrap", gap: "12px" }}>
+              <form onSubmit={handleGuestbookSubmit} style={{ display: "flex", flexWrap: "wrap", gap: "10px" }}>
                 <input
                   type="text"
-                  placeholder="Your Name"
+                  placeholder="Your Name *"
                   value={guestName}
-                  onChange={(e) => setGuestName(e.target.value)}
+                  onChange={(e) => { setGuestName(e.target.value); setModerationError(null); }}
                   required
+                  maxLength={50}
                   aria-label="Your Name"
+                  style={{
+                    flex: "1 1 160px",
+                    background: "var(--card-bg)",
+                    border: "1.5px solid var(--border-color)",
+                    borderRadius: "8px",
+                    padding: "8px 14px",
+                    fontSize: "0.85rem",
+                    outline: "none",
+                    color: "var(--text-dark)"
+                  }}
+                />
+                <input
+                  type="email"
+                  placeholder="Your Email *"
+                  value={guestEmail}
+                  onChange={(e) => { setGuestEmail(e.target.value); setModerationError(null); }}
+                  required
+                  aria-label="Your Email"
                   style={{
                     flex: "1 1 200px",
                     background: "var(--card-bg)",
@@ -1454,13 +1590,14 @@ export const App: React.FC = () => {
                 />
                 <input
                   type="text"
-                  placeholder="Leave a short comment..."
+                  placeholder="Leave a short comment... *"
                   value={guestMessage}
-                  onChange={(e) => setGuestMessage(e.target.value)}
+                  onChange={(e) => { setGuestMessage(e.target.value); setModerationError(null); }}
                   required
+                  maxLength={200}
                   aria-label="Your Comment"
                   style={{
-                    flex: "2 1 350px",
+                    flex: "2 1 300px",
                     background: "var(--card-bg)",
                     border: "1.5px solid var(--border-color)",
                     borderRadius: "8px",
