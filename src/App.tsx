@@ -62,7 +62,8 @@ const PROJECT_DETAILS_DATA = {
 │   └── training.py             # YOLOv8 custom model training script
 ├── best.pt                     # Trained custom weights (.pt weights)
 ├── requirements.txt            # Python dependencies configuration
-└── .env.example                # Server & SMTP email alert templates`
+└── .env.example                # Server & SMTP email alert templates`,
+    architecture: undefined
   },
   harmony: {
     title: "Harmony Hub: Mental Health & Wellness Assistant",
@@ -104,7 +105,8 @@ const PROJECT_DETAILS_DATA = {
 ├── utils/
 │   ├── pdf_parser.py           # Text extraction pipeline
 │   └── plot_helper.py          # Custom Plotly data visuals
-└── requirements.txt            # Project python pack list`
+└── requirements.txt            # Project python pack list`,
+    architecture: undefined
   },
   jobportal: {
     title: "Job Portal Business Intelligence Dashboard",
@@ -1334,6 +1336,30 @@ export const App: React.FC = () => {
                       </div>
                     )}
 
+                    {/* Architecture diagram */}
+                    {data.architecture && (
+                      <div>
+                        <h3 style={{ fontSize: "0.85rem", fontWeight: "bold", textTransform: "uppercase", marginBottom: "8px" }}>
+                          🏛️ System Architecture
+                        </h3>
+                        <pre 
+                          style={{ 
+                            background: "var(--card-bg-muted)", 
+                            border: "1.5px solid var(--border-color)", 
+                            borderRadius: "8px", 
+                            padding: "12px", 
+                            fontSize: "0.72rem", 
+                            fontFamily: "monospace", 
+                            color: "var(--text-dark)",
+                            overflowX: "auto",
+                            whiteSpace: "pre"
+                          }}
+                        >
+                          {data.architecture}
+                        </pre>
+                      </div>
+                    )}
+
                     {/* Challenges faced */}
                     <div>
                       <h3 style={{ fontSize: "0.85rem", fontWeight: "bold", textTransform: "uppercase", marginBottom: "4px" }}>
@@ -1363,7 +1389,6 @@ export const App: React.FC = () => {
                     </h3>
                     <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
                       {data.images.map((imgSrc, idx) => {
-                        const filename = imgSrc.split("/").pop();
                         return (
                           <div 
                             key={idx}
@@ -1374,8 +1399,7 @@ export const App: React.FC = () => {
                               padding: "10px",
                               boxShadow: "4px 4px 0px var(--card-shadow)",
                               display: "flex",
-                              flexDirection: "column",
-                              gap: "8px"
+                              flexDirection: "column"
                             }}
                           >
                             <img 
@@ -1390,9 +1414,6 @@ export const App: React.FC = () => {
                               }}
                               loading="lazy"
                             />
-                            <div style={{ fontFamily: "var(--font-lcd)", fontSize: "0.6rem", color: "var(--text-muted)", textTransform: "uppercase", overflow: "hidden", textOverflow: "ellipsis" }}>
-                              {filename}
-                            </div>
                           </div>
                         );
                       })}
