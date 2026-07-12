@@ -1493,10 +1493,10 @@ export const App: React.FC = () => {
                 overflowX: "auto"
               }}
             >
-              {(["roadwatch", "harmony", "jobportal", "aijdbot"] as const).map((key) => {
+              {(["roadwatch", "harmony", "jobportal", "aijdbot", "vibelyrics"] as const).map((key) => {
                 const isActive = activeDetailProject === key;
-                const icon = key === "roadwatch" ? "🏍️" : key === "harmony" ? "🧠" : key === "jobportal" ? "📊" : "🤖";
-                const label = key === "roadwatch" ? "ROADWATCH" : key === "harmony" ? "HARMONY HUB" : key === "jobportal" ? "JOB PORTAL" : "AI JD BOT";
+                const icon = key === "roadwatch" ? "🏍️" : key === "harmony" ? "🧠" : key === "jobportal" ? "📊" : key === "aijdbot" ? "🤖" : "🎤";
+                const label = key === "roadwatch" ? "ROADWATCH" : key === "harmony" ? "HARMONY HUB" : key === "jobportal" ? "JOB PORTAL" : key === "aijdbot" ? "AI JD BOT" : "VIBELYRICS";
                 return (
                   <button
                     key={key}
