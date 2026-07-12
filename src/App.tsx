@@ -41,38 +41,30 @@ const ScrambledText: React.FC<{ text: string }> = ({ text }) => {
   return <>{displayedText}</>;
 };
 
+// Typewriter text animation component for hero subtitles
+const TypewriterText: React.FC<{ text: string }> = ({ text }) => {
+  const [displayedText, setDisplayedText] = useState("");
+
+  useEffect(() => {
+    setDisplayedText("");
+    let idx = 0;
+    const interval = setInterval(() => {
+      if (idx < text.length) {
+        setDisplayedText(text.slice(0, idx + 1));
+        idx++;
+      } else {
+        clearInterval(interval);
+      }
+    }, 20);
+    return () => clearInterval(interval);
+  }, [text]);
+
+  return <>{displayedText}</>;
+};
+
 export const App: React.FC = () => {
   // Console Role Mode: 'select' = Decision screen, 'engineer' = Coding portfolio, 'producer' = Audio mixing portfolio
   const [mode, setMode] = useState<'select' | 'engineer' | 'producer'>('select');
-  const [isDark, setIsDark] = useState(false);
-
-  // Load theme from localStorage or system settings
-  useEffect(() => {
-    const saved = localStorage.getItem("theme");
-    const preferDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
-    if (saved === "dark" || (!saved && preferDark)) {
-      setIsDark(true);
-      document.documentElement.setAttribute("data-theme", "dark");
-    } else {
-      setIsDark(false);
-      document.documentElement.removeAttribute("data-theme");
-    }
-  }, []);
-
-  const toggleDarkMode = () => {
-    playBipSound();
-    setIsDark(prev => {
-      const next = !prev;
-      if (next) {
-        document.documentElement.setAttribute("data-theme", "dark");
-        localStorage.setItem("theme", "dark");
-      } else {
-        document.documentElement.removeAttribute("data-theme");
-        localStorage.setItem("theme", "light");
-      }
-      return next;
-    });
-  };
 
   const [currentTrack, setCurrentTrack] = useState<Track | null>(null);
   const [isPlaying, setIsPlaying] = useState(false);
@@ -127,6 +119,7 @@ export const App: React.FC = () => {
         if (entry.isIntersecting) {
           const index = parseInt(entry.target.getAttribute("data-section-idx") || "0");
           setActiveSection(index);
+          entry.target.classList.add("active");
         }
       });
     };
@@ -602,6 +595,7 @@ export const App: React.FC = () => {
             <section 
               ref={sectionRefs[0]}
               data-section-idx="0"
+              className="scroll-fade-in"
               style={{
                 height: "80vh",
                 display: "flex",
@@ -653,13 +647,16 @@ export const App: React.FC = () => {
                   fontSize: "1.1rem",
                   color: "var(--text-muted)",
                   letterSpacing: "1.5px",
-                  marginBottom: "36px"
+                  marginBottom: "36px",
+                  minHeight: "1.65rem"
                 }}
               >
-                {mode === 'engineer' 
-                  ? "// WEB APP DEVELOPER // DATA ANALYTICS & GEN-AI //" 
-                  : "// AUDIO MIXING & POST PRODUCTION SPECIALIST //"
-                }
+                <TypewriterText 
+                  text={mode === 'engineer' 
+                    ? "// WEB APP DEVELOPER // DATA ANALYTICS & GEN-AI //" 
+                    : "// AUDIO MIXING & POST PRODUCTION SPECIALIST //"
+                  } 
+                />
               </p>
 
               <div style={{ display: "flex", gap: "16px" }}>
@@ -696,6 +693,7 @@ export const App: React.FC = () => {
                 <section 
                   ref={sectionRefs[1]}
                   data-section-idx="1"
+                  className="scroll-fade-in"
                   style={{
                     width: "100%",
                     maxWidth: "850px",
@@ -712,6 +710,7 @@ export const App: React.FC = () => {
                 <section 
                   ref={sectionRefs[2]}
                   data-section-idx="2"
+                  className="scroll-fade-in"
                   style={{
                     width: "100%",
                     maxWidth: "850px",
@@ -730,6 +729,7 @@ export const App: React.FC = () => {
                 <section 
                   ref={sectionRefs[1]}
                   data-section-idx="1"
+                  className="scroll-fade-in"
                   style={{
                     width: "100%",
                     maxWidth: "750px",
@@ -757,6 +757,7 @@ export const App: React.FC = () => {
                 <section 
                   ref={sectionRefs[2]}
                   data-section-idx="2"
+                  className="scroll-fade-in"
                   style={{
                     width: "100%",
                     maxWidth: "750px",

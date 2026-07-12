@@ -343,6 +343,7 @@ export const DeveloperResumeCard: React.FC<DeveloperResumeCardProps> = ({ onInte
                     value={name}
                     onChange={(e) => setName(e.target.value)}
                     required
+                    aria-label="Your Name"
                     style={{
                       flexGrow: 1,
                       background: "var(--card-bg)",
@@ -378,6 +379,7 @@ export const DeveloperResumeCard: React.FC<DeveloperResumeCardProps> = ({ onInte
                   value={message}
                   onChange={(e) => setMessage(e.target.value)}
                   required
+                  aria-label="Your Comment"
                   style={{
                   background: "var(--card-bg)",
                   border: "1.5px solid var(--border-color)",
@@ -629,6 +631,8 @@ export const DeveloperResumeCard: React.FC<DeveloperResumeCardProps> = ({ onInte
                 placeholder="Ask me something (e.g., 'What is RAG?' or 'Where did you intern?')..."
                 value={chatInput}
                 onChange={(e) => setChatInput(e.target.value)}
+                aria-label="Chatbot input"
+                autoComplete="off"
                 style={{
                   flexGrow: 1,
                   background: "var(--card-bg)",

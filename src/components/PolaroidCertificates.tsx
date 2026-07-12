@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { createPortal } from "react-dom";
 import { resumeData } from "../data/resume";
 
 export const PolaroidCertificates: React.FC = () => {
@@ -254,7 +255,7 @@ export const PolaroidCertificates: React.FC = () => {
       </div>
 
       {/* Lightbox Modal Overlay */}
-      {selectedCert && (
+      {selectedCert && createPortal(
         <div 
           onClick={() => setSelectedCert(null)}
           style={{
@@ -355,7 +356,8 @@ export const PolaroidCertificates: React.FC = () => {
               STATE: VERIFIED &middot; SECURITY LOCK: ACTIVE
             </div>
           </div>
-        </div>
+        </div>,
+        document.body
       )}
     </div>
   );

@@ -255,3 +255,12 @@ body {
   transform: translateY(-3px) scale(1.04) !important;
   box-shadow: 4px 4px 0px var(--card-shadow) !important;
 }
+
+/* Accessibility Keyboard Focus Rings */
+.analog-btn:focus-visible,
+button:focus-visible,
+input:focus-visible,
+a:focus-visible {
+  outline: 3px solid var(--color-amber-accent) !important;
+  outline-offset: 3px !important;
+}
