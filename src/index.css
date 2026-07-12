@@ -247,3 +247,80 @@ a:focus-visible {
   outline: 3px solid var(--color-amber-accent) !important;
   outline-offset: 3px !important;
 }
+
+/* Shimmer skeleton styling for lazy-loading images */
+.skeleton-shimmer {
+  background: linear-gradient(90deg, var(--card-bg-muted) 25%, var(--grid-dot) 50%, var(--card-bg-muted) 75%);
+  background-size: 200% 100%;
+  animation: shimmer-anim 1.6s infinite linear;
+  border-radius: 8px;
+  border: 1.5px solid var(--border-color);
+  width: 100%;
+  box-shadow: 4px 4px 0px var(--card-shadow);
+}
+
+@keyframes shimmer-anim {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+/* Modal Spring Transition keyframes */
+@keyframes modal-spring-in {
+  0% {
+    opacity: 0;
+    transform: scale(0.94) translateY(24px);
+    filter: blur(4px);
+  }
+  70% {
+    transform: scale(1.01) translateY(-2px);
+    filter: blur(0px);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+.modal-spring-in {
+  animation: modal-spring-in 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.15) forwards;
+}
+
+/* Tab active slider and hover animations */
+.analog-btn {
+  position: relative;
+  overflow: hidden;
+}
+
+.analog-btn::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 4px;
+  background: var(--color-amber-accent);
+  transform: scaleX(0);
+  transform-origin: right;
+  transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.analog-btn:hover::after,
+.analog-btn.active::after {
+  transform: scaleX(1);
+  transform-origin: left;
+}
+
+.analog-btn.active {
+  box-shadow: 0 0 10px var(--color-amber-shadow) !important;
+  text-shadow: 0 0 1px rgba(255,255,255,0.4);
+}
+
+.screenshot-card-hover:hover {
+  transform: translateY(-3px);
+  box-shadow: 6px 6px 0px var(--card-shadow) !important;
+}
+

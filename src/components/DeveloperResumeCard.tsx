@@ -98,6 +98,73 @@ export const DeveloperResumeCard: React.FC<DeveloperResumeCardProps> = ({ onInte
   // Project Explorer state ('harmony' | 'roadwatch' | 'jobportal' | null)
   const [activeProject, setActiveProject] = useState<string | null>(null);
 
+  // Live GitHub stats fetching with caching
+  const [githubStats, setGithubStats] = useState<{
+    commits: number;
+    repos: number;
+    followers: number;
+    bio: string;
+    loading: boolean;
+  }>({
+    commits: 610,
+    repos: 19,
+    followers: 5,
+    bio: "BE-CSE 🚀 Data Science & Tech Enthusiast | 💻 Building with Python | 🤖 AI | SQL | MongoDB 🔧 Love creating impactful projects",
+    loading: true
+  });
+
+  useEffect(() => {
+    const fetchStats = async () => {
+      const cached = localStorage.getItem("github_stats_cache");
+      const cachedTime = localStorage.getItem("github_stats_time");
+      const cacheExpiry = 6 * 60 * 60 * 1000; // 6 hours
+
+      if (cached && cachedTime && Date.now() - Number(cachedTime) < cacheExpiry) {
+        try {
+          const parsed = JSON.parse(cached);
+          setGithubStats({ ...parsed, loading: false });
+          return;
+        } catch (e) {
+          // ignore parsing error, fetch fresh
+        }
+      }
+
+      try {
+        const [userRes, searchRes] = await Promise.all([
+          fetch("https://api.github.com/users/ChiragNSundar"),
+          fetch("https://api.github.com/search/commits?q=author:ChiragNSundar", {
+            headers: { Accept: "application/vnd.github.cloak-preview+json" }
+          })
+        ]);
+
+        if (!userRes.ok || !searchRes.ok) throw new Error("GitHub API issue");
+
+        const userData = await userRes.json();
+        const searchData = await searchRes.json();
+
+        const cleanBio = userData.bio 
+          ? userData.bio.replace(/\?/g, "🚀").replace(/\r?\n|\r/g, " ") 
+          : githubStats.bio;
+
+        const newStats = {
+          commits: searchData.total_count || 573,
+          repos: userData.public_repos || 19,
+          followers: userData.followers || 5,
+          bio: cleanBio
+        };
+
+        setGithubStats({ ...newStats, loading: false });
+        localStorage.setItem("github_stats_cache", JSON.stringify(newStats));
+        localStorage.setItem("github_stats_time", String(Date.now()));
+      } catch (err) {
+        console.warn("Using fallback GitHub stats: ", err);
+        setGithubStats(prev => ({ ...prev, loading: false }));
+      }
+    };
+
+    fetchStats();
+  }, []);
+
   // Chatbot state
   const [chatLog, setChatLog] = useState<{ sender: "user" | "bot"; text: string }[]>([
     {
@@ -858,31 +925,40 @@ export const DeveloperResumeCard: React.FC<DeveloperResumeCardProps> = ({ onInte
 
             {/* GitHub Stats & Heatmap */}
             <div style={{ background: "var(--card-bg)", border: "1.5px solid var(--border-color)", borderRadius: "16px", padding: "16px", display: "flex", flexDirection: "column", gap: "12px" }}>
-              <span style={{ fontSize: "0.68rem", fontWeight: "bold", color: "var(--color-amber-accent)", letterSpacing: "1px", textTransform: "uppercase" }}>
-                📊 GitHub Stats & Heatmap
-              </span>
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                <span style={{ fontSize: "0.68rem", fontWeight: "bold", color: "var(--color-amber-accent)", letterSpacing: "1px", textTransform: "uppercase" }}>
+                  📊 GitHub Stats & Heatmap
+                </span>
+                <span style={{ fontSize: "0.55rem", fontWeight: "bold", color: "var(--text-muted)", letterSpacing: "0.5px" }}>
+                  {githubStats.loading ? "⏳ SYNCING..." : "🟢 LIVE"}
+                </span>
+              </div>
               
               {/* GitHub bio summary */}
               <p style={{ fontSize: "0.65rem", color: "var(--text-muted)", fontStyle: "italic", borderLeft: "2.5px solid var(--color-amber-accent)", paddingLeft: "8px", margin: 0, lineHeight: 1.4 }}>
-                "BE-CSE 🚀 Data Science & Tech Enthusiast | 💻 Building with Python | 🤖 AI | SQL | MongoDB 🔧 Love creating impactful projects"
+                "{githubStats.bio}"
               </p>
 
               {/* Commit counters row */}
-              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "10px" }}>
-                <div style={{ background: "var(--card-bg-muted)", border: "1.5px solid var(--border-color)", borderRadius: "10px", padding: "8px", textAlign: "center" }}>
-                  <div style={{ fontSize: "1.3rem", fontWeight: "900", color: "#db2777" }}>610</div>
-                  <div style={{ fontSize: "0.55rem", color: "var(--text-muted)", textTransform: "uppercase", fontWeight: "bold", letterSpacing: "0.5px" }}>Total Commits</div>
+              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: "8px" }}>
+                <div style={{ background: "var(--card-bg-muted)", border: "1.5px solid var(--border-color)", borderRadius: "10px", padding: "6px 4px", textAlign: "center" }}>
+                  <div style={{ fontSize: "1.15rem", fontWeight: "900", color: "#db2777" }}>{githubStats.commits}</div>
+                  <div style={{ fontSize: "0.5rem", color: "var(--text-muted)", textTransform: "uppercase", fontWeight: "bold", letterSpacing: "0.2px" }}>Commits</div>
                 </div>
-                <div style={{ background: "var(--card-bg-muted)", border: "1.5px solid var(--border-color)", borderRadius: "10px", padding: "8px", textAlign: "center" }}>
-                  <div style={{ fontSize: "1.3rem", fontWeight: "900", color: "#eab308" }}>10</div>
-                  <div style={{ fontSize: "0.55rem", color: "var(--text-muted)", textTransform: "uppercase", fontWeight: "bold", letterSpacing: "0.5px" }}>Longest Streak</div>
+                <div style={{ background: "var(--card-bg-muted)", border: "1.5px solid var(--border-color)", borderRadius: "10px", padding: "6px 4px", textAlign: "center" }}>
+                  <div style={{ fontSize: "1.15rem", fontWeight: "900", color: "#0ca678" }}>{githubStats.repos}</div>
+                  <div style={{ fontSize: "0.5rem", color: "var(--text-muted)", textTransform: "uppercase", fontWeight: "bold", letterSpacing: "0.2px" }}>Repos</div>
+                </div>
+                <div style={{ background: "var(--card-bg-muted)", border: "1.5px solid var(--border-color)", borderRadius: "10px", padding: "6px 4px", textAlign: "center" }}>
+                  <div style={{ fontSize: "1.15rem", fontWeight: "900", color: "#eab308" }}>{githubStats.followers}</div>
+                  <div style={{ fontSize: "0.5rem", color: "var(--text-muted)", textTransform: "uppercase", fontWeight: "bold", letterSpacing: "0.2px" }}>Followers</div>
                 </div>
               </div>
 
               {/* Mini commit heatmap */}
               <div>
                 <span style={{ fontSize: "0.55rem", fontWeight: "900", color: "var(--text-muted)", display: "block", marginBottom: "6px", letterSpacing: "0.5px" }}>
-                  576 CONTRIBUTIONS IN THE LAST YEAR:
+                  CONTRIBUTIONS GRID (576+ BLOCKS SEEDED):
                 </span>
                 <div style={{ display: "flex", gap: "2.2px", flexWrap: "wrap", width: "100%", background: "var(--card-bg-muted)", border: "1.5px solid var(--border-color)", borderRadius: "8px", padding: "8px" }}>
                   {Array.from({ length: 63 }).map((_, i) => {

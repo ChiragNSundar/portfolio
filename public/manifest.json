@@ -1,0 +1,16 @@
+{
+  "short_name": "Chirag Portfolio",
+  "name": "Chirag N Sundar Dual-Role Studio Portfolio",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "type": "image/svg+xml",
+      "sizes": "any"
+    }
+  ],
+  "start_url": "/",
+  "background_color": "#fafaf9",
+  "theme_color": "#e0cbc0",
+  "display": "standalone",
+  "orientation": "portrait-primary"
+}

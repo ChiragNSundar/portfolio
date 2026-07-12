@@ -334,6 +334,116 @@
       "norm_label": "vite"
     },
     {
+      "label": "manifest.json",
+      "file_type": "code",
+      "source_file": "public/manifest.json",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "public_manifest",
+      "community": 12,
+      "norm_label": "manifest.json"
+    },
+    {
+      "label": "short_name",
+      "file_type": "code",
+      "source_file": "public/manifest.json",
+      "source_location": "L2",
+      "_origin": "ast",
+      "id": "public_manifest_short_name",
+      "community": 12,
+      "norm_label": "short_name"
+    },
+    {
+      "label": "name",
+      "file_type": "code",
+      "source_file": "public/manifest.json",
+      "source_location": "L3",
+      "_origin": "ast",
+      "id": "public_manifest_name",
+      "community": 12,
+      "norm_label": "name"
+    },
+    {
+      "label": "icons",
+      "file_type": "code",
+      "source_file": "public/manifest.json",
+      "source_location": "L4",
+      "_origin": "ast",
+      "id": "public_manifest_icons",
+      "community": 12,
+      "norm_label": "icons"
+    },
+    {
+      "label": "start_url",
+      "file_type": "code",
+      "source_file": "public/manifest.json",
+      "source_location": "L11",
+      "_origin": "ast",
+      "id": "public_manifest_start_url",
+      "community": 12,
+      "norm_label": "start_url"
+    },
+    {
+      "label": "background_color",
+      "file_type": "code",
+      "source_file": "public/manifest.json",
+      "source_location": "L12",
+      "_origin": "ast",
+      "id": "public_manifest_background_color",
+      "community": 12,
+      "norm_label": "background_color"
+    },
+    {
+      "label": "theme_color",
+      "file_type": "code",
+      "source_file": "public/manifest.json",
+      "source_location": "L13",
+      "_origin": "ast",
+      "id": "public_manifest_theme_color",
+      "community": 12,
+      "norm_label": "theme_color"
+    },
+    {
+      "label": "display",
+      "file_type": "code",
+      "source_file": "public/manifest.json",
+      "source_location": "L14",
+      "_origin": "ast",
+      "id": "public_manifest_display",
+      "community": 12,
+      "norm_label": "display"
+    },
+    {
+      "label": "orientation",
+      "file_type": "code",
+      "source_file": "public/manifest.json",
+      "source_location": "L15",
+      "_origin": "ast",
+      "id": "public_manifest_orientation",
+      "community": 12,
+      "norm_label": "orientation"
+    },
+    {
+      "label": "service-worker.js",
+      "file_type": "code",
+      "source_file": "public/service-worker.js",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "public_service_worker",
+      "community": 13,
+      "norm_label": "service-worker.js"
+    },
+    {
+      "label": "PRECACHE_ASSETS",
+      "file_type": "code",
+      "source_file": "public/service-worker.js",
+      "source_location": "L4",
+      "_origin": "ast",
+      "id": "public_service_worker_precache_assets",
+      "community": 13,
+      "norm_label": "precache_assets"
+    },
+    {
       "label": "App.tsx",
       "file_type": "code",
       "source_file": "src/App.tsx",
@@ -394,10 +504,20 @@
       "norm_label": "typewritertext()"
     },
     {
+      "label": "ScreenshotWithSkeleton()",
+      "file_type": "code",
+      "source_file": "src/App.tsx",
+      "source_location": "L522",
+      "_origin": "ast",
+      "id": "src_app_screenshotwithskeleton",
+      "community": 4,
+      "norm_label": "screenshotwithskeleton()"
+    },
+    {
       "label": "App()",
       "file_type": "code",
       "source_file": "src/App.tsx",
-      "source_location": "L521",
+      "source_location": "L568",
       "_origin": "ast",
       "id": "src_app_app",
       "community": 4,
@@ -700,7 +820,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "components_developerresumecard",
-      "community": 4,
+      "community": 8,
       "norm_label": "developerresumecard.tsx"
     },
     {
@@ -710,7 +830,7 @@
       "source_location": "L3",
       "_origin": "ast",
       "id": "components_developerresumecard_developerresumecardprops",
-      "community": 4,
+      "community": 8,
       "norm_label": "developerresumecardprops"
     },
     {
@@ -720,7 +840,7 @@
       "source_location": "L9",
       "_origin": "ast",
       "id": "components_developerresumecard_chatbot_kb",
-      "community": 4,
+      "community": 8,
       "norm_label": "chatbot_kb"
     },
     {
@@ -730,7 +850,7 @@
       "source_location": "L33",
       "_origin": "ast",
       "id": "components_developerresumecard_topic_synonyms",
-      "community": 4,
+      "community": 8,
       "norm_label": "topic_synonyms"
     },
     {
@@ -740,7 +860,7 @@
       "source_location": "L57",
       "_origin": "ast",
       "id": "components_developerresumecard_follow_ups",
-      "community": 4,
+      "community": 8,
       "norm_label": "follow_ups"
     },
     {
@@ -750,7 +870,7 @@
       "source_location": "L80",
       "_origin": "ast",
       "id": "components_developerresumecard_default_suggestions",
-      "community": 4,
+      "community": 8,
       "norm_label": "default_suggestions"
     },
     {
@@ -760,7 +880,7 @@
       "source_location": "L87",
       "_origin": "ast",
       "id": "components_developerresumecard_matchtopic",
-      "community": 4,
+      "community": 8,
       "norm_label": "matchtopic()"
     },
     {
@@ -770,7 +890,7 @@
       "source_location": "L97",
       "_origin": "ast",
       "id": "components_developerresumecard_developerresumecard",
-      "community": 4,
+      "community": 8,
       "norm_label": "developerresumecard()"
     },
     {
@@ -780,7 +900,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "components_polaroidcertificates",
-      "community": 8,
+      "community": 4,
       "norm_label": "polaroidcertificates.tsx"
     },
     {
@@ -790,7 +910,7 @@
       "source_location": "L5",
       "_origin": "ast",
       "id": "components_polaroidcertificates_polaroidcertificates",
-      "community": 8,
+      "community": 4,
       "norm_label": "polaroidcertificates()"
     },
     {
@@ -830,7 +950,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "data_resume",
-      "community": 8,
+      "community": 4,
       "norm_label": "resume.ts"
     },
     {
@@ -840,7 +960,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "data_resume_experience",
-      "community": 8,
+      "community": 4,
       "norm_label": "experience"
     },
     {
@@ -850,7 +970,7 @@
       "source_location": "L9",
       "_origin": "ast",
       "id": "data_resume_project",
-      "community": 8,
+      "community": 4,
       "norm_label": "project"
     },
     {
@@ -860,7 +980,7 @@
       "source_location": "L15",
       "_origin": "ast",
       "id": "data_resume_resumedata",
-      "community": 8,
+      "community": 4,
       "norm_label": "resumedata"
     },
     {
@@ -920,7 +1040,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "lib_supabaseclient",
-      "community": 4,
+      "community": 8,
       "norm_label": "supabaseclient.ts"
     },
     {
@@ -1844,6 +1964,96 @@
       "target": "package_devdependencies_vitejs_plugin_react"
     },
     {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "public/manifest.json",
+      "source_location": "L12",
+      "weight": 1.0,
+      "source": "public_manifest",
+      "target": "public_manifest_background_color",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "public/manifest.json",
+      "source_location": "L14",
+      "weight": 1.0,
+      "source": "public_manifest",
+      "target": "public_manifest_display",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "public/manifest.json",
+      "source_location": "L4",
+      "weight": 1.0,
+      "source": "public_manifest",
+      "target": "public_manifest_icons",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "public/manifest.json",
+      "source_location": "L3",
+      "weight": 1.0,
+      "source": "public_manifest",
+      "target": "public_manifest_name",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "public/manifest.json",
+      "source_location": "L15",
+      "weight": 1.0,
+      "source": "public_manifest",
+      "target": "public_manifest_orientation",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "public/manifest.json",
+      "source_location": "L2",
+      "weight": 1.0,
+      "source": "public_manifest",
+      "target": "public_manifest_short_name",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "public/manifest.json",
+      "source_location": "L11",
+      "weight": 1.0,
+      "source": "public_manifest",
+      "target": "public_manifest_start_url",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "public/manifest.json",
+      "source_location": "L13",
+      "weight": 1.0,
+      "source": "public_manifest",
+      "target": "public_manifest_theme_color",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "public/service-worker.js",
+      "source_location": "L4",
+      "weight": 1.0,
+      "source": "public_service_worker",
+      "target": "public_service_worker_precache_assets",
+      "confidence_score": 1.0
+    },
+    {
       "relation": "imports_from",
       "context": "import",
       "confidence": "EXTRACTED",
@@ -2046,6 +2256,16 @@
       "confidence_score": 1.0,
       "source": "src_app",
       "target": "src_app_scrambledtext"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/App.tsx",
+      "source_location": "L522",
+      "weight": 1.0,
+      "source": "src_app",
+      "target": "src_app_screenshotwithskeleton",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -3329,9 +3549,9 @@
       "source_file": "README.md",
       "source_location": "L22",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "readme_interface_key_features",
-      "target": "readme_2_software_engineer_dossier_timeline",
-      "confidence_score": 1.0
+      "target": "readme_2_software_engineer_dossier_timeline"
     },
     {
       "relation": "contains",
@@ -3339,9 +3559,9 @@
       "source_file": "README.md",
       "source_location": "L28",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "readme_interface_key_features",
-      "target": "readme_3_fullscreen_detailed_project_explorer_console",
-      "confidence_score": 1.0
+      "target": "readme_3_fullscreen_detailed_project_explorer_console"
     },
     {
       "relation": "contains",
@@ -3349,9 +3569,9 @@
       "source_file": "README.md",
       "source_location": "L36",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "readme_interface_key_features",
-      "target": "readme_4_realigned_supabase_guestbook_footer",
-      "confidence_score": 1.0
+      "target": "readme_4_realigned_supabase_guestbook_footer"
     },
     {
       "relation": "contains",
@@ -3435,5 +3655,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "3735fdd7f580bd98978e67ebbbbcb38ebc9cb172"
+  "built_at_commit": "eed2ad3db3efc053df2a6a52b03548a7f03a4574"
 }

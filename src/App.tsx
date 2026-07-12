@@ -518,10 +518,81 @@ const TypewriterText: React.FC<{ text: string }> = ({ text }) => {
   return <>{displayedText}</>;
 };
 
+// Component for screenshots with skeleton loading shim
+const ScreenshotWithSkeleton: React.FC<{
+  imgSrc: string;
+  title: string;
+  idx: number;
+  onEnlarge: (src: string) => void;
+}> = ({ imgSrc, title, idx, onEnlarge }) => {
+  const [loaded, setLoaded] = useState(false);
+
+  return (
+    <div 
+      onClick={() => onEnlarge(imgSrc)}
+      style={{
+        background: "var(--card-bg)",
+        border: "1.5px solid var(--border-color)",
+        borderRadius: "12px",
+        padding: "10px",
+        boxShadow: "4px 4px 0px var(--card-shadow)",
+        display: "flex",
+        flexDirection: "column",
+        cursor: "zoom-in",
+        transition: "transform 0.2s ease, box-shadow 0.2s ease",
+        position: "relative"
+      }}
+      className="screenshot-card-hover"
+    >
+      {!loaded && (
+        <div className="skeleton-shimmer" style={{ height: "180px", width: "100%" }} />
+      )}
+      <img 
+        src={imgSrc} 
+        alt={`${title} Asset ${idx + 1}`}
+        onLoad={() => setLoaded(true)}
+        style={{
+          width: "100%",
+          height: "auto",
+          display: loaded ? "block" : "none",
+          borderRadius: "6px",
+          border: "1px solid var(--border-color)",
+          transition: "transform 0.2s ease"
+        }}
+        loading="lazy"
+      />
+    </div>
+  );
+};
+
 export const App: React.FC = () => {
   // Console Role Mode: 'select' = Decision screen, 'engineer' = Coding portfolio, 'producer' = Audio mixing portfolio
   const [mode, setMode] = useState<'select' | 'engineer' | 'producer'>('select');
   const [activeDetailProject, setActiveDetailProject] = useState<"roadwatch" | "harmony" | "jobportal" | "aijdbot" | "vibelyrics" | null>(null);
+  const [activeScreenshotLightbox, setActiveScreenshotLightbox] = useState<string | null>(null);
+
+  // Background Preloading & Esc key listeners
+  useEffect(() => {
+    // 1. Preload modal visual assets in background
+    Object.values(PROJECT_DETAILS_DATA).forEach((proj) => {
+      if (proj.images) {
+        proj.images.forEach((imgUrl) => {
+          const img = new Image();
+          img.src = imgUrl;
+        });
+      }
+    });
+
+    // 2. Keyboard listeners to close modals on Escape
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        setActiveScreenshotLightbox(null);
+        setActiveDetailProject(null);
+      }
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, []);
 
   // Guestbook Footer states & handlers
   const [entries, setEntries] = useState<GuestbookEntry[]>([]);
@@ -530,7 +601,11 @@ export const App: React.FC = () => {
   const [isGuestbookSubmitting, setIsGuestbookSubmitting] = useState(false);
 
   const fetchSignatures = async () => {
-    if (!isSupabaseConfigured) return;
+    if (!isSupabaseConfigured) {
+      const local = localStorage.getItem("local_signatures");
+      setEntries(local ? JSON.parse(local) : []);
+      return;
+    }
     try {
       const { data, error } = await supabase!
         .from("guestbook")
@@ -540,7 +615,7 @@ export const App: React.FC = () => {
       if (error) throw error;
       setEntries(data || []);
     } catch (err: any) {
-      console.error("Error:", err);
+      console.error("Error fetching signatures:", err);
     }
   };
 
@@ -550,12 +625,79 @@ export const App: React.FC = () => {
     }
   }, [mode]);
 
+  // Handle offline sync when network status shifts to online
+  useEffect(() => {
+    const syncOfflineSignatures = async () => {
+      if (!isSupabaseConfigured || !navigator.onLine) return;
+      const queued = localStorage.getItem("offline_signatures");
+      if (!queued) return;
+
+      try {
+        const signaturesList = JSON.parse(queued);
+        if (signaturesList.length === 0) return;
+
+        console.log(`Syncing ${signaturesList.length} offline signatures...`);
+        const { error } = await supabase!.from("guestbook").insert(
+          signaturesList.map((sig: any) => ({
+            name: sig.name,
+            message: sig.message
+          }))
+        );
+
+        if (!error) {
+          localStorage.removeItem("offline_signatures");
+          await fetchSignatures();
+          console.log("Successfully synchronized offline signatures.");
+        }
+      } catch (err) {
+        console.error("Error syncing offline signatures:", err);
+      }
+    };
+
+    window.addEventListener("online", syncOfflineSignatures);
+    syncOfflineSignatures();
+
+    return () => window.removeEventListener("online", syncOfflineSignatures);
+  }, []);
+
   const handleGuestbookSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!guestName.trim() || !guestMessage.trim()) return;
     unlockAudioContext();
 
     setIsGuestbookSubmitting(true);
+    const entryData = {
+      name: guestName.trim(),
+      message: guestMessage.trim(),
+      created_at: new Date().toISOString()
+    };
+
+    if (!isSupabaseConfigured) {
+      const local = localStorage.getItem("local_signatures");
+      const list = local ? JSON.parse(local) : [];
+      list.unshift(entryData);
+      localStorage.setItem("local_signatures", JSON.stringify(list));
+      setEntries(prev => [entryData as any, ...prev.slice(0, 5)]);
+      setGuestName("");
+      setGuestMessage("");
+      setIsGuestbookSubmitting(false);
+      return;
+    }
+
+    if (!navigator.onLine) {
+      const queued = localStorage.getItem("offline_signatures");
+      const signaturesList = queued ? JSON.parse(queued) : [];
+      signaturesList.push(entryData);
+      localStorage.setItem("offline_signatures", JSON.stringify(signaturesList));
+
+      setEntries(prev => [entryData as any, ...prev.slice(0, 5)]);
+      setGuestName("");
+      setGuestMessage("");
+      setIsGuestbookSubmitting(false);
+      console.log("Offline: Queued guestbook signature locally.");
+      return;
+    }
+
     try {
       const { error } = await supabase!.from("guestbook").insert([
         { name: guestName.trim(), message: guestMessage.trim() }
@@ -566,7 +708,15 @@ export const App: React.FC = () => {
       setGuestMessage("");
       await fetchSignatures();
     } catch (err: any) {
-      alert("Submission error: " + err.message);
+      const queued = localStorage.getItem("offline_signatures");
+      const signaturesList = queued ? JSON.parse(queued) : [];
+      signaturesList.push(entryData);
+      localStorage.setItem("offline_signatures", JSON.stringify(signaturesList));
+
+      setEntries(prev => [entryData as any, ...prev.slice(0, 5)]);
+      setGuestName("");
+      setGuestMessage("");
+      console.warn("Connection lost. Queued locally.");
     } finally {
       setIsGuestbookSubmitting(false);
     }
@@ -1442,6 +1592,7 @@ export const App: React.FC = () => {
           }}
         >
           <div 
+            className="modal-spring-in"
             onClick={(e) => e.stopPropagation()}
             style={{
               width: "100%",
@@ -1712,31 +1863,13 @@ export const App: React.FC = () => {
                       <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
                         {data.images.map((imgSrc, idx) => {
                           return (
-                            <div 
-                              key={idx}
-                              style={{
-                                background: "var(--card-bg)",
-                                border: "1.5px solid var(--border-color)",
-                                borderRadius: "12px",
-                                padding: "10px",
-                                boxShadow: "4px 4px 0px var(--card-shadow)",
-                                display: "flex",
-                                flexDirection: "column"
-                              }}
-                            >
-                              <img 
-                                src={imgSrc} 
-                                alt={`${data.title} Asset ${idx + 1}`}
-                                style={{
-                                  width: "100%",
-                                  height: "auto",
-                                  display: "block",
-                                  borderRadius: "6px",
-                                  border: "1px solid var(--border-color)"
-                                }}
-                                loading="lazy"
-                              />
-                            </div>
+                            <ScreenshotWithSkeleton 
+                              key={idx} 
+                              imgSrc={imgSrc} 
+                              title={data.title} 
+                              idx={idx} 
+                              onEnlarge={setActiveScreenshotLightbox} 
+                            />
                           );
                         })}
                       </div>
@@ -1748,6 +1881,79 @@ export const App: React.FC = () => {
           </div>
         </div>,
         document.body
+      )}
+      {activeScreenshotLightbox && (
+        <div 
+          onClick={() => setActiveScreenshotLightbox(null)}
+          style={{
+            position: "fixed",
+            top: 0,
+            left: 0,
+            width: "100vw",
+            height: "100vh",
+            background: "rgba(24, 24, 27, 0.7)",
+            backdropFilter: "blur(12px)",
+            zIndex: 99999,
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            padding: "24px",
+            cursor: "zoom-out"
+          }}
+        >
+          <div 
+            className="modal-spring-in"
+            onClick={(e) => e.stopPropagation()}
+            style={{
+              position: "relative",
+              maxWidth: "90%",
+              maxHeight: "90%",
+              background: "var(--card-bg)",
+              border: "3px solid var(--border-color)",
+              borderRadius: "16px",
+              padding: "12px",
+              boxShadow: "10px 10px 0px var(--card-shadow)",
+              display: "flex",
+              flexDirection: "column",
+              cursor: "default"
+            }}
+          >
+            <button
+              onClick={() => setActiveScreenshotLightbox(null)}
+              style={{
+                position: "absolute",
+                top: "-15px",
+                right: "-15px",
+                width: "36px",
+                height: "36px",
+                background: "var(--color-rose-accent)",
+                color: "white",
+                border: "2px solid var(--border-color)",
+                borderRadius: "50%",
+                fontSize: "1rem",
+                fontWeight: "900",
+                cursor: "pointer",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                boxShadow: "2px 2px 0px var(--card-shadow)"
+              }}
+            >
+              ✕
+            </button>
+            <img 
+              src={activeScreenshotLightbox} 
+              alt="Project Screenshot Enlarged"
+              style={{
+                maxWidth: "100%",
+                maxHeight: "80vh",
+                borderRadius: "8px",
+                border: "1.5px solid var(--border-color)",
+                display: "block"
+              }}
+            />
+          </div>
+        </div>
       )}
     </div>
   );
