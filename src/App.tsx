@@ -251,7 +251,7 @@ export const App: React.FC = () => {
                 boxShadow: "3px 3px 0px #18181b"
               }}
             >
-              SYS ACCESS: ACTIVE CONSOLE <span className="bouncy-emoji">👋</span>
+              PORTFOLIO WEBSITE: ACTIVE CONSOLE <span className="bouncy-emoji">👋</span>
             </div>
 
             <h1 
@@ -277,7 +277,7 @@ export const App: React.FC = () => {
                 letterSpacing: "1.5px"
               }}
             >
-              // MULTI-DISCIPLINARY CODES & AUDIO SYSTEMS PORTAL //
+              // PORTFOLIO WEBSITE: CODES & AUDIO SYSTEMS //
             </p>
           </div>
 

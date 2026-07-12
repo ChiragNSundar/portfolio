@@ -172,23 +172,51 @@ export const mixAndOriginalTracks: Track[] = [
 export const coverVideos: CoverVideo[] = [
   {
     id: "cover-1",
-    title: "After Hours - The Weeknd (Retro Synth Cover)",
-    youtubeId: "dQw4w9WgXcQ",
-    description: "Re-imagining the modern classic using vintage Roland Juno and Korg Poly-800 hardware synths. Arranged, mixed, and performed live.",
-    genre: "Retro Pop Cover"
+    title: "Zamana Ho Gaya (Cover) @BellaOfficials",
+    youtubeId: "dQw4w9WgXcQ", // Keep placeholder, customizable
+    description: "Mixing Focus: Heavy parallel saturation, upfront vocal dynamics control, and stereo spacing to glue the modern rap delivery into the beat.",
+    genre: "Hip Hop Mix"
   },
   {
     id: "cover-2",
-    title: "Blinding Lights (80s Synth Live Instrumental Cover)",
+    title: "Bloom (Cover) @bygsmyle @BellaOfficials",
     youtubeId: "y6120QOlsfU",
-    description: "Live multi-instrumental loop cover featuring real guitar, retro drum machine, and keytar leads.",
-    genre: "80s New Wave Cover"
+    description: "Mixing Focus: Dynamic EQ adjustments on vocal low-mids, smooth de-essing, and wide stereo background harmony spreads.",
+    genre: "Melodic Rap Mix"
   },
   {
     id: "cover-3",
-    title: "Resonance - HOME (Synthesizer Cover)",
+    title: "Antidote 2 (Cover) @BellaOfficials",
     youtubeId: "8GW6sLrK40k",
-    description: "Fidelity replication of the legendary chillwave anthem, programming accurate oscillator detuning and tape wobble.",
-    genre: "Chillwave Cover"
+    description: "Mixing Focus: Transient drum bus compression, vocal presence elevation in the mid-range, and atmospheric sidechain sweeps.",
+    genre: "Hip Hop Mix"
+  },
+  {
+    id: "cover-4",
+    title: "Cloud 9 (Cover) @therealrapdemon",
+    youtubeId: "dQw4w9WgXcQ",
+    description: "Mixing Focus: Deep sub-bass mono alignment, aggressive multi-band saturation on synths, and lush vocal room reverbs.",
+    genre: "Rap / Trap Mix"
+  },
+  {
+    id: "cover-5",
+    title: "Midas Touch (Cover)",
+    youtubeId: "y6120QOlsfU",
+    description: "Mixing Focus: Balancing punchy 808 transients with a clean, centered lead vocal, adding tape tape warble on pads.",
+    genre: "Pop / Rap Mix"
+  },
+  {
+    id: "cover-6",
+    title: "Tere Bina (Cover) @BellaOfficials",
+    youtubeId: "8GW6sLrK40k",
+    description: "Mixing Focus: Organic space design using chorused tape delays, manual vocal pitch alignment, and high-frequency sheen enhancement.",
+    genre: "R&B / Rap Mix"
+  },
+  {
+    id: "cover-7",
+    title: "Nalla Freestyle (Cover) @SeedheMaut",
+    youtubeId: "dQw4w9WgXcQ",
+    description: "Mixing Focus: Raw dual-vocal dynamic saturation, analog tape bus compression, and sharp transient shaping on aggressive kicks.",
+    genre: "Hardcore Rap Mix"
   }
 ];
