@@ -521,7 +521,7 @@ const TypewriterText: React.FC<{ text: string }> = ({ text }) => {
 export const App: React.FC = () => {
   // Console Role Mode: 'select' = Decision screen, 'engineer' = Coding portfolio, 'producer' = Audio mixing portfolio
   const [mode, setMode] = useState<'select' | 'engineer' | 'producer'>('select');
-  const [activeDetailProject, setActiveDetailProject] = useState<"roadwatch" | "harmony" | "jobportal" | "aijdbot" | null>(null);
+  const [activeDetailProject, setActiveDetailProject] = useState<"roadwatch" | "harmony" | "jobportal" | "aijdbot" | "vibelyrics" | null>(null);
 
   // Guestbook Footer states & handlers
   const [entries, setEntries] = useState<GuestbookEntry[]>([]);
@@ -1526,10 +1526,10 @@ export const App: React.FC = () => {
                   <div 
                     className="full-width-mobile"
                     style={{
-                      flex: "1.3 1 0",
+                      flex: data.images.length === 0 ? "1 1 100%" : "1.3 1 0",
                       padding: "24px",
                       overflowY: "auto",
-                      borderRight: "2px solid var(--border-color)",
+                      borderRight: data.images.length === 0 ? "none" : "2px solid var(--border-color)",
                       display: "flex",
                       flexDirection: "column",
                       gap: "20px"
@@ -1693,53 +1693,55 @@ export const App: React.FC = () => {
                   </div>
 
                   {/* Right Column: Visual screenshot feed */}
-                  <div 
-                    className="full-width-mobile"
-                    style={{
-                      flex: "0.9 1 0",
-                      padding: "24px",
-                      background: "var(--card-bg-muted)",
-                      overflowY: "auto",
-                      display: "flex",
-                      flexDirection: "column",
-                      gap: "20px"
-                    }}
-                  >
-                    <h3 style={{ fontSize: "0.85rem", fontWeight: "bold", textTransform: "uppercase", color: "var(--text-muted)" }}>
-                      🖼️ Visual Assets & Demos
-                    </h3>
-                    <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
-                      {data.images.map((imgSrc, idx) => {
-                        return (
-                          <div 
-                            key={idx}
-                            style={{
-                              background: "var(--card-bg)",
-                              border: "1.5px solid var(--border-color)",
-                              borderRadius: "12px",
-                              padding: "10px",
-                              boxShadow: "4px 4px 0px var(--card-shadow)",
-                              display: "flex",
-                              flexDirection: "column"
-                            }}
-                          >
-                            <img 
-                              src={imgSrc} 
-                              alt={`${data.title} Asset ${idx + 1}`}
+                  {data.images.length > 0 && (
+                    <div 
+                      className="full-width-mobile"
+                      style={{
+                        flex: "0.9 1 0",
+                        padding: "24px",
+                        background: "var(--card-bg-muted)",
+                        overflowY: "auto",
+                        display: "flex",
+                        flexDirection: "column",
+                        gap: "20px"
+                      }}
+                    >
+                      <h3 style={{ fontSize: "0.85rem", fontWeight: "bold", textTransform: "uppercase", color: "var(--text-muted)" }}>
+                        🖼️ Visual Assets & Demos
+                      </h3>
+                      <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
+                        {data.images.map((imgSrc, idx) => {
+                          return (
+                            <div 
+                              key={idx}
                               style={{
-                                width: "100%",
-                                height: "auto",
-                                display: "block",
-                                borderRadius: "6px",
-                                border: "1px solid var(--border-color)"
+                                background: "var(--card-bg)",
+                                border: "1.5px solid var(--border-color)",
+                                borderRadius: "12px",
+                                padding: "10px",
+                                boxShadow: "4px 4px 0px var(--card-shadow)",
+                                display: "flex",
+                                flexDirection: "column"
                               }}
-                              loading="lazy"
-                            />
-                          </div>
-                        );
-                      })}
+                            >
+                              <img 
+                                src={imgSrc} 
+                                alt={`${data.title} Asset ${idx + 1}`}
+                                style={{
+                                  width: "100%",
+                                  height: "auto",
+                                  display: "block",
+                                  borderRadius: "6px",
+                                  border: "1px solid var(--border-color)"
+                                }}
+                                loading="lazy"
+                              />
+                            </div>
+                          );
+                        })}
+                      </div>
                     </div>
-                  </div>
+                  )}
                 </div>
               );
             })()}
