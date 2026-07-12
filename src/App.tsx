@@ -228,76 +228,134 @@ export const App: React.FC = () => {
           style={{
             minHeight: "100vh",
             display: "flex",
-            flexDirection: "row",
-            flexWrap: "wrap",
+            flexDirection: "column",
             justifyContent: "center",
             alignItems: "center",
-            padding: "40px 20px",
+            padding: "60px 20px",
             gap: "36px"
           }}
         >
-          {/* Split 1: Software Engineer */}
-          <div 
-            className="creative-card"
-            onClick={() => { playBipSound(); setMode('engineer'); }}
-            style={{
-              flex: "1 1 350px",
-              maxWidth: "480px",
-              height: "460px",
-              padding: "40px 28px",
-              display: "flex",
-              flexDirection: "column",
-              justifyContent: "space-between",
-              cursor: "pointer",
-              borderColor: "#18181b",
-              boxShadow: "10px 10px 0px rgba(245, 159, 0, 0.2), 10px 10px 0px #18181b"
-            }}
-          >
-            <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
-              <div style={{ fontSize: "3.5rem" }} className="bouncy-emoji">💻</div>
-              <h2 style={{ fontSize: "2rem", fontWeight: "900", textTransform: "uppercase", lineHeight: 1.1 }}>
-                Software<br/>Engineering<br/>Dossier
-              </h2>
-              <p style={{ fontSize: "0.85rem", color: "var(--text-muted)", lineHeight: 1.4 }}>
-                Review my Computer Science degree from RNSIT (8.89 GPA), WhatDigital Tech Data Science internship, detailed project technical sheets (RoadWatch, Harmony Hub), and query my local AI chatbot.
-              </p>
+          {/* Top Header Section */}
+          <div style={{ textAlign: "center", display: "flex", flexDirection: "column", alignItems: "center", marginBottom: "12px" }}>
+            <div 
+              style={{
+                background: "#ffffff",
+                border: "1.5px solid #18181b",
+                borderRadius: "12px",
+                padding: "6px 14px",
+                fontFamily: "var(--font-lcd)",
+                fontSize: "0.75rem",
+                color: "var(--color-amber-accent)",
+                fontWeight: "bold",
+                marginBottom: "16px",
+                boxShadow: "3px 3px 0px #18181b"
+              }}
+            >
+              SYS ACCESS: ACTIVE CONSOLE <span className="bouncy-emoji">👋</span>
             </div>
-            
-            <button className="analog-btn active" style={{ padding: "12px 24px", justifyContent: "center" }}>
-              LOAD DOSSIER CONSOLE &rarr;
-            </button>
+
+            <h1 
+              style={{
+                fontFamily: "var(--font-body)",
+                fontSize: "4.8rem",
+                fontWeight: "900",
+                lineHeight: "1.0",
+                letterSpacing: "-2px",
+                color: "var(--text-dark)",
+                marginBottom: "12px",
+                textTransform: "uppercase"
+              }}
+            >
+              CHIRAG N SUNDAR
+            </h1>
+
+            <p 
+              style={{
+                fontFamily: "var(--font-lcd)",
+                fontSize: "0.95rem",
+                color: "var(--text-muted)",
+                letterSpacing: "1.5px"
+              }}
+            >
+              // MULTI-DISCIPLINARY CODES & AUDIO SYSTEMS PORTAL //
+            </p>
           </div>
 
-          {/* Split 2: Music Producer */}
+          {/* Cards Split Wrapper */}
           <div 
-            className="creative-card"
-            onClick={() => { playBipSound(); setMode('producer'); }}
             style={{
-              flex: "1 1 350px",
-              maxWidth: "480px",
-              height: "460px",
-              padding: "40px 28px",
               display: "flex",
-              flexDirection: "column",
-              justifyContent: "space-between",
-              cursor: "pointer",
-              borderColor: "#18181b",
-              boxShadow: "10px 10px 0px rgba(147, 51, 234, 0.2), 10px 10px 0px #18181b"
+              flexDirection: "row",
+              flexWrap: "wrap",
+              justifyContent: "center",
+              alignItems: "center",
+              gap: "32px",
+              width: "100%"
             }}
           >
-            <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
-              <div style={{ fontSize: "3.5rem" }} className="bouncy-emoji">🎚️</div>
-              <h2 style={{ fontSize: "2rem", fontWeight: "900", textTransform: "uppercase", lineHeight: 1.1 }}>
-                Music<br/>Production &<br/>Mixing Studio
-              </h2>
-              <p style={{ fontSize: "0.85rem", color: "var(--text-muted)", lineHeight: 1.4 }}>
-                Step inside the audio mixing studio. Interact with my live synchronized before/after multitrack stems player and watch YouTube video covers demonstrating my mixing capabilities.
-              </p>
+            {/* Split 1: Software Engineer */}
+            <div 
+              className="creative-card"
+              onClick={() => { playBipSound(); setMode('engineer'); }}
+              style={{
+                flex: "1 1 350px",
+                maxWidth: "440px",
+                height: "440px",
+                padding: "36px 28px",
+                display: "flex",
+                flexDirection: "column",
+                justifyContent: "space-between",
+                cursor: "pointer",
+                borderColor: "#18181b",
+                boxShadow: "10px 10px 0px rgba(245, 159, 0, 0.15), 10px 10px 0px #18181b"
+              }}
+            >
+              <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
+                <div style={{ fontSize: "3.2rem" }} className="bouncy-emoji">💻</div>
+                <h2 style={{ fontSize: "1.8rem", fontWeight: "900", textTransform: "uppercase", lineHeight: 1.1 }}>
+                  Software<br/>Engineering<br/>Dossier
+                </h2>
+                <p style={{ fontSize: "0.82rem", color: "var(--text-muted)", lineHeight: 1.4 }}>
+                  Review my Computer Science degree from RNSIT (8.89 GPA), WhatDigital Tech Data Science internship, detailed project technical sheets (RoadWatch, Harmony Hub), and query my local AI chatbot.
+                </p>
+              </div>
+              
+              <button className="analog-btn active" style={{ padding: "12px 24px", justifyContent: "center" }}>
+                LOAD DOSSIER CONSOLE &rarr;
+              </button>
             </div>
-            
-            <button className="analog-btn active" style={{ padding: "12px 24px", justifyContent: "center" }}>
-              ENTER AUDIO STUDIO &rarr;
-            </button>
+
+            {/* Split 2: Music Producer */}
+            <div 
+              className="creative-card"
+              onClick={() => { playBipSound(); setMode('producer'); }}
+              style={{
+                flex: "1 1 350px",
+                maxWidth: "440px",
+                height: "440px",
+                padding: "36px 28px",
+                display: "flex",
+                flexDirection: "column",
+                justifyContent: "space-between",
+                cursor: "pointer",
+                borderColor: "#18181b",
+                boxShadow: "10px 10px 0px rgba(147, 51, 234, 0.15), 10px 10px 0px #18181b"
+              }}
+            >
+              <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
+                <div style={{ fontSize: "3.2rem" }} className="bouncy-emoji">🎚️</div>
+                <h2 style={{ fontSize: "1.8rem", fontWeight: "900", textTransform: "uppercase", lineHeight: 1.1 }}>
+                  Music<br/>Production &<br/>Mixing Studio
+                </h2>
+                <p style={{ fontSize: "0.82rem", color: "var(--text-muted)", lineHeight: 1.4 }}>
+                  Step inside the audio mixing studio. Interact with my live synchronized before/after multitrack stems player and watch YouTube video covers demonstrating my mixing capabilities.
+                </p>
+              </div>
+              
+              <button className="analog-btn active" style={{ padding: "12px 24px", justifyContent: "center" }}>
+                ENTER AUDIO STUDIO &rarr;
+              </button>
+            </div>
           </div>
         </div>
       )}
