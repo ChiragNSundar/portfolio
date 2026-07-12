@@ -1,33 +1,33 @@
-@import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Orbitron:wght@400;600;800;900&family=Outfit:wght@300;400;500;700&family=VT323&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Orbitron:wght@400;600;800;900&family=Outfit:wght@300;400;500;600;700;900&family=VT323&display=swap');
 
 :root {
-  /* Color Palette - Gold/Bronze Accents and Dark Industrial Metal */
-  --color-wood: #26160d;
-  --color-gold: #c5a059;
-  --color-gold-light: #ebd6a9;
-  --color-gold-dark: #7a5e2f;
-  --color-metal: #121214;
-  --color-metal-light: #252528;
-  --color-metal-dark: #09090a;
+  /* Color Palette - Cream Canvas and Playful Pastel highlights */
+  --bg-cream: #faf9f5;
+  --text-dark: #18181b;
+  --text-muted: #71717a;
   
-  /* Glowing HUD Colors */
-  --color-amber-glow: rgba(255, 140, 0, 0.85);
-  --color-amber-bg: #120900;
-  --color-green-glow: rgba(0, 255, 120, 0.95);
-  --color-green-bg: #000c04;
-  --color-tv-glow: rgba(180, 210, 255, 0.85);
-  --color-tv-bg: #050608;
+  /* Themed Category Colors */
+  --color-lavender: #f3e8ff;
+  --color-lavender-accent: #9333ea;
+  --color-lavender-shadow: rgba(147, 51, 234, 0.08);
+
+  --color-mint: #e6fcf5;
+  --color-mint-accent: #0ca678;
+  --color-mint-shadow: rgba(12, 166, 120, 0.08);
+
+  --color-amber: #fff9db;
+  --color-amber-accent: #f59f00;
+  --color-amber-shadow: rgba(245, 159, 0, 0.08);
+
+  --color-rose: #fff0f6;
+  --color-rose-accent: #e64980;
+  --color-rose-shadow: rgba(230, 73, 128, 0.08);
 
   /* Typography */
   --font-retro: 'VT323', monospace;
   --font-lcd: 'Share Tech Mono', monospace;
   --font-display: 'Orbitron', sans-serif;
   --font-body: 'Outfit', sans-serif;
-
-  /* Glow Effects */
-  --glow-amber: 0 0 10px var(--color-amber-glow);
-  --glow-green: 0 0 10px var(--color-green-glow);
-  --glow-gold: 0 0 8px rgba(197, 160, 89, 0.6);
 }
 
 * {
@@ -37,303 +37,112 @@
 }
 
 body {
-  background-color: #030304;
-  color: #d8d8e2;
+  background-color: var(--bg-cream);
+  color: var(--text-dark);
   font-family: var(--font-body);
   overflow-x: hidden;
 }
 
-/* Custom Scrollbar */
+/* Custom Scrollbar - Minimal Light Mode */
 ::-webkit-scrollbar {
-  width: 6px;
+  width: 8px;
 }
 ::-webkit-scrollbar-track {
-  background: var(--color-metal-dark);
+  background: #f4f4f5;
 }
 ::-webkit-scrollbar-thumb {
-  background: var(--color-gold-dark);
-  border-radius: 2px;
+  background: #d4d4d8;
+  border-radius: 4px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--color-gold);
+  background: #a1a1aa;
 }
 
-/* Main Console Frame Trim */
-.console-frame {
-  background: linear-gradient(135deg, #18181a, #0e0e0f);
-  border: 4px solid var(--color-gold-dark);
-  border-radius: 4px;
-  box-shadow: 0 35px 80px rgba(0, 0, 0, 0.95), inset 0 0 30px rgba(0,0,0,0.85);
+/* Playful Flat Card Styling */
+.creative-card {
+  background-color: #ffffff;
+  border: 1.5px solid #18181b;
+  border-radius: 24px;
+  box-shadow: 6px 6px 0px #18181b;
+  transition: transform 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275), 
+              box-shadow 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
-/* Console Panel/Bay Setup */
-.console-panel {
-  background: #111113;
-  border: 2px solid #202023;
-  border-radius: 4px;
-  box-shadow: inset 0 0 10px rgba(0,0,0,0.85);
-  position: relative;
+.creative-card:hover {
+  transform: translate(-3px, -3px);
+  box-shadow: 9px 9px 0px #18181b;
 }
 
-/* CRT Screen Effects */
-.crt-screen {
-  position: relative;
-  overflow: hidden;
-  border-radius: 4px;
-  box-shadow: inset 0 0 30px rgba(0, 0, 0, 0.95);
-  border: 2px solid #1a1a1c;
-}
-
-.crt-screen::before {
-  content: " ";
-  display: block;
-  position: absolute;
-  top: 0; left: 0; bottom: 0; right: 0;
-  background: radial-gradient(circle at 50% 15%, rgba(255, 255, 255, 0.1) 0%, rgba(0, 0, 0, 0) 80%);
-  pointer-events: none;
-  z-index: 10;
-}
-
-.crt-scanlines::after {
-  content: " ";
-  display: block;
-  position: absolute;
-  top: 0; left: 0; bottom: 0; right: 0;
-  background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.3) 50%);
-  background-size: 100% 4px;
-  pointer-events: none;
-  z-index: 9;
-}
-
-/* CRT Screen Flicker */
-@keyframes crt-flicker {
-  0% { opacity: 0.985; }
-  50% { opacity: 1.0; }
-  100% { opacity: 0.99; }
-}
-
-.crt-flicker-animation {
-  animation: crt-flicker 0.18s infinite;
-}
-
-/* Static Noise on TV Startup */
-@keyframes static-noise {
-  0% { background-position: 0 0; }
-  100% { background-position: 100% 100%; }
-}
-.tv-static {
-  background-image: repeating-radial-gradient(circle at 17% 32%, #18181c, #333339 1px, #18181c 2px);
-  background-size: 300px 300px;
-  animation: static-noise 0.1s steps(4) infinite;
-}
-
-/* Amber CRT Terminal Styling */
-.terminal-container {
-  background-color: var(--color-amber-bg);
-  color: var(--color-gold-light);
-  font-family: var(--font-retro);
-  font-size: 1.25rem;
-  line-height: 1.35;
-  padding: 1rem;
-  height: 100%;
-  width: 100%;
-  text-shadow: var(--glow-amber);
-  overflow-y: auto;
-}
-
-.terminal-cursor {
-  display: inline-block;
-  width: 8px;
-  height: 18px;
-  background: var(--color-gold);
-  animation: blink 0.8s infinite;
-  vertical-align: middle;
-  margin-left: 4px;
-}
-
-@keyframes blink {
-  0%, 49% { opacity: 1; }
-  50%, 100% { opacity: 0; }
-}
-
-/* Tactile buttons styled like physical keycaps */
-.analog-btn {
-  background: linear-gradient(180deg, #323236 0%, #1a1a1c 100%);
-  border: 1px solid #4a4a50;
-  border-bottom: 3px solid #101012;
-  color: #a0a0ab;
-  padding: 6px 12px;
-  font-family: var(--font-lcd);
-  font-size: 0.75rem;
-  font-weight: 600;
-  cursor: pointer;
-  border-radius: 3px;
-  box-shadow: 0 3px 6px rgba(0,0,0,0.5);
-  transition: all 0.1s;
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-}
-
-.analog-btn:hover {
-  color: #fff;
-  border-color: var(--color-gold);
-  box-shadow: 0 0 6px rgba(197, 160, 89, 0.4);
-}
-
-.analog-btn:active {
-  transform: translateY(2px);
-  border-bottom-width: 1px;
-  box-shadow: 0 1px 2px rgba(0,0,0,0.7);
-}
-
-.analog-btn.active {
-  background: linear-gradient(180deg, var(--color-gold-dark) 0%, #3e2e14 100%);
-  color: #fff;
-  border-color: var(--color-gold-light);
-  border-bottom-color: #201708;
-  box-shadow: inset 0 2px 5px rgba(0,0,0,0.6);
-}
-
-/* Metal Fader Rail */
-.fader-rail {
-  width: 6px;
-  height: 80px;
-  background: #09090a;
-  border-radius: 3px;
-  border: 1px solid #323236;
-  position: relative;
-}
-
-/* Fader Cap Handle */
-.fader-cap {
-  width: 20px;
-  height: 12px;
-  background: linear-gradient(90deg, #718096, #4a5568, #718096);
-  border: 1px solid #1a202c;
-  border-radius: 2px;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.6);
-  position: absolute;
-  left: -7px;
-  cursor: pointer;
-  transition: top 0.05s linear;
-}
-
-.fader-cap::after {
-  content: '';
-  display: block;
-  width: 100%;
-  height: 2px;
-  background: #e2e8f0;
-  position: absolute;
-  top: 5px;
-}
-
-/* LED light dots */
-.led-dot {
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background: #3182ce;
-  box-shadow: 0 0 4px #3182ce;
-  display: inline-block;
-}
-
-/* Wood panels on desk console side */
-.wood-panel {
-  background: linear-gradient(to right, #2a1405, #140a02);
-  border-right: 4px solid #4a2810;
-  position: relative;
-}
-
-/* Dynamic glow metrics */
-.hud-text-green {
-  color: var(--color-green-glow);
-  font-family: var(--font-lcd);
-  text-shadow: var(--glow-green);
-}
-
-.hud-text-gold {
-  color: var(--color-gold);
-  font-family: var(--font-lcd);
-  text-shadow: var(--glow-gold);
-}
-
-/* Circular Chart visualization styles */
-.sunburst-ring {
-  transform-origin: center;
-  transition: stroke-dashoffset 0.35s;
-}
-
-/* Bottom Deck panel styles */
-.deck-strip {
-  background: linear-gradient(180deg, #1b1b1f, #0d0d0f);
-  border-top: 3px solid #2d2d32;
-  border-bottom: 3px solid #09090a;
-  padding: 10px 20px;
-}
-
-/* CSS Scrolling Marquee Text */
-@keyframes scrollText {
-  0% { transform: translateX(100%); }
-  100% { transform: translateX(-100%); }
-}
-
-.scrolling-text {
-  display: inline-block;
-  white-space: nowrap;
-  animation: scrollText 16s linear infinite;
-}
-
-/* 3D Folding Scroll Entrance (Thibaut style) */
+/* Scroll-Fade-In 3D Zooming transitions (Thibaut inspired) */
 .scroll-fade-in {
-  opacity: 0.1;
-  transform: translateY(120px) scale(0.85) rotateX(20deg) rotateY(-8deg);
-  filter: blur(6px);
-  transform-style: preserve-3d;
-  backface-visibility: hidden;
+  opacity: 0.05;
+  transform: translateY(80px) scale(0.92);
+  filter: blur(4px);
   transition: opacity 0.8s cubic-bezier(0.25, 1, 0.5, 1), 
               transform 1.0s cubic-bezier(0.19, 1, 0.22, 1), 
               filter 0.8s cubic-bezier(0.25, 1, 0.5, 1);
+  transform-style: preserve-3d;
+  backface-visibility: hidden;
 }
 
 .scroll-fade-in.active {
   opacity: 1;
-  transform: translateY(0) scale(1) rotateX(0deg) rotateY(0deg);
+  transform: translateY(0) scale(1);
   filter: blur(0);
 }
 
-/* CRT Tube Power-On boot expansion */
-@keyframes crt-boot {
-  0% {
-    transform: scaleY(0.005) scaleX(0);
-    filter: brightness(5) contrast(3);
-    opacity: 0;
+/* Bouncy Emoji Keyframes */
+@keyframes emoji-bounce {
+  0%, 100% {
+    transform: translateY(0) scale(1);
   }
-  30% {
-    transform: scaleY(0.005) scaleX(1);
-    filter: brightness(3) contrast(2);
-    opacity: 1;
-  }
-  100% {
-    transform: scaleY(1) scaleX(1);
-    filter: brightness(1) contrast(1);
-    opacity: 1;
+  50% {
+    transform: translateY(-14px) scale(1.18);
   }
 }
 
-.crt-boot-effect {
-  transform-origin: center center;
-  animation: crt-boot 0.65s cubic-bezier(0.19, 1, 0.22, 1) forwards;
+.bouncy-emoji {
+  display: inline-block;
+  cursor: pointer;
+  transition: transform 0.2s;
 }
 
-/* Float animations for badges */
-@keyframes float {
-  0% { transform: translateY(0px); }
-  50% { transform: translateY(-8px); }
-  100% { transform: translateY(0px); }
+.bouncy-emoji:hover {
+  animation: emoji-bounce 0.55s ease infinite;
 }
 
-.floating-badge {
-  animation: float 3s ease-in-out infinite;
+/* Playful Analog-styled Buttons (Flat modern) */
+.analog-btn {
+  background: #ffffff;
+  border: 1.5px solid #18181b;
+  border-bottom: 4px solid #18181b;
+  border-radius: 12px;
+  color: #18181b;
+  font-family: var(--font-body);
+  font-size: 0.82rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.1s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.02);
+}
+
+.analog-btn:hover {
+  background: #f4f4f5;
+  transform: translateY(-1px);
+  border-bottom-width: 5px;
+}
+
+.analog-btn:active {
+  transform: translateY(3px);
+  border-bottom-width: 1px;
+}
+
+.analog-btn.active {
+  background: #18181b;
+  color: #ffffff;
+  border-color: #18181b;
+  border-bottom-color: #000000;
 }

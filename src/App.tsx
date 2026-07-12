@@ -1,8 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
-import { TapeDeckUnit } from "./components/TapeDeckUnit";
-import { CrtVisualizerUnit } from "./components/CrtVisualizerUnit";
-import { CrtTvUnit } from "./components/CrtTvUnit";
-import { CrtTerminalUnit } from "./components/CrtTerminalUnit";
+import { AudioEngineCard } from "./components/AudioEngineCard";
+import { YoutubeCoversCard } from "./components/YoutubeCoversCard";
+import { DeveloperResumeCard } from "./components/DeveloperResumeCard";
 import { PolaroidCertificates } from "./components/PolaroidCertificates";
 import type { Track } from "./data/tracks";
 import { mixAndOriginalTracks } from "./data/tracks";
@@ -88,8 +87,8 @@ export const App: React.FC = () => {
       setTilts(prev => ({
         ...prev,
         [activeSection]: {
-          rx: -y * 8,
-          ry: x * 8
+          rx: -y * 6,
+          ry: x * 6
         }
       }));
     };
@@ -165,46 +164,37 @@ export const App: React.FC = () => {
       filter: isActive ? "blur(0px)" : "blur(8px)",
       transform: isActive 
         ? `perspective(1600px) rotateX(${tilt.rx}deg) rotateY(${tilt.ry}deg) translateY(0) scale(1)` 
-        : `perspective(1600px) rotateX(22deg) rotateY(-8deg) translateY(120px) scale(0.85)`,
+        : `perspective(1600px) rotateX(15deg) rotateY(-5deg) translateY(80px) scale(0.92)`,
       transition: isActive 
-        ? "transform 0.15s ease-out, opacity 0.8s ease, filter 0.8s ease" 
-        : "transform 1.0s cubic-bezier(0.19, 1, 0.22, 1), opacity 0.8s ease, filter 0.8s ease",
+        ? "transform 0.15s ease-out, opacity 0.6s ease, filter 0.6s ease" 
+        : "transform 0.9s cubic-bezier(0.19, 1, 0.22, 1), opacity 0.6s ease, filter 0.6s ease",
       transformStyle: "preserve-3d" as const,
       backfaceVisibility: "hidden" as const
     };
   };
 
   const menuItems = [
-    { label: "01 INTRO", index: 0 },
-    { label: "02 MIXES", index: 1 },
-    { label: "03 COVERS", index: 2 },
-    { label: "04 PROFILE", index: 3 },
-    { label: "05 FILES", index: 4 }
+    { label: "01 INTRO", index: 0, color: "var(--color-amber-accent)" },
+    { label: "02 MIXES", index: 1, color: "var(--color-lavender-accent)" },
+    { label: "03 COVERS", index: 2, color: "var(--color-mint-accent)" },
+    { label: "04 PROFILE", index: 3, color: "var(--color-amber-accent)" },
+    { label: "05 FILES", index: 4, color: "var(--color-rose-accent)" }
   ];
 
   return (
     <div 
       style={{
         minHeight: "100vh",
-        background: "radial-gradient(circle at center, #15161b 0%, #030304 100%)",
-        color: "#d8d8e2",
+        backgroundColor: "var(--bg-cream)",
+        color: "var(--text-dark)",
         overflowX: "hidden",
-        position: "relative"
+        position: "relative",
+        // Grid lined overlay background
+        backgroundImage: "radial-gradient(#e4e4e7 1.2px, transparent 0)",
+        backgroundSize: "32px 32px"
       }}
       onClick={unlockAudioContext}
     >
-      {/* Dynamic Floating Parallax Background Particles */}
-      <div 
-        style={{
-          position: "fixed",
-          top: 0, left: 0, width: "100vw", height: "100vh",
-          backgroundImage: "radial-gradient(rgba(197, 160, 89, 0.03) 1px, transparent 0)",
-          backgroundSize: "24px 24px",
-          pointerEvents: "none",
-          zIndex: 1
-        }}
-      />
-
       {/* Floating Skeuomorphic Navigation LED Panel (Patch Bay style) */}
       <nav
         style={{
@@ -212,18 +202,18 @@ export const App: React.FC = () => {
           right: "30px",
           top: "50%",
           transform: "translateY(-50%)",
-          background: "linear-gradient(135deg, #1b1b1f, #0d0d0f)",
-          border: "2.5px solid var(--color-gold-dark)",
-          borderRadius: "6px",
-          padding: "16px 12px",
+          background: "#ffffff",
+          border: "2px solid #18181b",
+          borderRadius: "16px",
+          padding: "18px 14px",
           display: "flex",
           flexDirection: "column",
           gap: "18px",
-          boxShadow: "0 10px 30px rgba(0,0,0,0.8)",
+          boxShadow: "6px 6px 0px #18181b",
           zIndex: 100
         }}
       >
-        <div style={{ fontFamily: "var(--font-display)", fontSize: "0.55rem", color: "var(--color-gold)", fontWeight: "bold", borderBottom: "1px solid var(--color-gold-dark)", paddingBottom: "4px", textAlign: "center" }}>
+        <div style={{ fontFamily: "var(--font-lcd)", fontSize: "0.6rem", color: "var(--text-dark)", fontWeight: "bold", borderBottom: "1.5px solid #18181b", paddingBottom: "6px", textAlign: "center" }}>
           PATCH-BAY
         </div>
 
@@ -243,12 +233,12 @@ export const App: React.FC = () => {
               {/* Glowing LED Socket Light */}
               <span 
                 style={{
-                  width: "10px",
-                  height: "10px",
+                  width: "12px",
+                  height: "12px",
                   borderRadius: "50%",
-                  background: isActive ? "rgb(0, 255, 120)" : "#222",
-                  boxShadow: isActive ? "0 0 10px rgb(0, 255, 120), 0 0 4px rgb(0, 255, 120)" : "inset 0 1px 2px rgba(0,0,0,0.8)",
-                  border: isActive ? "1px solid #fff" : "1px solid #444",
+                  background: isActive ? item.color : "#e4e4e7",
+                  boxShadow: isActive ? `0 0 10px ${item.color}, 0 0 4px ${item.color}` : "inset 0 1px 2px rgba(0,0,0,0.1)",
+                  border: "1.5px solid #18181b",
                   transition: "all 0.25s ease"
                 }}
               />
@@ -256,8 +246,7 @@ export const App: React.FC = () => {
                 style={{
                   fontFamily: "var(--font-lcd)",
                   fontSize: "0.65rem",
-                  color: isActive ? "#ffffff" : "#666",
-                  textShadow: isActive ? "0 0 4px rgba(255,255,255,0.4)" : "none",
+                  color: isActive ? "var(--text-dark)" : "var(--text-muted)",
                   fontWeight: isActive ? "bold" : "normal",
                   transition: "color 0.25s"
                 }}
@@ -276,8 +265,8 @@ export const App: React.FC = () => {
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
-          gap: "120px",
-          padding: "60px 20px"
+          gap: "140px",
+          padding: "80px 20px"
         }}
       >
         
@@ -297,33 +286,33 @@ export const App: React.FC = () => {
             ...getSectionStyles(0)
           }}
         >
+          {/* Glowing Retro Badge */}
           <div 
             style={{
-              border: "1.5px solid var(--color-gold)",
-              borderRadius: "4px",
-              padding: "4px 12px",
+              background: "#ffffff",
+              border: "1.5px solid #18181b",
+              borderRadius: "12px",
+              padding: "6px 14px",
               fontFamily: "var(--font-lcd)",
-              fontSize: "0.75rem",
-              color: "var(--color-gold)",
-              textShadow: "var(--glow-gold)",
-              marginBottom: "20px",
-              boxShadow: "0 0 10px rgba(197, 160, 89, 0.1)"
+              fontSize: "0.8rem",
+              color: "var(--color-amber-accent)",
+              fontWeight: "bold",
+              marginBottom: "24px",
+              boxShadow: "3px 3px 0px #18181b"
             }}
           >
-            SYS STATUS: ONLINE
+            SYS STATUS: ONLINE <span className="bouncy-emoji">👋</span>
           </div>
           
           <h1 
             style={{
-              fontFamily: "var(--font-display)",
-              fontSize: "4.5rem",
+              fontFamily: "var(--font-body)",
+              fontSize: "5.5rem",
               fontWeight: "900",
               lineHeight: "1.0",
-              letterSpacing: "4px",
-              background: "linear-gradient(135deg, #ffffff 30%, #c5a059 100%)",
-              WebkitBackgroundClip: "text",
-              WebkitTextFillColor: "transparent",
-              marginBottom: "12px",
+              letterSpacing: "-2px",
+              color: "var(--text-dark)",
+              marginBottom: "16px",
               textTransform: "uppercase"
             }}
           >
@@ -333,21 +322,21 @@ export const App: React.FC = () => {
           <p 
             style={{
               fontFamily: "var(--font-lcd)",
-              fontSize: "1.05rem",
-              color: "#a0a0ab",
-              letterSpacing: "3px",
-              marginBottom: "32px"
+              fontSize: "1.1rem",
+              color: "var(--text-muted)",
+              letterSpacing: "1.5px",
+              marginBottom: "36px"
             }}
           >
-            // SOFTWARE ENGINEER // DUAL-STAGE AUDIO MIXING STATION //
+            // SOFTWARE DEPLOYMENT ENGINEER & MUSIC PRODUCER //
           </p>
 
           <div style={{ display: "flex", gap: "16px" }}>
-            <button className="analog-btn active" onClick={() => scrollToSection(1)} style={{ padding: "10px 20px" }}>
-              ENTER MIXING RACK
+            <button className="analog-btn active" onClick={() => scrollToSection(1)} style={{ padding: "12px 24px" }}>
+              ENTER MIXING BAY <span className="bouncy-emoji">🎵</span>
             </button>
-            <button className="analog-btn" onClick={() => scrollToSection(3)} style={{ padding: "10px 20px" }}>
-              BIO TERMINAL
+            <button className="analog-btn" onClick={() => scrollToSection(3)} style={{ padding: "12px 24px" }}>
+              ENGINEER DOSSIER <span className="bouncy-emoji">💻</span>
             </button>
           </div>
 
@@ -355,37 +344,31 @@ export const App: React.FC = () => {
             style={{
               marginTop: "80px",
               animation: "float 2.5s ease-in-out infinite",
-              fontSize: "1.5rem",
+              fontSize: "1.8rem",
               cursor: "pointer",
               opacity: 0.6
             }}
             onClick={() => scrollToSection(1)}
           >
-            ⬇️
+            👇
           </div>
         </section>
 
 
-        {/* SECTION 2: AUDIO MIXING (TAPE DECK + OSCILLOSCOPE) */}
+        {/* SECTION 2: AUDIO MIXING */}
         <section 
           ref={sectionRefs[1]}
           data-section-idx="1"
           style={{
             width: "100%",
-            maxWidth: "680px",
+            maxWidth: "750px",
             display: "flex",
             flexDirection: "column",
             gap: "20px",
             ...getSectionStyles(1)
           }}
         >
-          <div style={{ borderLeft: "4px solid var(--color-gold)", paddingLeft: "10px" }}>
-            <h2 style={{ fontFamily: "var(--font-display)", fontSize: "0.95rem", color: "var(--color-gold)", letterSpacing: "1.5px", fontWeight: "bold" }}>
-              BAY 01 // SYNCHRONIZED STEM MIXES
-            </h2>
-          </div>
-
-          <TapeDeckUnit 
+          <AudioEngineCard 
             currentTrack={currentTrack}
             isPlaying={isPlaying}
             mixRatio={mixRatio}
@@ -397,43 +380,30 @@ export const App: React.FC = () => {
             onVolumeChange={handleVolumeChange}
             onInteract={unlockAudioContext}
           />
-
-          <CrtVisualizerUnit 
-            currentTrack={currentTrack}
-            isPlaying={isPlaying}
-            mixRatio={mixRatio}
-            active={activeSection === 1}
-          />
         </section>
 
 
-        {/* SECTION 3: YOUTUBE COVERS (TELE-TUNER CRT TV) */}
+        {/* SECTION 3: YOUTUBE COVERS */}
         <section 
           ref={sectionRefs[2]}
           data-section-idx="2"
           style={{
             width: "100%",
-            maxWidth: "680px",
+            maxWidth: "750px",
             display: "flex",
             flexDirection: "column",
             gap: "20px",
             ...getSectionStyles(2)
           }}
         >
-          <div style={{ borderLeft: "4px solid var(--color-gold)", paddingLeft: "10px" }}>
-            <h2 style={{ fontFamily: "var(--font-display)", fontSize: "0.95rem", color: "var(--color-gold)", letterSpacing: "1.5px", fontWeight: "bold" }}>
-              BAY 02 // VISUAL COVER CHANNELS
-            </h2>
-          </div>
-
-          <CrtTvUnit 
+          <YoutubeCoversCard 
             onInteract={unlockAudioContext}
             active={activeSection === 2}
           />
         </section>
 
 
-        {/* SECTION 4: RESUME CLI & ANALYTICS (MS-DOS TERMINAL) */}
+        {/* SECTION 4: RESUME CLI & ANALYTICS */}
         <section 
           ref={sectionRefs[3]}
           data-section-idx="3"
@@ -446,38 +416,26 @@ export const App: React.FC = () => {
             ...getSectionStyles(3)
           }}
         >
-          <div style={{ borderLeft: "4px solid var(--color-gold)", paddingLeft: "10px" }}>
-            <h2 style={{ fontFamily: "var(--font-display)", fontSize: "0.95rem", color: "var(--color-gold)", letterSpacing: "1.5px", fontWeight: "bold" }}>
-              BAY 03 // CORE BIO & DEVELOPMENT CORE
-            </h2>
-          </div>
-
-          <CrtTerminalUnit 
+          <DeveloperResumeCard 
             onInteract={unlockAudioContext}
             active={activeSection === 3}
           />
         </section>
 
 
-        {/* SECTION 5: POLAROID CERTIFICATIONS & FOOTER */}
+        {/* SECTION 5: POLAROID CERTIFICATIONS */}
         <section 
           ref={sectionRefs[4]}
           data-section-idx="4"
           style={{
             width: "100%",
-            maxWidth: "680px",
+            maxWidth: "750px",
             display: "flex",
             flexDirection: "column",
             gap: "20px",
             ...getSectionStyles(4)
           }}
         >
-          <div style={{ borderLeft: "4px solid var(--color-gold)", paddingLeft: "10px" }}>
-            <h2 style={{ fontFamily: "var(--font-display)", fontSize: "0.95rem", color: "var(--color-gold)", letterSpacing: "1.5px", fontWeight: "bold" }}>
-              BAY 04 // CREDENTIAL STACKS
-            </h2>
-          </div>
-
           <PolaroidCertificates />
         </section>
 
@@ -485,7 +443,6 @@ export const App: React.FC = () => {
 
       {/* Persistent Bottom Hardware Strip */}
       <div 
-        className="deck-strip"
         style={{
           position: "fixed",
           bottom: 0,
@@ -495,26 +452,36 @@ export const App: React.FC = () => {
           justifyContent: "space-between",
           alignItems: "center",
           gap: "20px",
-          borderTop: "3px solid #202024",
-          background: "linear-gradient(180deg, #16161a, #0b0b0c)",
+          borderTop: "3.5px solid #18181b",
+          background: "#ffffff",
           zIndex: 90,
-          padding: "8px 24px",
-          boxShadow: "0 -5px 15px rgba(0,0,0,0.5)"
+          padding: "10px 24px",
+          boxShadow: "0 -4px 15px rgba(0,0,0,0.03)"
         }}
       >
         <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-          <span className="led-dot" style={{ background: isPlaying ? "#00ff78" : "#444", boxShadow: isPlaying ? "0 0 6px #00ff78" : "none" }} />
-          <span style={{ fontFamily: "var(--font-lcd)", fontSize: "0.6rem", color: "#666" }}>SYS AUDIO STREAMING</span>
+          <span 
+            style={{ 
+              width: "10px", 
+              height: "10px", 
+              borderRadius: "50%", 
+              background: isPlaying ? "var(--color-lavender-accent)" : "#d4d4d8", 
+              boxShadow: isPlaying ? "0 0 6px var(--color-lavender-accent)" : "none" 
+            }} 
+          />
+          <span style={{ fontFamily: "var(--font-lcd)", fontSize: "0.65rem", color: "var(--text-muted)", fontWeight: "bold" }}>
+            SYS AUDIO STREAMING
+          </span>
         </div>
 
         <div 
           style={{
             flexGrow: 1,
             maxWidth: "500px",
-            background: "#050506",
-            border: "1px solid #1c1c20",
-            borderRadius: "2px",
-            height: "26px",
+            background: "#f4f4f5",
+            border: "1.5px solid #18181b",
+            borderRadius: "8px",
+            height: "28px",
             padding: "2px 8px",
             overflow: "hidden",
             display: "flex",
@@ -525,16 +492,16 @@ export const App: React.FC = () => {
             className="scrolling-text"
             style={{ 
               fontFamily: "var(--font-lcd)", 
-              fontSize: "0.55rem", 
-              color: "rgb(0, 255, 120)",
-              textShadow: "0 0 3px rgba(0,255,120,0.8)"
+              fontSize: "0.6rem", 
+              color: "var(--text-dark)",
+              fontWeight: "bold"
             }}
           >
-            CHIRAG N SUNDAR PORTFOLIO ENGINE // STATUS: STEADY // SECTIONS LOADED: 5 // BIOMETRICS: SHIELDED // MIX STATUS: LOCKSTEP SYNC
+            CHIRAG N SUNDAR PORTFOLIO ENGINE // STATUS: ACTIVE // DEPLOYMENT BAY ONLINE // CREATIVE GRID LOADED // LOCKSTEP SIGNAL READY
           </span>
         </div>
 
-        <div style={{ fontFamily: "var(--font-lcd)", fontSize: "0.6rem", color: "#555", display: "flex", gap: "12px" }}>
+        <div style={{ fontFamily: "var(--font-lcd)", fontSize: "0.65rem", color: "var(--text-muted)", display: "flex", gap: "12px", fontWeight: "bold" }}>
           <span>BAUD: 9600</span>
           <span>&copy; 2026</span>
         </div>

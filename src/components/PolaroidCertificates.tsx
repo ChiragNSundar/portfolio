@@ -4,10 +4,10 @@ import { resumeData } from "../data/resume";
 export const PolaroidCertificates: React.FC = () => {
   // A curated color palette for the polaroid inner backgrounds
   const colors = [
-    "linear-gradient(135deg, #2b1055, #7597de)",
-    "linear-gradient(135deg, #1f4037, #99f2c8)",
-    "linear-gradient(135deg, #f12711, #f5af19)",
-    "linear-gradient(135deg, #00c6ff, #0072ff)"
+    "linear-gradient(135deg, #f8bbd0, #f06292)", // rose pastels
+    "linear-gradient(135deg, #e1bee7, #ba68c8)", // lavender pastels
+    "linear-gradient(135deg, #b2dfdb, #4db6ac)", // mint pastels
+    "linear-gradient(135deg, #ffe082, #ffb300)"  // amber pastels
   ];
 
   // Rotate angles to fan out the cards
@@ -15,30 +15,41 @@ export const PolaroidCertificates: React.FC = () => {
 
   return (
     <div 
-      className="console-panel"
+      className="creative-card"
       style={{
         display: "flex",
         flexDirection: "column",
-        padding: "20px",
-        gap: "16px",
-        border: "1px solid var(--color-gold-dark)",
-        boxShadow: "inset 0 0 15px rgba(0,0,0,0.95)"
+        padding: "28px",
+        gap: "20px",
+        borderColor: "#18181b",
+        boxShadow: "8px 8px 0px rgba(230, 73, 128, 0.15), 8px 8px 0px #18181b"
       }}
     >
       <div 
         style={{
-          borderBottom: "1px solid #2d2d32",
-          paddingBottom: "6px",
+          borderBottom: "1.5px solid #18181b",
+          paddingBottom: "8px",
           display: "flex",
           justifyContent: "space-between",
           alignItems: "center"
         }}
       >
-        <span style={{ fontFamily: "var(--font-display)", fontSize: "0.75rem", color: "var(--color-gold)", letterSpacing: "1.5px", fontWeight: "bold" }}>
-          BAY 03 // CREDENTIAL STACKS
-        </span>
-        <span style={{ fontFamily: "var(--font-lcd)", fontSize: "0.65rem", color: "#666" }}>
-          POLAROID FILE
+        <div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
+          <span className="bouncy-emoji" style={{ fontSize: "1.2rem" }}>🎖️</span>
+          <span 
+            style={{ 
+              fontFamily: "var(--font-lcd)", 
+              fontSize: "0.8rem", 
+              color: "var(--color-rose-accent)",
+              fontWeight: "bold",
+              letterSpacing: "1px" 
+            }}
+          >
+            BAY 04 // CREDENTIAL STACKS
+          </span>
+        </div>
+        <span style={{ fontSize: "0.7rem", color: "var(--text-muted)", letterSpacing: "1px" }}>
+          [POLAROID DOSSIER]
         </span>
       </div>
 
@@ -51,7 +62,7 @@ export const PolaroidCertificates: React.FC = () => {
           justifyContent: "center",
           alignItems: "center",
           overflow: "hidden",
-          margin: "10px 0"
+          margin: "15px 0"
         }}
       >
         {resumeData.certifications.map((cert, idx) => {
@@ -68,9 +79,9 @@ export const PolaroidCertificates: React.FC = () => {
               style={{
                 width: "155px",
                 height: "185px",
-                backgroundColor: "#f7f7f7",
-                border: "1px solid #ddd",
-                boxShadow: "0 8px 15px rgba(0,0,0,0.6)",
+                backgroundColor: "#ffffff",
+                border: "2px solid #18181b",
+                boxShadow: "4px 4px 0px #18181b",
                 padding: "8px 8px 24px 8px", // typical thick Polaroid bottom margin
                 position: "absolute",
                 transform: `rotate(${rotation}deg) translateY(${Math.abs(rotation) * 1.5}px)`,
@@ -78,20 +89,17 @@ export const PolaroidCertificates: React.FC = () => {
                 cursor: "pointer",
                 zIndex: idx + 1
               }}
-              // CSS custom variables on event handles for R3F-like hover animation
               onMouseEnter={(e) => {
                 const el = e.currentTarget;
-                el.style.transform = "scale(1.18) rotate(0deg) translateY(-15px)";
+                el.style.transform = "scale(1.15) rotate(0deg) translateY(-15px)";
                 el.style.zIndex = "20";
-                el.style.boxShadow = "0 15px 30px rgba(0, 255, 120, 0.4)";
-                el.style.borderColor = "var(--color-green-glow)";
+                el.style.boxShadow = "8px 8px 0px var(--color-rose-accent), 8px 8px 0px #18181b";
               }}
               onMouseLeave={(e) => {
                 const el = e.currentTarget;
                 el.style.transform = `rotate(${rotation}deg) translateY(${Math.abs(rotation) * 1.5}px)`;
                 el.style.zIndex = `${idx + 1}`;
-                el.style.boxShadow = "0 8px 15px rgba(0,0,0,0.6)";
-                el.style.borderColor = "#ddd";
+                el.style.boxShadow = "4px 4px 0px #18181b";
               }}
             >
               {/* Polaroid Image Box */}
@@ -100,19 +108,20 @@ export const PolaroidCertificates: React.FC = () => {
                   width: "100%",
                   height: "115px",
                   background: bg,
-                  borderRadius: "2px",
+                  borderRadius: "6px",
+                  border: "1.5px solid #18181b",
                   display: "flex",
                   flexDirection: "column",
                   justifyContent: "center",
                   alignItems: "center",
                   padding: "8px",
                   textAlign: "center",
-                  color: "#fff",
-                  boxShadow: "inset 0 0 10px rgba(0,0,0,0.4)"
+                  color: "#18181b",
+                  boxShadow: "inset 0 2px 4px rgba(255,255,255,0.2)"
                 }}
               >
-                <div style={{ fontSize: "1.6rem", marginBottom: "4px" }}>🎖️</div>
-                <div style={{ fontSize: "0.6rem", fontWeight: "bold", fontFamily: "var(--font-display)", letterSpacing: "0.5px", textTransform: "uppercase", lineHeight: 1.2 }}>
+                <div style={{ fontSize: "1.8rem", marginBottom: "4px" }}>🥇</div>
+                <div style={{ fontSize: "0.6rem", fontWeight: "900", fontFamily: "var(--font-body)", letterSpacing: "0.2px", textTransform: "uppercase", lineHeight: 1.2 }}>
                   {name}
                 </div>
               </div>
@@ -120,13 +129,14 @@ export const PolaroidCertificates: React.FC = () => {
               {/* Polaroid Handwritten Caption */}
               <div 
                 style={{
-                  marginTop: "8px",
+                  marginTop: "10px",
                   textAlign: "center",
                   fontFamily: "var(--font-retro)",
-                  fontSize: "1.1rem",
-                  color: "#2d3748",
+                  fontSize: "1.2rem",
+                  color: "#18181b",
                   lineHeight: 1.1,
-                  transform: "rotate(-1deg)"
+                  transform: "rotate(-1deg)",
+                  fontWeight: "bold"
                 }}
               >
                 {provider}
@@ -139,14 +149,15 @@ export const PolaroidCertificates: React.FC = () => {
       <div 
         style={{ 
           fontFamily: "var(--font-lcd)", 
-          fontSize: "0.6rem", 
-          color: "#555", 
+          fontSize: "0.65rem", 
+          color: "var(--text-muted)", 
           textAlign: "center",
           marginTop: "4px"
         }}
       >
-        HOVER OVER A POLAROID FILE TO FAN AND ROTATE THE CREDENTIALS FOR DISPLAY
+        HOVER OVER A CREDENTIAL FILE TO FAN AND ROTATE THE POLAROIDS FOR ANALYSIS
       </div>
     </div>
   );
 };
+export default PolaroidCertificates;
