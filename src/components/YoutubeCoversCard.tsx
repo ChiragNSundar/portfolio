@@ -51,7 +51,7 @@ export const YoutubeCoversCard: React.FC<YoutubeCoversCardProps> = ({ onInteract
               letterSpacing: "1px" 
             }}
           >
-            BAY 02 // COVERS & PRODUCTIONS
+            COVERS & PRODUCTIONS
           </span>
         </div>
         <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-end" }}>

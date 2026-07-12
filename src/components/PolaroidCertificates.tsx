@@ -68,7 +68,7 @@ export const PolaroidCertificates: React.FC = () => {
               letterSpacing: "1px" 
             }}
           >
-            BAY 04 // CREDENTIAL STACKS
+            CREDENTIAL STACKS
           </span>
         </div>
         <span style={{ fontSize: "0.7rem", color: "var(--text-muted)", letterSpacing: "1px" }}>

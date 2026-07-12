@@ -1571,7 +1571,7 @@ export const App: React.FC = () => {
                   fontWeight: "bold"
                 }}
               >
-                CHIRAG N SUNDAR PORTFOLIO ENGINE // ACTIVE ROLE: {mode.toUpperCase()} // DEPLOYMENT BAY ONLINE // CREATIVE GRID LOADED // LOCKSTEP SIGNAL READY
+                CHIRAG N SUNDAR PORTFOLIO ENGINE // ACTIVE ROLE: {mode.toUpperCase()} // SYSTEM STATUS: ACTIVE // CREATIVE GRID LOADED // LOCKSTEP SIGNAL READY
               </span>
             </div>
 

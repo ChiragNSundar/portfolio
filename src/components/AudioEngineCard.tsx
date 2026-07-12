@@ -122,7 +122,7 @@ export const AudioEngineCard: React.FC<AudioEngineCardProps> = ({
               letterSpacing: "1px" 
             }}
           >
-            BAY 01 // AUDIO REFINEMENT
+            AUDIO REFINEMENT
           </span>
         </div>
         <span style={{ fontSize: "0.7rem", color: "var(--text-muted)", letterSpacing: "1px" }}>

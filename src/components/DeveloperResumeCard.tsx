@@ -266,12 +266,28 @@ export const DeveloperResumeCard: React.FC<DeveloperResumeCardProps> = ({ onInte
               letterSpacing: "1px" 
             }}
           >
-            BAY 03 // SOFTWARE ENGINEER DOSSIER
+            SOFTWARE ENGINEER DOSSIER
           </span>
         </div>
         <span style={{ fontSize: "0.7rem", color: "var(--text-muted)", letterSpacing: "1px" }}>
           [RNSIT GRADUATE // 8.89 GPA // DATA & GEN-AI FOCUS]
         </span>
+      </div>
+
+      {/* Short Bio Statement */}
+      <div 
+        style={{ 
+          background: "var(--card-bg-muted)", 
+          border: "1.5px solid var(--border-color)", 
+          borderRadius: "12px", 
+          padding: "14px 18px", 
+          fontSize: "0.82rem", 
+          lineHeight: 1.5,
+          color: "var(--text-dark)",
+          boxShadow: "3px 3px 0px var(--card-shadow)"
+        }}
+      >
+        Result-driven Software Engineer specializing in Web App Development, Data Science/Analytics, and GenAI/AI Agents. Passionate about architecting and deploying high-quality, robust user-centric solutions.
       </div>
 
       {/* Main Layout Grid */}
