@@ -13,7 +13,7 @@ interface DeveloperResumeCardProps {
 }
 
 // Chatbot Knowledge Base
-const CHATBOT_KB = {
+const CHATBOT_KB: Record<string, string> = {
   intro: "Hi my name is Chirag, I am a Software Engineer specializing in Web App Development, Data Analytics, and Generative AI workflows. I recently completed my B.E. in Computer Science & engineering from RNSIT, maintaining a GPA of 8.89, and have worked as a Data Science & AI Intern at WhatDigital Technologies (5 months).",
   rag: "RAG stands for Retrieval-Augmented Generation. Instead of giving generic AI responses, in Harmony Hub, the chatbot first retrieves relevant information from uploaded documents (using a PDF parser text pipeline) and then generates context-aware answers. This makes responses accurate and personalized.",
   nlp: "NLP (Natural Language Processing) was used in Harmony Hub to understand user input, analyze text queries, and improve chatbot interactions, facilitating natural, empathetic conversations instead of simple keyword-based replies.",
@@ -27,8 +27,73 @@ const CHATBOT_KB = {
   weaknesses: "My weaknesses are: \n1. Perfectionism (sometimes spending too much time on small details. I balance this by setting time limits).\n2. Asking for help (earlier I hesitated to reach out, but now I actively collaborate to get faster results).",
   internship: "I worked as a Data Science & AI Intern at WhatDigital Technologies for 5 months. I engineered chatbots, generative AI integrations, and built database-backed business intelligence dashboards.",
   education: "I graduated with a B.E. in Computer Science & Engineering from RNSIT with an aggregate GPA of 8.89. My coursework focused on Algorithms, Database Systems, Artificial Intelligence, and Computer Vision.",
-  jobportal: "The Job Portal Analytics Dashboard was built using Plotly and Dash. It connected to MongoDB and MySQL databases to visualize traffic trends, geospatial job demands, device analytics, and user engagement metrics."
+  jobportal: "The Job Portal Analytics Dashboard was built using Plotly and Dash. It connected to MongoDB and MySQL databases to visualize traffic trends, geospatial job demands, device analytics, and user engagement metrics.",
+  contact: "You can reach Chirag at chiragns12@gmail.com. Find him on GitHub at github.com/ChiragNSundar and on LinkedIn at linkedin.com/in/chiragnsundar/.",
+  techstack: "Chirag's tech stack includes: Python, TypeScript, JavaScript, React, Node.js, Vite, Streamlit, Plotly/Dash, MongoDB, MySQL, PostgreSQL (Supabase), YOLOv8, OpenCV, LangChain, Three.js, HTML/CSS, Git, and Vercel.",
+  certifications: "Chirag holds certifications from Infosys Springboard (Python, AI/ML Foundations) and freeCodeCamp (Responsive Web Design, JavaScript Algorithms).",
+  summary: "Chirag N Sundar is a Software Engineer (B.E. CS, RNSIT, GPA 8.89) who interned at WhatDigital Technologies for 5 months building AI chatbots and BI dashboards. Key projects: Harmony Hub (RAG chatbot), RoadWatch (YOLOv8 helmet detection + license plate OCR), and a Job Portal Analytics Dashboard. Core skills: Python, React/TS, computer vision, generative AI."
 };
+
+// Synonym groups: each group maps to a CHATBOT_KB key
+const TOPIC_SYNONYMS: { topic: string; keywords: string[] }[] = [
+  { topic: "intro",     keywords: ["who are you", "about you", "yourself", "introduce", "about chirag", "who is chirag", "tell me about"] },
+  { topic: "summary",   keywords: ["summary", "everything", "overview", "tell me everything", "all about", "quick summary", "brief"] },
+  { topic: "rag",       keywords: ["rag", "retrieval", "harmony", "hub", "augmented generation"] },
+  { topic: "nlp",       keywords: ["nlp", "natural language"] },
+  { topic: "streamlit", keywords: ["streamlit"] },
+  { topic: "yolo",      keywords: ["yolo", "helmet", "roadwatch", "road watch", "detect", "computer vision", "object detection"] },
+  { topic: "regex",     keywords: ["license", "plate", "ocr", "regex", "indian", "number plate"] },
+  { topic: "jobportal", keywords: ["job portal", "mongo", "mysql", "dashboard", "analytics", "plotly", "dash"] },
+  { topic: "internship",keywords: ["intern", "whatdigital", "work experience", "experience", "work"] },
+  { topic: "education", keywords: ["education", "college", "rnsit", "gpa", "degree", "university", "graduated", "coursework"] },
+  { topic: "challenges",keywords: ["challenge", "difficult", "trouble", "hard", "problem", "obstacle"] },
+  { topic: "pride",     keywords: ["proud", "achievement", "accomplishment", "best work"] },
+  { topic: "strengths", keywords: ["strength", "good at", "strong suit", "best quality", "advantage"] },
+  { topic: "weaknesses",keywords: ["weakness", "bad at", "perfection", "improve", "flaw", "shortcoming"] },
+  { topic: "learning",  keywords: ["learning", "new tech", "how do you learn", "approach"] },
+  { topic: "contact",   keywords: ["contact", "email", "reach", "mail", "github", "linkedin", "hire", "connect"] },
+  { topic: "techstack", keywords: ["tech stack", "technologies", "tools", "languages", "framework", "skills", "what do you know", "programming"] },
+  { topic: "certifications", keywords: ["certification", "certificate", "infosys", "freecodecamp", "credential"] },
+];
+
+// Contextual follow-up suggestions per topic
+const FOLLOW_UPS: Record<string, { label: string; query: string }[]> = {
+  intro:     [{ label: "Projects 🚀", query: "Tell me about your projects" }, { label: "Tech Stack 🛠️", query: "What technologies do you use?" }],
+  summary:   [{ label: "Internship 💼", query: "Where did you intern?" }, { label: "Certifications 📜", query: "What certifications do you have?" }],
+  rag:       [{ label: "RoadWatch 🏍️", query: "Tell me about RoadWatch" }, { label: "NLP Details 🧠", query: "How was NLP used in Harmony Hub?" }],
+  nlp:       [{ label: "RAG Explained 🧠", query: "What is RAG?" }, { label: "Streamlit 📊", query: "Why Streamlit?" }],
+  streamlit: [{ label: "RAG Explained 🧠", query: "What is RAG?" }, { label: "Job Portal 📈", query: "Tell me about the Job Portal Dashboard" }],
+  yolo:      [{ label: "License Plate OCR 🔍", query: "How does the license plate regex work?" }, { label: "Challenges 💪", query: "What challenges did you face?" }],
+  regex:     [{ label: "RoadWatch 🏍️", query: "How does RoadWatch detect helmets?" }, { label: "Proud Of 🏆", query: "What are you most proud of?" }],
+  jobportal: [{ label: "Tech Stack 🛠️", query: "What technologies do you use?" }, { label: "Internship 💼", query: "Where did you intern?" }],
+  internship:[{ label: "Projects 🚀", query: "Tell me about your projects" }, { label: "Education 🎓", query: "Where did you study?" }],
+  education: [{ label: "Certifications 📜", query: "What certifications do you have?" }, { label: "Strengths ⚡", query: "What are your strengths?" }],
+  challenges:[{ label: "Proud Of 🏆", query: "What are you most proud of?" }, { label: "Learning 📚", query: "How do you learn new tech?" }],
+  pride:     [{ label: "Challenges 💪", query: "What challenges did you face?" }, { label: "Strengths ⚡", query: "What are your strengths?" }],
+  strengths: [{ label: "Weaknesses ⚖️", query: "What are your weaknesses?" }, { label: "Internship 💼", query: "Where did you intern?" }],
+  weaknesses:[{ label: "Strengths ⚡", query: "What are your strengths?" }, { label: "Learning 📚", query: "How do you learn new tech?" }],
+  learning:  [{ label: "Tech Stack 🛠️", query: "What technologies do you use?" }, { label: "Education 🎓", query: "Where did you study?" }],
+  contact:   [{ label: "Summary 📋", query: "Give me a quick summary" }, { label: "Tech Stack 🛠️", query: "What technologies do you use?" }],
+  techstack: [{ label: "Projects 🚀", query: "Tell me about your projects" }, { label: "Certifications 📜", query: "What certifications do you have?" }],
+  certifications: [{ label: "Education 🎓", query: "Where did you study?" }, { label: "Contact 📧", query: "How can I contact you?" }],
+};
+
+const DEFAULT_SUGGESTIONS = [
+  { label: "Explain RAG 🧠", query: "What is RAG and how did you use it?" },
+  { label: "RoadWatch Info 🏍️", query: "Tell me about your RoadWatch helmet detection project" },
+  { label: "Strengths & Weaknesses ⚖️", query: "What are your strengths?" },
+  { label: "Quick Summary 📋", query: "Give me a quick summary" }
+];
+
+function matchTopic(query: string): string | null {
+  const q = query.toLowerCase();
+  for (const group of TOPIC_SYNONYMS) {
+    for (const kw of group.keywords) {
+      if (q.includes(kw)) return group.topic;
+    }
+  }
+  return null;
+}
 
 const MOCK_ENTRIES = [
   { id: "mock-1", name: "Infosys Recruiter", message: "Loved the interactive CV & SVG treemaps! 👍" },
@@ -56,6 +121,8 @@ export const DeveloperResumeCard: React.FC<DeveloperResumeCardProps> = ({ onInte
   ]);
   const [chatInput, setChatInput] = useState("");
   const [isTyping, setIsTyping] = useState(false);
+  const [lastTopic, setLastTopic] = useState<string | null>(null);
+  const [isChatExpanded, setIsChatExpanded] = useState(false);
   const chatContainerRef = useRef<HTMLDivElement>(null);
 
   const handleClearChat = () => {
@@ -66,6 +133,7 @@ export const DeveloperResumeCard: React.FC<DeveloperResumeCardProps> = ({ onInte
       }
     ]);
     setIsTyping(false);
+    setLastTopic(null);
   };
 
   const fetchSignatures = async () => {
@@ -135,52 +203,34 @@ export const DeveloperResumeCard: React.FC<DeveloperResumeCardProps> = ({ onInte
     setChatInput("");
     setIsTyping(true);
 
-    let botResponse = "";
+    // Fuzzy synonym-group matching
+    const matched = matchTopic(query);
+    let botResponse: string;
+    let resolvedTopic: string | null = matched;
 
-    // Local Query Matching
-    if (query.includes("rag") || query.includes("retrieval") || query.includes("harmony") || query.includes("hub")) {
-      botResponse = CHATBOT_KB.rag;
-    } else if (query.includes("yolo") || query.includes("helmet") || query.includes("roadwatch") || query.includes("detect")) {
-      botResponse = CHATBOT_KB.yolo + "\n\n" + CHATBOT_KB.regex;
-    } else if (query.includes("nlp") || query.includes("natural language")) {
-      botResponse = CHATBOT_KB.nlp;
-    } else if (query.includes("streamlit")) {
-      botResponse = CHATBOT_KB.streamlit;
-    } else if (query.includes("license") || query.includes("plate") || query.includes("ocr") || query.includes("regex") || query.includes("indian")) {
-      botResponse = CHATBOT_KB.regex;
-    } else if (query.includes("job portal") || query.includes("mongo") || query.includes("mysql") || query.includes("dashboard") || query.includes("analytics")) {
-      botResponse = CHATBOT_KB.jobportal;
-    } else if (query.includes("intern") || query.includes("whatdigital") || query.includes("work") || query.includes("experience")) {
-      botResponse = CHATBOT_KB.internship;
-    } else if (query.includes("education") || query.includes("college") || query.includes("rnsit") || query.includes("gpa") || query.includes("degree")) {
-      botResponse = CHATBOT_KB.education;
-    } else if (query.includes("challenge") || query.includes("difficult") || query.includes("trouble")) {
-      botResponse = CHATBOT_KB.challenges;
-    } else if (query.includes("proud")) {
-      botResponse = CHATBOT_KB.pride;
-    } else if (query.includes("strength") || query.includes("good at")) {
-      botResponse = CHATBOT_KB.strengths;
-    } else if (query.includes("weakness") || query.includes("bad at") || query.includes("perfection")) {
-      botResponse = CHATBOT_KB.weaknesses;
-    } else if (query.includes("learning") || query.includes("new tech")) {
-      botResponse = CHATBOT_KB.learning;
+    if (matched && CHATBOT_KB[matched]) {
+      botResponse = CHATBOT_KB[matched];
+      // Special case: YOLO also includes regex/plate info
+      if (matched === "yolo") {
+        botResponse += "\n\n" + CHATBOT_KB.regex;
+      }
     } else {
-      botResponse = CHATBOT_KB.intro + "\n\nI specialize in YOLOv8 computer vision, RAG generative AI models, and Streamlit dashboards. Try asking me:\n- 'What is RAG?'\n- 'How does RoadWatch detect helmets?'\n- 'What are your strengths?'";
+      botResponse = "Hmm, I'm not sure about that one! Try asking about my projects, skills, education, internship, or certifications 😄";
+      resolvedTopic = null;
     }
 
     // Delay bot response slightly to simulate thinking
     setTimeout(() => {
       setIsTyping(false);
+      setLastTopic(resolvedTopic);
       setChatLog(prev => [...prev, { sender: "bot" as const, text: botResponse }]);
     }, 650);
   };
 
-  const suggestions = [
-    { label: "Explain RAG 🧠", query: "What is RAG and how did you use it?" },
-    { label: "RoadWatch Info 🏍️", query: "Tell me about your RoadWatch helmet detection project" },
-    { label: "Weaknesses & Strengths ⚖️", query: "What are your strengths and weaknesses?" },
-    { label: "Internship Details 💼", query: "Where did you intern and what did you build?" }
-  ];
+  // Contextual follow-up suggestions based on last answered topic
+  const suggestions = lastTopic && FOLLOW_UPS[lastTopic]
+    ? FOLLOW_UPS[lastTopic]
+    : DEFAULT_SUGGESTIONS;
 
   return (
     <div 
