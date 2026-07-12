@@ -42,9 +42,14 @@ export const YoutubeCoversCard: React.FC<YoutubeCoversCardProps> = ({ onInteract
             BAY 02 // COVERS & PRODUCTIONS
           </span>
         </div>
-        <span style={{ fontSize: "0.7rem", color: "var(--text-muted)", letterSpacing: "1px" }}>
-          [YOUTUBE PERFORMANCE CATALOG]
-        </span>
+        <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-end" }}>
+          <span style={{ fontSize: "0.7rem", color: "var(--text-muted)", letterSpacing: "1px" }}>
+            [YOUTUBE PERFORMANCE CATALOG]
+          </span>
+          <span style={{ fontSize: "0.6rem", color: "var(--color-mint-accent)", fontWeight: "bold", marginTop: "2px" }}>
+            Note: These covers showcase my mixing & production capabilities
+          </span>
+        </div>
       </div>
 
       {/* Main Split Layout */}

@@ -1,5 +1,4 @@
-import React, { useState, useEffect } from "react";
-import { resumeData } from "../data/resume";
+import React, { useState, useEffect, useRef } from "react";
 import { supabase, isSupabaseConfigured } from "../lib/supabaseClient";
 
 interface GuestbookEntry {
@@ -11,8 +10,25 @@ interface GuestbookEntry {
 
 interface DeveloperResumeCardProps {
   onInteract?: () => void;
-  active?: boolean;
 }
+
+// Chatbot Knowledge Base
+const CHATBOT_KB = {
+  intro: "Hi my name is Chirag, I am a Software Engineer specializing in Web App Development, Data Analytics, and Generative AI workflows. I recently completed my B.E. in Computer Science & engineering from RNSIT, maintaining a GPA of 8.89, and have worked as a Data Science & AI Intern at WhatDigital Technologies (5 months).",
+  rag: "RAG stands for Retrieval-Augmented Generation. Instead of giving generic AI responses, in Harmony Hub, the chatbot first retrieves relevant information from uploaded documents (using a PDF parser text pipeline) and then generates context-aware answers. This makes responses accurate and personalized.",
+  nlp: "NLP (Natural Language Processing) was used in Harmony Hub to understand user input, analyze text queries, and improve chatbot interactions, facilitating natural, empathetic conversations instead of simple keyword-based replies.",
+  streamlit: "I chose Streamlit for Harmony Hub because it allowed me to build an interactive, responsive web interface rapidly in Python, focusing my efforts on AI RAG functionality and analytics visualization.",
+  yolo: "RoadWatch uses YOLOv8 for real-time computer vision object detection. The model has been custom-trained to detect four specific classes: 'with helmet', 'without helmet', 'rider', and 'number plate' (defined in our coco128.yaml config). The camera feed is processed frame by frame using OpenCV.",
+  regex: "For Indian vehicle number plates, RoadWatch validates the format using regex patterns. The expected format is 'XX00XX0000' (two state letters, two RTO numbers, two letters, and four sequence numbers). Once validated, it stores the text in a CSV file to prevent duplicate logs.",
+  challenges: "In RoadWatch, a key challenge was maintaining accurate detection in varying traffic lights and weather conditions, as well as handling blurry plates in OCR. I improved this by applying OpenCV frame preprocessing and tuning confidence thresholds.",
+  pride: "I am most proud of the RoadWatch project because it combines real-time computer vision, backend API processing, and practical safety impacts. It was satisfying to build something that could contribute to road safety.",
+  learning: "I approach new tech by first understanding the fundamentals, then building small prototypes, and finally integrating it into actual projects. Hands-on development is my core learning vector.",
+  strengths: "My strengths are: \n1. Problem-Solving & Logical thinking.\n2. Teamwork (taking initiative to coordinate tasks in college projects to keep everyone aligned).\n3. Attention to detail.",
+  weaknesses: "My weaknesses are: \n1. Perfectionism (sometimes spending too much time on small details. I balance this by setting time limits).\n2. Asking for help (earlier I hesitated to reach out, but now I actively collaborate to get faster results).",
+  internship: "I worked as a Data Science & AI Intern at WhatDigital Technologies for 5 months. I engineered chatbots, generative AI integrations, and built database-backed business intelligence dashboards.",
+  education: "I graduated with a B.E. in Computer Science & Engineering from RNSIT with an aggregate GPA of 8.89. My coursework focused on Algorithms, Database Systems, Artificial Intelligence, and Computer Vision.",
+  jobportal: "The Job Portal Analytics Dashboard was built using Plotly and Dash. It connected to MongoDB and MySQL databases to visualize traffic trends, geospatial job demands, device analytics, and user engagement metrics."
+};
 
 export const DeveloperResumeCard: React.FC<DeveloperResumeCardProps> = ({ onInteract }) => {
   const [entries, setEntries] = useState<GuestbookEntry[]>([]);
@@ -21,10 +37,22 @@ export const DeveloperResumeCard: React.FC<DeveloperResumeCardProps> = ({ onInte
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [fetchError, setFetchError] = useState<string | null>(null);
 
-  // Fetch guestbook signatures from Supabase
+  // Project Explorer state ('harmony' | 'roadwatch' | 'jobportal' | null)
+  const [activeProject, setActiveProject] = useState<string | null>(null);
+
+  // Chatbot state
+  const [chatLog, setChatLog] = useState<{ sender: "user" | "bot"; text: string }[]>([
+    {
+      sender: "bot",
+      text: "Hi! I'm Chirag's AI representative. Ask me anything about my projects, internship, education, or core strengths/weaknesses!"
+    }
+  ]);
+  const [chatInput, setChatInput] = useState("");
+  const chatEndRef = useRef<HTMLDivElement>(null);
+
   const fetchSignatures = async () => {
     if (!isSupabaseConfigured) {
-      setFetchError("Database configuration incomplete.");
+      setFetchError("Supabase keys not found in environment.");
       return;
     }
     try {
@@ -32,12 +60,12 @@ export const DeveloperResumeCard: React.FC<DeveloperResumeCardProps> = ({ onInte
         .from("guestbook")
         .select("*")
         .order("created_at", { ascending: false })
-        .limit(6);
+        .limit(5);
       if (error) throw error;
       setEntries(data || []);
     } catch (err: any) {
-      console.error("Error fetching guestbook:", err);
-      setFetchError(err.message || "Failed to fetch signatures.");
+      console.error("Error:", err);
+      setFetchError(err.message || "Failed to load signatures.");
     }
   };
 
@@ -45,7 +73,12 @@ export const DeveloperResumeCard: React.FC<DeveloperResumeCardProps> = ({ onInte
     fetchSignatures();
   }, []);
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  // Scroll chatbot to end on update
+  useEffect(() => {
+    chatEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [chatLog]);
+
+  const handleGuestbookSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!name.trim() || !message.trim()) return;
     if (onInteract) onInteract();
@@ -67,6 +100,68 @@ export const DeveloperResumeCard: React.FC<DeveloperResumeCardProps> = ({ onInte
     }
   };
 
+  // Local Chatbot Query Resolver
+  const handleChatSubmit = (e?: React.FormEvent, customQuery?: string) => {
+    if (e) e.preventDefault();
+    const rawQuery = customQuery || chatInput;
+    if (!rawQuery.trim()) return;
+
+    if (onInteract) onInteract();
+
+    const userMessage = rawQuery.trim();
+    const query = userMessage.toLowerCase();
+    
+    // Add user message to log
+    const updatedLog = [...chatLog, { sender: "user" as const, text: userMessage }];
+    setChatLog(updatedLog);
+    setChatInput("");
+
+    let botResponse = "";
+
+    // Local Query Matching
+    if (query.includes("rag") || query.includes("retrieval") || query.includes("harmony") || query.includes("hub")) {
+      botResponse = CHATBOT_KB.rag;
+    } else if (query.includes("yolo") || query.includes("helmet") || query.includes("roadwatch") || query.includes("detect")) {
+      botResponse = CHATBOT_KB.yolo + "\n\n" + CHATBOT_KB.regex;
+    } else if (query.includes("nlp") || query.includes("natural language")) {
+      botResponse = CHATBOT_KB.nlp;
+    } else if (query.includes("streamlit")) {
+      botResponse = CHATBOT_KB.streamlit;
+    } else if (query.includes("license") || query.includes("plate") || query.includes("ocr") || query.includes("regex") || query.includes("indian")) {
+      botResponse = CHATBOT_KB.regex;
+    } else if (query.includes("job portal") || query.includes("mongo") || query.includes("mysql") || query.includes("dashboard") || query.includes("analytics")) {
+      botResponse = CHATBOT_KB.jobportal;
+    } else if (query.includes("intern") || query.includes("whatdigital") || query.includes("work") || query.includes("experience")) {
+      botResponse = CHATBOT_KB.internship;
+    } else if (query.includes("education") || query.includes("college") || query.includes("rnsit") || query.includes("gpa") || query.includes("degree")) {
+      botResponse = CHATBOT_KB.education;
+    } else if (query.includes("challenge") || query.includes("difficult") || query.includes("trouble")) {
+      botResponse = CHATBOT_KB.challenges;
+    } else if (query.includes("proud")) {
+      botResponse = CHATBOT_KB.pride;
+    } else if (query.includes("strength") || query.includes("good at")) {
+      botResponse = CHATBOT_KB.strengths;
+    } else if (query.includes("weakness") || query.includes("bad at") || query.includes("perfection")) {
+      botResponse = CHATBOT_KB.weaknesses;
+    } else if (query.includes("learning") || query.includes("new tech")) {
+      botResponse = CHATBOT_KB.learning;
+    } else {
+      botResponse = CHATBOT_KB.intro + "\n\nI specialize in YOLOv8 computer vision, RAG generative AI models, and Streamlit dashboards. Try asking me:\n- 'What is RAG?'\n- 'How does RoadWatch detect helmets?'\n- 'What are your strengths?'";
+    }
+
+    // Delay bot response slightly to simulate thinking
+    setTimeout(() => {
+      setChatLog(prev => [...prev, { sender: "bot" as const, text: botResponse }]);
+    }, 400);
+  };
+
+  const suggestions = [
+    { label: "Explain RAG 🧠", query: "What is RAG and how did you use it?" },
+    { label: "RoadWatch Info 🏍️", query: "Tell me about your RoadWatch helmet detection project" },
+    { label: "Weaknesses & Strengths ⚖️", query: "What are your strengths and weaknesses?" },
+    { label: "Internship Details 💼", query: "Where did you intern and what did you build?" }
+  ];
+
   return (
     <div 
       className="creative-card"
@@ -74,12 +169,12 @@ export const DeveloperResumeCard: React.FC<DeveloperResumeCardProps> = ({ onInte
         padding: "28px",
         display: "flex",
         flexDirection: "column",
-        gap: "24px",
+        gap: "28px",
         borderColor: "#18181b",
         boxShadow: "8px 8px 0px rgba(245, 159, 0, 0.15), 8px 8px 0px #18181b"
       }}
     >
-      {/* Header */}
+      {/* Dossier Header */}
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
         <div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
           <span className="bouncy-emoji" style={{ fontSize: "1.2rem" }}>💼</span>
@@ -96,67 +191,98 @@ export const DeveloperResumeCard: React.FC<DeveloperResumeCardProps> = ({ onInte
           </span>
         </div>
         <span style={{ fontSize: "0.7rem", color: "var(--text-muted)", letterSpacing: "1px" }}>
-          [DEVELOPMENT INTEL]
+          [RNSIT GRADUATE // 8.89 GPA // DATA & GEN-AI FOCUS]
         </span>
       </div>
 
-      {/* Split Columns Layout */}
-      <div style={{ display: "flex", gap: "24px", flexDirection: "row" }}>
+      {/* Main Layout Grid */}
+      <div style={{ display: "flex", gap: "28px", flexDirection: "column" }}>
         
-        {/* Left Column: Interactive CV & Guestbook Registry (60%) */}
-        <div style={{ flexGrow: 1.5, flexBasis: "0", display: "flex", flexDirection: "column", gap: "20px" }}>
+        {/* ROW 1: CV Intro & Project Explorer */}
+        <div style={{ display: "flex", gap: "24px", flexDirection: "row", flexWrap: "wrap" }}>
           
-          {/* Professional Profile */}
-          <div style={{ background: "#fafafa", border: "1.5px solid #18181b", borderRadius: "16px", padding: "20px" }}>
-            <h3 style={{ fontSize: "1.1rem", fontWeight: "700", marginBottom: "8px", borderBottom: "1.5px solid #18181b", paddingBottom: "4px" }}>
-              PROFILE OVERVIEW
-            </h3>
-            <p style={{ fontSize: "0.85rem", color: "#3f3f46", lineHeight: 1.4, marginBottom: "16px" }}>
-              {resumeData.about}
-            </p>
-
-            <h4 style={{ fontSize: "0.9rem", fontWeight: "700", marginBottom: "6px" }}>PROFESSIONAL TIMELINE</h4>
-            <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
-              {resumeData.experience.slice(0, 2).map((exp, idx) => (
-                <div key={idx} style={{ fontSize: "0.8rem", color: "#3f3f46" }}>
-                  <div style={{ fontWeight: "700", color: "#18181b", display: "flex", justifyContent: "space-between" }}>
-                    <span>⚡ {exp.role} @ {exp.company}</span>
-                    <span style={{ color: "var(--color-amber-accent)" }}>{exp.period}</span>
-                  </div>
-                  <ul style={{ paddingLeft: "16px", marginTop: "2px", listStyleType: "circle" }}>
-                    {exp.bullets.slice(0, 2).map((b, bi) => (
-                      <li key={bi} style={{ fontSize: "0.78rem" }}>{b}</li>
-                    ))}
-                  </ul>
+          {/* Left Column: Education & Intern Info */}
+          <div style={{ flex: "1 1 350px", display: "flex", flexDirection: "column", gap: "20px" }}>
+            <div style={{ background: "#fcfcfa", border: "1.5px solid #18181b", borderRadius: "16px", padding: "20px" }}>
+              <h3 style={{ fontSize: "1.1rem", fontWeight: "900", marginBottom: "12px", borderBottom: "1.5px solid #18181b", paddingBottom: "4px" }}>
+                EDUCATION & PROFESSIONAL TIMELINE
+              </h3>
+              
+              {/* College */}
+              <div style={{ marginBottom: "14px" }}>
+                <div style={{ display: "flex", justifyContent: "space-between", fontWeight: "bold", fontSize: "0.85rem" }}>
+                  <span>🎓 B.E. Computer Science & Engineering</span>
+                  <span style={{ color: "var(--color-amber-accent)" }}>GPA: 8.89</span>
                 </div>
-              ))}
-            </div>
-          </div>
+                <div style={{ fontSize: "0.75rem", color: "var(--text-muted)", fontWeight: "600" }}>
+                  RNS Institute of Technology (RNSIT)
+                </div>
+              </div>
 
-          {/* Supabase Guestbook Signer */}
-          <div 
-            style={{ 
-              background: "var(--color-amber)", 
-              border: "1.5px solid #18181b", 
-              borderRadius: "16px", 
-              padding: "20px", 
-              boxShadow: "4px 4px 0px #18181b" 
-            }}
-          >
-            <h3 style={{ fontSize: "1rem", fontWeight: "700", color: "#8a5b00", marginBottom: "10px", display: "flex", alignItems: "center", gap: "6px" }}>
-              ✍️ Guestbook Signature
-            </h3>
-            
-            <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
-              <div style={{ display: "flex", gap: "8px" }}>
+              {/* Internship */}
+              <div>
+                <div style={{ display: "flex", justifyContent: "space-between", fontWeight: "bold", fontSize: "0.85rem" }}>
+                  <span>💼 Data Science & AI Intern (5 months)</span>
+                  <span style={{ color: "var(--color-amber-accent)" }}>Completed</span>
+                </div>
+                <div style={{ fontSize: "0.75rem", color: "var(--text-muted)", fontWeight: "600", marginBottom: "6px" }}>
+                  WhatDigital Technologies
+                </div>
+                <p style={{ fontSize: "0.78rem", color: "#3f3f46", lineHeight: 1.35 }}>
+                  Engineered production-ready web interfaces, chatbot pipelines utilizing large language models, and clean data-driven MongoDB/MySQL BI analytics dashboards.
+                </p>
+              </div>
+            </div>
+
+            {/* Supabase Guestbook Card */}
+            <div style={{ background: "var(--color-amber)", border: "1.5px solid #18181b", borderRadius: "16px", padding: "20px", boxShadow: "4px 4px 0px #18181b" }}>
+              <h3 style={{ fontSize: "1rem", fontWeight: "900", color: "#7a5a07", marginBottom: "8px", display: "flex", alignItems: "center", gap: "6px" }}>
+                ✍️ Guestbook Signature Log
+              </h3>
+              
+              <form onSubmit={handleGuestbookSubmit} style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
+                <div style={{ display: "flex", gap: "8px" }}>
+                  <input
+                    type="text"
+                    placeholder="Your Name"
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    required
+                    style={{
+                      flexGrow: 1,
+                      background: "#ffffff",
+                      border: "1.5px solid #18181b",
+                      borderRadius: "8px",
+                      padding: "6px 12px",
+                      fontSize: "0.8rem",
+                      outline: "none"
+                    }}
+                  />
+                  <button
+                    type="submit"
+                    disabled={isSubmitting}
+                    style={{
+                      background: "var(--color-amber-accent)",
+                      border: "1.5px solid #18181b",
+                      borderRadius: "8px",
+                      padding: "6px 14px",
+                      fontSize: "0.8rem",
+                      fontWeight: "bold",
+                      color: "#000000",
+                      cursor: "pointer",
+                      boxShadow: "2px 2px 0px #18181b"
+                    }}
+                  >
+                    {isSubmitting ? "SIGNING..." : "SIGN"}
+                  </button>
+                </div>
                 <input
                   type="text"
-                  placeholder="Your Name"
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
+                  placeholder="Leave a short comment..."
+                  value={message}
+                  onChange={(e) => setMessage(e.target.value)}
                   required
                   style={{
-                    flexGrow: 1,
                     background: "#ffffff",
                     border: "1.5px solid #18181b",
                     borderRadius: "8px",
@@ -165,145 +291,283 @@ export const DeveloperResumeCard: React.FC<DeveloperResumeCardProps> = ({ onInte
                     outline: "none"
                   }}
                 />
-                <button
-                  type="submit"
-                  disabled={isSubmitting}
-                  style={{
-                    background: "var(--color-amber-accent)",
-                    border: "1.5px solid #18181b",
-                    borderRadius: "8px",
-                    padding: "6px 14px",
-                    fontSize: "0.8rem",
-                    fontWeight: "bold",
-                    color: "#000000",
-                    cursor: "pointer",
-                    boxShadow: "2px 2px 0px #18181b"
-                  }}
-                >
-                  {isSubmitting ? "SIGNING..." : "SIGN REGISTRY"}
-                </button>
-              </div>
-              <input
-                type="text"
-                placeholder="Leave a short comment..."
-                value={message}
-                onChange={(e) => setMessage(e.target.value)}
-                required
-                style={{
-                  background: "#ffffff",
-                  border: "1.5px solid #18181b",
-                  borderRadius: "8px",
-                  padding: "6px 12px",
-                  fontSize: "0.8rem",
-                  outline: "none"
-                }}
-              />
-            </form>
+              </form>
 
-            {/* List of recent signatures */}
-            <div style={{ marginTop: "12px", borderTop: "1px dashed #dca53d", paddingTop: "8px" }}>
-              <div style={{ fontSize: "0.65rem", fontWeight: "bold", color: "#8a5b00", marginBottom: "4px" }}>
-                RECENT VISITOR SIGNATURES:
+              {/* Guestbook signatures output */}
+              <div style={{ marginTop: "12px", borderTop: "1px dashed #c29528", paddingTop: "8px" }}>
+                <div style={{ maxHeight: "80px", overflowY: "auto", display: "flex", flexDirection: "column", gap: "4px" }}>
+                  {entries.length > 0 ? (
+                    entries.map((ent) => (
+                      <div key={ent.id} style={{ fontFamily: "var(--font-lcd)", fontSize: "0.62rem", color: "#543b00", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
+                        &raquo; <span style={{ fontWeight: "bold" }}>{ent.name}</span>: {ent.message}
+                      </div>
+                    ))
+                  ) : (
+                    <div style={{ fontFamily: "var(--font-lcd)", fontSize: "0.6rem", color: "#7a5a07" }}>
+                      {fetchError ? `Error: ${fetchError}` : "No visitor signatures loaded."}
+                    </div>
+                  )}
+                </div>
               </div>
-              
+            </div>
+          </div>
+
+          {/* Right Column: Project Explorer cards */}
+          <div style={{ flex: "1.2 1 400px", display: "flex", flexDirection: "column", gap: "12px" }}>
+            <div style={{ background: "#ffffff", border: "1.5px solid #18181b", borderRadius: "16px", padding: "20px", display: "flex", flexDirection: "column", gap: "10px" }}>
+              <h3 style={{ fontSize: "1.1rem", fontWeight: "900", borderBottom: "1.5px solid #18181b", paddingBottom: "4px" }}>
+                DETAILED PROJECT EXPLORER
+              </h3>
+              <p style={{ fontSize: "0.78rem", color: "var(--text-muted)" }}>
+                Click a card below to expand its technical workflows and interview validation sheets.
+              </p>
+
+              {/* Project 1: RoadWatch */}
               <div 
-                style={{ 
-                  maxHeight: "80px", 
-                  overflowY: "auto", 
-                  display: "flex", 
-                  flexDirection: "column", 
-                  gap: "4px" 
+                onClick={() => setActiveProject(activeProject === "roadwatch" ? null : "roadwatch")}
+                style={{
+                  border: "1.5px solid #18181b",
+                  borderRadius: "12px",
+                  padding: "12px",
+                  cursor: "pointer",
+                  backgroundColor: activeProject === "roadwatch" ? "var(--color-amber)" : "#fafafa",
+                  transition: "background-color 0.2s"
                 }}
               >
-                {entries.length > 0 ? (
-                  entries.map((ent) => (
-                    <div 
-                      key={ent.id} 
-                      style={{ 
-                        fontFamily: "var(--font-lcd)", 
-                        fontSize: "0.62rem", 
-                        color: "#543b00",
-                        whiteSpace: "nowrap",
-                        overflow: "hidden",
-                        textOverflow: "ellipsis"
-                      }}
-                    >
-                      &raquo; <span style={{ fontWeight: "bold" }}>{ent.name}</span>: {ent.message}
-                    </div>
-                  ))
-                ) : (
-                  <div style={{ fontFamily: "var(--font-lcd)", fontSize: "0.6rem", color: "#8a5b00" }}>
-                    {fetchError ? `Error: ${fetchError}` : "No visitor dockets loaded."}
+                <div style={{ display: "flex", justifyContent: "space-between", fontWeight: "bold", fontSize: "0.85rem" }}>
+                  <span>🏍️ RoadWatch: Smart Helmet Detection (2024)</span>
+                  <span>{activeProject === "roadwatch" ? "▼" : "▶"}</span>
+                </div>
+                {activeProject === "roadwatch" && (
+                  <div style={{ marginTop: "10px", fontSize: "0.78rem", color: "#3f3f46", display: "flex", flexDirection: "column", gap: "8px", borderTop: "1px dashed #18181b", paddingTop: "8px" }}>
+                    <div><strong>Pitch:</strong> Real-time traffic monitoring system detecting helmet violations automatically using YOLOv8, extracting license plates via EasyOCR/PaddleOCR, and sending SMS alerts via an asynchronous FastAPI backend.</div>
+                    <div><strong>Model Training:</strong> Custom-trained YOLOv8 model for 4 classes: <code>with helmet</code>, <code>without helmet</code>, <code>rider</code>, and <code>number plate</code>.</div>
+                    <div><strong>Indian Plate Regex:</strong> Matches pattern <code>XX00XX0000</code> to prevent duplicate CSV entries.</div>
+                    <div><strong>Challenges faced:</strong> Preprocessed blurry number plate frames in OpenCV and tuned confidence thresholds to combat poor lighting.</div>
                   </div>
                 )}
               </div>
-            </div>
 
+              {/* Project 2: Harmony Hub */}
+              <div 
+                onClick={() => setActiveProject(activeProject === "harmony" ? null : "harmony")}
+                style={{
+                  border: "1.5px solid #18181b",
+                  borderRadius: "12px",
+                  padding: "12px",
+                  cursor: "pointer",
+                  backgroundColor: activeProject === "harmony" ? "var(--color-amber)" : "#fafafa",
+                  transition: "background-color 0.2s"
+                }}
+              >
+                <div style={{ display: "flex", justifyContent: "space-between", fontWeight: "bold", fontSize: "0.85rem" }}>
+                  <span>🧠 Harmony Hub: Mental Health Assistant (2023)</span>
+                  <span>{activeProject === "harmony" ? "▼" : "▶"}</span>
+                </div>
+                {activeProject === "harmony" && (
+                  <div style={{ marginTop: "10px", fontSize: "0.78rem", color: "#3f3f46", display: "flex", flexDirection: "column", gap: "8px", borderTop: "1px dashed #18181b", paddingTop: "8px" }}>
+                    <div><strong>Pitch:</strong> Supportive mental wellness platform helping users track progress and converse with an AI chatbot.</div>
+                    <div><strong>AI RAG Integration:</strong> Employs Retrieval-Augmented Generation to process uploaded PDF document text pipelines, delivering context-aware, personalized LLM responses instead of generic answers.</div>
+                    <div><strong>NLP & Analytics:</strong> Uses natural language processing to comprehend conversations and integrates interactive Plotly charts in a Python Streamlit UI wrapper.</div>
+                  </div>
+                )}
+              </div>
+
+              {/* Project 3: Job Portal Analytics */}
+              <div 
+                onClick={() => setActiveProject(activeProject === "jobportal" ? null : "jobportal")}
+                style={{
+                  border: "1.5px solid #18181b",
+                  borderRadius: "12px",
+                  padding: "12px",
+                  cursor: "pointer",
+                  backgroundColor: activeProject === "jobportal" ? "var(--color-amber)" : "#fafafa",
+                  transition: "background-color 0.2s"
+                }}
+              >
+                <div style={{ display: "flex", justifyContent: "space-between", fontWeight: "bold", fontSize: "0.85rem" }}>
+                  <span>📊 Job Portal Business Intelligence Dashboard</span>
+                  <span>{activeProject === "jobportal" ? "▼" : "▶"}</span>
+                </div>
+                {activeProject === "jobportal" && (
+                  <div style={{ marginTop: "10px", fontSize: "0.78rem", color: "#3f3f46", display: "flex", flexDirection: "column", gap: "8px", borderTop: "1px dashed #18181b", paddingTop: "8px" }}>
+                    <div><strong>Pitch:</strong> Interactive business intelligence dashboard visualizing job board metrics.</div>
+                    <div><strong>Database Pipeline:</strong> Connected to MongoDB and MySQL databases, optimized query pipelines, and loaded geospatial, device usage, and engagement trends in Plotly & Dash.</div>
+                  </div>
+                )}
+              </div>
+
+            </div>
           </div>
 
         </div>
 
-        {/* Right Column: Skills Sunburst Wheel & Treemap Intelmap (40%) */}
-        <div style={{ width: "260px", display: "flex", flexDirection: "column", gap: "20px" }}>
+        {/* ROW 2: ASK CHIRAG AI CHATBOT & SKILLS DATA */}
+        <div style={{ display: "flex", gap: "24px", flexDirection: "row", flexWrap: "wrap" }}>
           
-          {/* Skill Sunburst card */}
-          <div style={{ background: "#fafafa", border: "1.5px solid #18181b", borderRadius: "16px", padding: "16px", display: "flex", flexDirection: "column", alignItems: "center" }}>
-            <span style={{ fontSize: "0.65rem", fontWeight: "bold", color: "var(--color-amber-accent)", letterSpacing: "1px", marginBottom: "10px" }}>
-              SYSTEM DYNAMICS / SKILL MAP
-            </span>
-
-            <svg width="120" height="120" viewBox="0 0 100 100">
-              <circle cx="50" cy="50" r="44" fill="none" stroke="#f1f1f1" strokeWidth="10" />
-              
-              {/* Outer segments (Pastel themed) */}
-              <circle cx="50" cy="50" r="44" fill="none" stroke="#db2777" strokeWidth="8" strokeDasharray="60 200" strokeDashoffset="0" className="sunburst-ring" />
-              <circle cx="50" cy="50" r="44" fill="none" stroke="#0d9488" strokeWidth="8" strokeDasharray="80 200" strokeDashoffset="70" className="sunburst-ring" />
-              <circle cx="50" cy="50" r="44" fill="none" stroke="#9333ea" strokeWidth="8" strokeDasharray="40 200" strokeDashoffset="160" className="sunburst-ring" />
-              
-              {/* Middle segment ring */}
-              <circle cx="50" cy="50" r="32" fill="none" stroke="#eaeaea" strokeWidth="8" />
-              <circle cx="50" cy="50" r="32" fill="none" stroke="#f59f00" strokeWidth="6" strokeDasharray="90 200" strokeDashoffset="20" className="sunburst-ring" />
-              <circle cx="50" cy="50" r="32" fill="none" stroke="#3b82f6" strokeWidth="6" strokeDasharray="60 200" strokeDashoffset="120" className="sunburst-ring" />
-
-              {/* Inner core */}
-              <circle cx="50" cy="50" r="18" fill="#ffffff" stroke="#18181b" strokeWidth="1.5" />
-              <text x="50" y="52" fill="#18181b" fontSize="6.5" textAnchor="middle" fontWeight="bold" fontFamily="var(--font-lcd)">HUD</text>
-            </svg>
-            <div style={{ fontFamily: "var(--font-lcd)", fontSize: "0.55rem", color: "var(--text-muted)", marginTop: "8px", textAlign: "center" }}>
-              DEVIATION: DETUNED / COHERENT
+          {/* Chatbot Console (60%) */}
+          <div 
+            style={{
+              flex: "1.5 1 450px",
+              background: "#ffffff",
+              border: "1.5px solid #18181b",
+              borderRadius: "16px",
+              padding: "20px",
+              display: "flex",
+              flexDirection: "column",
+              gap: "12px"
+            }}
+          >
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", borderBottom: "1.5px solid #18181b", paddingBottom: "6px" }}>
+              <span style={{ fontWeight: "900", fontSize: "1rem", display: "flex", alignItems: "center", gap: "6px" }}>
+                🤖 Ask Chirag AI
+              </span>
+              <span style={{ fontSize: "0.6rem", background: "var(--color-amber)", border: "1px solid #18181b", padding: "2px 6px", borderRadius: "4px", fontWeight: "bold" }}>
+                FREE // NO KEY NEEDED
+              </span>
             </div>
-          </div>
 
-          {/* Skills Intelmap (Treemap grid) */}
-          <div style={{ background: "#fafafa", border: "1.5px solid #18181b", borderRadius: "16px", padding: "16px" }}>
-            <span style={{ fontSize: "0.65rem", fontWeight: "bold", color: "var(--color-amber-accent)", letterSpacing: "1px", display: "block", textAlign: "center", marginBottom: "8px" }}>
-              CORE DEVELOPMENT INTELMAP
-            </span>
-
+            {/* Chat Messages scroll container */}
             <div 
               style={{
-                display: "grid",
-                gridTemplateColumns: "1.8fr 1fr",
-                gridTemplateRows: "1.2fr 1fr",
-                gap: "4px",
-                height: "100px"
+                height: "170px",
+                overflowY: "auto",
+                border: "1.5px solid #18181b",
+                borderRadius: "12px",
+                background: "#fafafa",
+                padding: "10px",
+                display: "flex",
+                flexDirection: "column",
+                gap: "8px"
               }}
             >
-              <div style={{ background: "rgba(147, 51, 234, 0.08)", border: "1px solid #9333ea", borderRadius: "4px", padding: "4px", display: "flex", flexDirection: "column", justifyContent: "space-between" }}>
-                <span style={{ fontSize: "0.55rem", fontWeight: "bold", color: "#9333ea" }}>TENSORFLOW</span>
-                <span style={{ fontSize: "0.45rem", color: "#777" }}>82% ACC</span>
+              {chatLog.map((chat, idx) => (
+                <div 
+                  key={idx} 
+                  style={{
+                    alignSelf: chat.sender === "user" ? "flex-end" : "flex-start",
+                    background: chat.sender === "user" ? "var(--color-amber)" : "#ffffff",
+                    border: "1.5px solid #18181b",
+                    borderRadius: chat.sender === "user" ? "12px 12px 2px 12px" : "12px 12px 12px 2px",
+                    padding: "8px 12px",
+                    maxWidth: "85%",
+                    fontSize: "0.78rem",
+                    lineHeight: 1.35,
+                    boxShadow: "2px 2px 0px rgba(0,0,0,0.05)"
+                  }}
+                >
+                  <div style={{ fontSize: "0.6rem", fontWeight: "bold", color: chat.sender === "user" ? "#7a5a07" : "var(--text-muted)", marginBottom: "2px" }}>
+                    {chat.sender === "user" ? "YOU" : "CHIRAG AI"}
+                  </div>
+                  <div style={{ whiteSpace: "pre-line" }}>{chat.text}</div>
+                </div>
+              ))}
+              <div ref={chatEndRef} />
+            </div>
+
+            {/* Suggestion Chips */}
+            <div style={{ display: "flex", gap: "6px", flexWrap: "wrap" }}>
+              {suggestions.map((sug, sIdx) => (
+                <button
+                  key={sIdx}
+                  onClick={(e) => handleChatSubmit(e, sug.query)}
+                  style={{
+                    background: "#ffffff",
+                    border: "1px solid #18181b",
+                    borderRadius: "20px",
+                    padding: "3px 10px",
+                    fontSize: "0.65rem",
+                    cursor: "pointer",
+                    transition: "background 0.15s"
+                  }}
+                  onMouseEnter={(e) => e.currentTarget.style.background = "#f4f4f5"}
+                  onMouseLeave={(e) => e.currentTarget.style.background = "#ffffff"}
+                >
+                  {sug.label}
+                </button>
+              ))}
+            </div>
+
+            {/* Input form */}
+            <form onSubmit={handleChatSubmit} style={{ display: "flex", gap: "8px" }}>
+              <input
+                type="text"
+                placeholder="Ask me something (e.g., 'What is RAG?' or 'Where did you intern?')..."
+                value={chatInput}
+                onChange={(e) => setChatInput(e.target.value)}
+                style={{
+                  flexGrow: 1,
+                  background: "#ffffff",
+                  border: "1.5px solid #18181b",
+                  borderRadius: "8px",
+                  padding: "8px 12px",
+                  fontSize: "0.8rem",
+                  outline: "none"
+                }}
+              />
+              <button
+                type="submit"
+                style={{
+                  background: "var(--color-amber-accent)",
+                  border: "1.5px solid #18181b",
+                  borderRadius: "8px",
+                  padding: "8px 16px",
+                  fontSize: "0.8rem",
+                  fontWeight: "bold",
+                  cursor: "pointer",
+                  boxShadow: "3px 3px 0px #18181b"
+                }}
+              >
+                ASK
+              </button>
+            </form>
+          </div>
+
+          {/* Core Skills Summary (40%) */}
+          <div style={{ width: "260px", display: "flex", flexDirection: "column", gap: "20px" }}>
+            <div style={{ background: "#ffffff", border: "1.5px solid #18181b", borderRadius: "16px", padding: "16px" }}>
+              <span style={{ fontSize: "0.65rem", fontWeight: "bold", color: "var(--color-amber-accent)", letterSpacing: "1px", display: "block", textAlign: "center", marginBottom: "8px" }}>
+                CORE SKILLS SUMMARY
+              </span>
+
+              <div style={{ display: "flex", flexDirection: "column", gap: "8px", fontSize: "0.75rem" }}>
+                <div><strong>Languages:</strong> Python, SQL, JavaScript, HTML5/CSS3</div>
+                <div><strong>AI & Vision:</strong> YOLOv8, TensorFlow, OpenAI, RAG, OpenCV</div>
+                <div><strong>Frameworks:</strong> React, FastAPI, Dash, Streamlit, Node.js</div>
+                <div><strong>Databases:</strong> MongoDB, MySQL, Supabase (Postgres)</div>
               </div>
-              <div style={{ background: "rgba(245, 159, 0, 0.08)", border: "1px solid #f59f00", borderRadius: "4px", padding: "4px", display: "flex", flexDirection: "column", justifyContent: "space-between" }}>
-                <span style={{ fontSize: "0.55rem", fontWeight: "bold", color: "#b45309" }}>PYTHON</span>
-                <span style={{ fontSize: "0.45rem", color: "#777" }}>95% EXP</span>
-              </div>
-              <div style={{ background: "rgba(12, 166, 120, 0.08)", border: "1px solid #0ca678", borderRadius: "4px", padding: "4px", display: "flex", flexDirection: "column", justifyContent: "space-between" }}>
-                <span style={{ fontSize: "0.55rem", fontWeight: "bold", color: "#0d9488" }}>NODE</span>
-                <span style={{ fontSize: "0.45rem", color: "#777" }}>CORE</span>
-              </div>
-              <div style={{ background: "rgba(230, 73, 128, 0.08)", border: "1px solid #e64980", borderRadius: "4px", padding: "4px", display: "flex", flexDirection: "column", justifyContent: "space-between" }}>
-                <span style={{ fontSize: "0.55rem", fontWeight: "bold", color: "#db2777" }}>OPENCV</span>
-                <span style={{ fontSize: "0.45rem", color: "#777" }}>VISION</span>
+            </div>
+
+            {/* SVG Treemap Intelmap */}
+            <div style={{ background: "#ffffff", border: "1.5px solid #18181b", borderRadius: "16px", padding: "12px", display: "flex", flexDirection: "column", gap: "6px" }}>
+              <span style={{ fontSize: "0.6rem", fontWeight: "bold", color: "var(--color-amber-accent)", letterSpacing: "0.5px", textAlign: "center", display: "block" }}>
+                INTELMAP MATRIX
+              </span>
+              <div 
+                style={{
+                  display: "grid",
+                  gridTemplateColumns: "1.5fr 1fr",
+                  gridTemplateRows: "1.2fr 1fr",
+                  gap: "4px",
+                  height: "70px"
+                }}
+              >
+                <div style={{ background: "rgba(147, 51, 234, 0.05)", border: "1px solid #9333ea", borderRadius: "4px", padding: "2px 4px", display: "flex", flexDirection: "column", justifyContent: "space-between" }}>
+                  <span style={{ fontSize: "0.5rem", fontWeight: "bold", color: "#9333ea" }}>TF/YOLO</span>
+                  <span style={{ fontSize: "0.4rem", color: "#777" }}>VISION</span>
+                </div>
+                <div style={{ background: "rgba(245, 159, 0, 0.05)", border: "1px solid #f59f00", borderRadius: "4px", padding: "2px 4px", display: "flex", flexDirection: "column", justifyContent: "space-between" }}>
+                  <span style={{ fontSize: "0.5rem", fontWeight: "bold", color: "#b45309" }}>PYTHON</span>
+                  <span style={{ fontSize: "0.4rem", color: "#777" }}>95%</span>
+                </div>
+                <div style={{ background: "rgba(12, 166, 120, 0.05)", border: "1px solid #0ca678", borderRadius: "4px", padding: "2px 4px", display: "flex", flexDirection: "column", justifyContent: "space-between" }}>
+                  <span style={{ fontSize: "0.5rem", fontWeight: "bold", color: "#0d9488" }}>NODE</span>
+                  <span style={{ fontSize: "0.4rem", color: "#777" }}>REST</span>
+                </div>
+                <div style={{ background: "rgba(230, 73, 128, 0.05)", border: "1px solid #e64980", borderRadius: "4px", padding: "2px 4px", display: "flex", flexDirection: "column", justifyContent: "space-between" }}>
+                  <span style={{ fontSize: "0.5rem", fontWeight: "bold", color: "#db2777" }}>FASTAPI</span>
+                  <span style={{ fontSize: "0.4rem", color: "#777" }}>ASYNC</span>
+                </div>
               </div>
             </div>
           </div>
