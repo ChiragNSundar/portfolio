@@ -55,7 +55,18 @@ export const DeveloperResumeCard: React.FC<DeveloperResumeCardProps> = ({ onInte
     }
   ]);
   const [chatInput, setChatInput] = useState("");
+  const [isTyping, setIsTyping] = useState(false);
   const chatEndRef = useRef<HTMLDivElement>(null);
+
+  const handleClearChat = () => {
+    setChatLog([
+      {
+        sender: "bot",
+        text: "Hi! I'm Chirag's AI representative. Ask me anything about my projects, internship, education, or core strengths/weaknesses!"
+      }
+    ]);
+    setIsTyping(false);
+  };
 
   const fetchSignatures = async () => {
     if (!isSupabaseConfigured) {
@@ -81,7 +92,7 @@ export const DeveloperResumeCard: React.FC<DeveloperResumeCardProps> = ({ onInte
   // Scroll chatbot to end on update
   useEffect(() => {
     chatEndRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, [chatLog]);
+  }, [chatLog, isTyping]);
 
   const handleGuestbookSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -121,6 +132,7 @@ export const DeveloperResumeCard: React.FC<DeveloperResumeCardProps> = ({ onInte
     // Add user message to log immediately
     setChatLog(prev => [...prev, { sender: "user" as const, text: userMessage }]);
     setChatInput("");
+    setIsTyping(true);
 
     let botResponse = "";
 
@@ -157,8 +169,9 @@ export const DeveloperResumeCard: React.FC<DeveloperResumeCardProps> = ({ onInte
 
     // Delay bot response slightly to simulate thinking
     setTimeout(() => {
+      setIsTyping(false);
       setChatLog(prev => [...prev, { sender: "bot" as const, text: botResponse }]);
-    }, 400);
+    }, 650);
   };
 
   const suggestions = [
@@ -470,6 +483,31 @@ export const DeveloperResumeCard: React.FC<DeveloperResumeCardProps> = ({ onInte
                   <div style={{ whiteSpace: "pre-line" }}>{chat.text}</div>
                 </div>
               ))}
+              
+              {/* Typing indicator bubble */}
+              {isTyping && (
+                <div 
+                  style={{
+                    alignSelf: "flex-start",
+                    background: "#ffffff",
+                    border: "1.5px solid #18181b",
+                    borderRadius: "12px 12px 12px 2px",
+                    padding: "8px 12px",
+                    maxWidth: "85%",
+                    fontSize: "0.78rem",
+                    boxShadow: "2px 2px 0px rgba(0,0,0,0.05)"
+                  }}
+                >
+                  <div style={{ fontSize: "0.6rem", fontWeight: "bold", color: "var(--text-muted)", marginBottom: "2px" }}>
+                    CHIRAG AI
+                  </div>
+                  <div className="typing-dots">
+                    <span />
+                    <span />
+                    <span />
+                  </div>
+                </div>
+              )}
               <div ref={chatEndRef} />
             </div>
 
@@ -528,6 +566,23 @@ export const DeveloperResumeCard: React.FC<DeveloperResumeCardProps> = ({ onInte
                 }}
               >
                 ASK
+              </button>
+              <button
+                type="button"
+                onClick={handleClearChat}
+                style={{
+                  background: "#f4f4f5",
+                  border: "1.5px solid #18181b",
+                  borderRadius: "8px",
+                  padding: "8px 14px",
+                  fontSize: "0.8rem",
+                  fontWeight: "bold",
+                  cursor: "pointer",
+                  boxShadow: "3px 3px 0px #18181b"
+                }}
+                title="Clear Chat Logs"
+              >
+                🗑️
               </button>
             </form>
           </div>
