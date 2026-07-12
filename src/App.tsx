@@ -1,11 +1,122 @@
 import React, { useState, useEffect, useRef } from "react";
+import { createPortal } from "react-dom";
 import { AudioEngineCard } from "./components/AudioEngineCard";
 import { YoutubeCoversCard } from "./components/YoutubeCoversCard";
 import { DeveloperResumeCard } from "./components/DeveloperResumeCard";
 import { PolaroidCertificates } from "./components/PolaroidCertificates";
+import { supabase, isSupabaseConfigured } from "./lib/supabaseClient";
 import type { Track } from "./data/tracks";
 import { mixAndOriginalTracks } from "./data/tracks";
 import { audioEngine } from "./audio/audioEngine";
+
+interface GuestbookEntry {
+  id: string;
+  name: string;
+  message: string;
+  created_at: string;
+}
+
+const MOCK_ENTRIES = [
+  { id: "mock-1", name: "Infosys Recruiter", message: "Loved the interactive CV & SVG treemaps! 👍" },
+  { id: "mock-2", name: "WhatDigital Supervisor", message: "Outstanding execution on LLM chatbot architectures." },
+  { id: "mock-3", name: "GitHub Visitor", message: "Awesome YOLOv8 helmet detection main pipeline." },
+  { id: "mock-4", name: "Gen-AI Recruiter", message: "The local RAG chatbot is incredibly fast and fun!" },
+  { id: "mock-5", name: "Creative Dev", message: "Fascinating Neobrutalist cream design styling." }
+];
+
+const PROJECT_DETAILS_DATA = {
+  roadwatch: {
+    title: "RoadWatch: Smart Helmet & License Plate Recognition",
+    github: "https://github.com/ChiragNSundar/Helmet-Violation-Detection-and-License-Plate-Recognition-Realtime",
+    images: ["/rw/bike.gif", "/rw/image.png"],
+    pitch: "An AI-powered traffic enforcement system designed for real-time monitoring of motorcycle helmet violations. It detects riders without helmets, recognizes their license plates via advanced OCR consensus logic, and logs violations with visual evidence.",
+    techStack: [
+      { component: "Language", tech: "Python 3.10.x" },
+      { component: "Object Detection", tech: "YOLOv8 (v8.4.47)" },
+      { component: "Backend", tech: "FastAPI" },
+      { component: "OCR Engines", tech: "EasyOCR / PaddleOCR" },
+      { component: "Deep Learning", tech: "PyTorch" },
+      { component: "Graphics / UI", tech: "OpenCV / Jinja2" }
+    ],
+    features: [
+      "Real-Time Detection: High-speed YOLOv8 predictions mapping riders, helmets, and number plates.",
+      "OCR Consensus: Position-Level Voting System resolving character confusion (e.g., D vs Q) with 99%+ accuracy.",
+      "Smart Filtering: Automatically drops duplicate logs and matches Indian License Standard formats.",
+      "Automated Alerts: E-mails warning notices with attached infraction crop images to authorities.",
+      "Admin Dashboard: Built in FastAPI for uploading videos and tracking violation database logs."
+    ],
+    coreIntelligence: [
+      "Spatial Association: Triggers violations only when no-helmet detections and plate detections overlap the rider box by >=30%.",
+      "Weather-Resilient CLAHE: LAB color space CLAHE normalisation and Unsharp Masking applied dynamically in rain/low light.",
+      "Consensus Aggregator: Groups frame-by-frame readings using string-distance heuristics to clean OCR noise."
+    ],
+    challenges: "Maintaining accurate OCR reading on plates that were blurry, dirty, or captured in bad lighting. Solved by integrating CLAHE image pre-processing and custom tuning confidence bounds."
+  },
+  harmony: {
+    title: "Harmony Hub: Mental Health & Wellness Assistant",
+    github: "https://github.com/Mental-Wellbeing-App/MentalHealthApp",
+    images: [
+      "/hm/GenAI AssistantChat.jpeg",
+      "/hm/Chat2.jpeg",
+      "/hm/HabitTracker.jpeg",
+      "/hm/PlotlyGraphData.png",
+      "/hm/UserAuthPage.jpeg"
+    ],
+    pitch: "A comprehensive mental health assistant helping users with mood logs, habit trackers, and personalized AI support through a generative Gemini RAG chatbot.",
+    techStack: [
+      { component: "Frontend / UI", tech: "Streamlit (Python)" },
+      { component: "AI Chatbot", tech: "Gemini Pro LLM" },
+      { component: "Search Pipeline", tech: "RAG (Retrieval-Augmented Generation)" },
+      { component: "Data Parsing", tech: "NLP / PDF Parser text pipelines" },
+      { component: "Visual Analytics", tech: "Plotly Charts" }
+    ],
+    features: [
+      "AI Gemini Chatbot: Converses empathetically utilizing NLP pipelines.",
+      "Retrieval-Augmented Generation: Upload personal documents (PDFs) to feed context-aware answers to the LLM chatbot.",
+      "Wellness Tracking: Streamlit-based interfaces for tracking mood patterns, habit goals, and progress notes.",
+      "Dynamic Graphs: Plotly charts demonstrating wellness improvements."
+    ],
+    coreIntelligence: [
+      "RAG Architecture: Bypasses generic LLM boundaries by retrieving localized context from documents before formulating answers.",
+      "NLP Processing: Text queries analyzed naturally to return empathetic mental wellness replies rather than simple keyword matches.",
+      "Visual Insights: Pandas processes logs on-the-fly to render interactive Streamlit graph metrics."
+    ],
+    challenges: "Context injection accuracy for larger PDF uploads. Solved by refining text splitting algorithms and chunk size configurations."
+  },
+  jobportal: {
+    title: "Job Portal Business Intelligence Dashboard",
+    github: "https://github.com/ChiragNSundar/JobPortalDashboard",
+    images: [
+      "/jp/Screenshot 2026-07-12 205812.png",
+      "/jp/image copy.png",
+      "/jp/image.png",
+      "/jp/image copy 2.png",
+      "/jp/image copy 3.png",
+      "/jp/image copy 4.png",
+      "/jp/image copy 5.png"
+    ],
+    pitch: "A comprehensive, interactive data visualization dashboard querying user device preference models, application status distributions, and geo-spatial applicant locations.",
+    techStack: [
+      { component: "Core Logic", tech: "Python 3.x" },
+      { component: "Framework", tech: "Dash (by Plotly)" },
+      { component: "Database Controllers", tech: "SQLAlchemy / PyMongo / PyMySQL" },
+      { component: "Configuration Source", tech: "MongoDB Config documents / .env variables" },
+      { component: "Data Wrangling", tech: "Pandas / NumPy" }
+    ],
+    features: [
+      "Trend Analysis: Tracks daily and monthly application volumes over time with dual-axis Plotly charts.",
+      "Device Intelligence: Desktop vs mobile adoption charts modeling user device trends.",
+      "Geospatial Analytics: Bar charts mapping applicant regions and sunburst graphs representing countries.",
+      "Interactive UI: Neobrutalist glassmorphism layouts with global multi-metric dropdown filtering."
+    ],
+    coreIntelligence: [
+      "Fallback Config Pipeline: Centralized SQL controller attempts Mongo extraction first, defaulting to local environment variables if database is offline.",
+      "Modular Layout Architecture: Separates dashboard pages (Daily_Overview, Monthly_Trend) to ease maintenance.",
+      "Data Optimization: Uses optimized SQL query indices and Pandas aggregations to load thousands of rows quickly."
+    ],
+    challenges: "Managing connections across multiple remote database servers. Solved by building a centralized SQL controller utilizing local backups as fallback options."
+  }
+};
 
 // Scrambled text animation component for high-quality transitions
 const ScrambledText: React.FC<{ text: string }> = ({ text }) => {
@@ -65,6 +176,56 @@ const TypewriterText: React.FC<{ text: string }> = ({ text }) => {
 export const App: React.FC = () => {
   // Console Role Mode: 'select' = Decision screen, 'engineer' = Coding portfolio, 'producer' = Audio mixing portfolio
   const [mode, setMode] = useState<'select' | 'engineer' | 'producer'>('select');
+  const [activeDetailProject, setActiveDetailProject] = useState<"roadwatch" | "harmony" | "jobportal" | null>(null);
+
+  // Guestbook Footer states & handlers
+  const [entries, setEntries] = useState<GuestbookEntry[]>([]);
+  const [guestName, setGuestName] = useState("");
+  const [guestMessage, setGuestMessage] = useState("");
+  const [isGuestbookSubmitting, setIsGuestbookSubmitting] = useState(false);
+
+  const fetchSignatures = async () => {
+    if (!isSupabaseConfigured) return;
+    try {
+      const { data, error } = await supabase!
+        .from("guestbook")
+        .select("*")
+        .order("created_at", { ascending: false })
+        .limit(6);
+      if (error) throw error;
+      setEntries(data || []);
+    } catch (err: any) {
+      console.error("Error:", err);
+    }
+  };
+
+  useEffect(() => {
+    if (mode !== 'select') {
+      fetchSignatures();
+    }
+  }, [mode]);
+
+  const handleGuestbookSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!guestName.trim() || !guestMessage.trim()) return;
+    unlockAudioContext();
+
+    setIsGuestbookSubmitting(true);
+    try {
+      const { error } = await supabase!.from("guestbook").insert([
+        { name: guestName.trim(), message: guestMessage.trim() }
+      ]);
+      if (error) throw error;
+      
+      setGuestName("");
+      setGuestMessage("");
+      await fetchSignatures();
+    } catch (err: any) {
+      alert("Submission error: " + err.message);
+    } finally {
+      setIsGuestbookSubmitting(false);
+    }
+  };
 
   const [currentTrack, setCurrentTrack] = useState<Track | null>(null);
   const [isPlaying, setIsPlaying] = useState(false);
@@ -665,7 +826,10 @@ export const App: React.FC = () => {
                     ...getSectionStyles(1)
                   }}
                 >
-                  <DeveloperResumeCard onInteract={unlockAudioContext} />
+                  <DeveloperResumeCard 
+                    onInteract={unlockAudioContext} 
+                    onLaunchDetails={(key) => { playBipSound(); setActiveDetailProject(key); }}
+                  />
                 </section>
 
                 {/* Software Engineer: Polaroid Certifications */}
@@ -733,6 +897,111 @@ export const App: React.FC = () => {
                 </section>
               </>
             )}
+
+            {/* Visual Divider */}
+            <div 
+              style={{
+                width: "100%",
+                maxWidth: mode === 'engineer' ? "850px" : "750px",
+                borderTop: "3px dashed var(--border-color)",
+                marginTop: "60px",
+                marginBottom: "40px"
+              }}
+            />
+
+            {/* Supabase Guestbook Card Footer */}
+            <div 
+              style={{
+                width: "100%",
+                maxWidth: mode === 'engineer' ? "850px" : "750px",
+                background: "var(--color-amber)",
+                border: "2.5px solid var(--border-color)",
+                borderRadius: "16px",
+                padding: "24px",
+                boxShadow: "6px 6px 0px var(--card-shadow)",
+                marginBottom: "40px"
+              }}
+            >
+              <h3 style={{ fontSize: "1.2rem", fontWeight: "900", color: "var(--text-dark)", marginBottom: "12px", display: "flex", alignItems: "center", gap: "8px" }}>
+                ✍️ Guestbook Signature Log
+              </h3>
+              
+              <form onSubmit={handleGuestbookSubmit} style={{ display: "flex", flexWrap: "wrap", gap: "12px" }}>
+                <input
+                  type="text"
+                  placeholder="Your Name"
+                  value={guestName}
+                  onChange={(e) => setGuestName(e.target.value)}
+                  required
+                  aria-label="Your Name"
+                  style={{
+                    flex: "1 1 200px",
+                    background: "var(--card-bg)",
+                    border: "1.5px solid var(--border-color)",
+                    borderRadius: "8px",
+                    padding: "8px 14px",
+                    fontSize: "0.85rem",
+                    outline: "none",
+                    color: "var(--text-dark)"
+                  }}
+                />
+                <input
+                  type="text"
+                  placeholder="Leave a short comment..."
+                  value={guestMessage}
+                  onChange={(e) => setGuestMessage(e.target.value)}
+                  required
+                  aria-label="Your Comment"
+                  style={{
+                    flex: "2 1 350px",
+                    background: "var(--card-bg)",
+                    border: "1.5px solid var(--border-color)",
+                    borderRadius: "8px",
+                    padding: "8px 14px",
+                    fontSize: "0.85rem",
+                    outline: "none",
+                    color: "var(--text-dark)"
+                  }}
+                />
+                <button
+                  type="submit"
+                  disabled={isGuestbookSubmitting}
+                  style={{
+                    flex: "0 0 auto",
+                    background: "var(--color-amber-accent)",
+                    border: "1.5px solid var(--border-color)",
+                    borderRadius: "8px",
+                    padding: "8px 24px",
+                    fontSize: "0.85rem",
+                    fontWeight: "bold",
+                    color: "var(--card-bg)",
+                    cursor: "pointer",
+                    boxShadow: "3px 3px 0px var(--card-shadow)"
+                  }}
+                >
+                  {isGuestbookSubmitting ? "SIGNING..." : "SIGN THE LOG"}
+                </button>
+              </form>
+
+              {/* Guestbook signatures list */}
+              <div style={{ marginTop: "16px", borderTop: "1.5px dashed var(--border-color)", paddingTop: "12px" }}>
+                <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(240px, 1fr))", gap: "8px", maxHeight: "120px", overflowY: "auto" }}>
+                  {entries.length > 0 ? (
+                    entries.map((ent) => (
+                      <div key={ent.id} style={{ fontFamily: "var(--font-lcd)", fontSize: "0.68rem", color: "var(--text-dark)", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
+                        &raquo; <span style={{ fontWeight: "bold" }}>{ent.name}</span>: {ent.message}
+                      </div>
+                    ))
+                  ) : (
+                    MOCK_ENTRIES.map((ent) => (
+                      <div key={ent.id} style={{ fontFamily: "var(--font-lcd)", fontSize: "0.68rem", color: "var(--text-dark)", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
+                        &raquo; <span style={{ fontWeight: "bold" }}>{ent.name}</span>: {ent.message}
+                      </div>
+                    ))
+                  )}
+                </div>
+              </div>
+            </div>
 
             {/* Scroll bottom spacer to provide scrolling headroom */}
             <div style={{ height: "160px" }} />
@@ -805,6 +1074,253 @@ export const App: React.FC = () => {
             </div>
           </div>
         </>
+      )}
+
+      {/* Fullscreen Detailed Project Explorer Console Modal */}
+      {activeDetailProject && createPortal(
+        <div 
+          onClick={() => setActiveDetailProject(null)}
+          style={{
+            position: "fixed",
+            top: 0,
+            left: 0,
+            width: "100vw",
+            height: "100vh",
+            background: "rgba(24, 24, 27, 0.55)",
+            backdropFilter: "blur(16px)",
+            WebkitBackdropFilter: "blur(16px)",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            zIndex: 10000,
+            padding: "20px"
+          }}
+        >
+          <div 
+            onClick={(e) => e.stopPropagation()}
+            style={{
+              width: "100%",
+              maxWidth: "1000px",
+              height: "90vh",
+              backgroundColor: "var(--card-bg)",
+              border: "3px solid var(--border-color)",
+              borderRadius: "16px",
+              boxShadow: "12px 12px 0px var(--card-shadow)",
+              display: "flex",
+              flexDirection: "column",
+              overflow: "hidden"
+            }}
+          >
+            {/* Header console bar */}
+            <div 
+              style={{
+                background: "var(--card-bg-muted)",
+                borderBottom: "3px solid var(--border-color)",
+                padding: "16px 20px",
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center"
+              }}
+            >
+              <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+                <span style={{ fontSize: "1.3rem" }}>📂</span>
+                <span style={{ fontFamily: "var(--font-lcd)", fontWeight: "bold", fontSize: "0.85rem", color: "var(--color-amber-accent)" }}>
+                  PROJECT CONSOLE: {activeDetailProject.toUpperCase()}
+                </span>
+              </div>
+              <button 
+                onClick={() => setActiveDetailProject(null)}
+                className="analog-btn active"
+                style={{ padding: "6px 12px", fontSize: "0.75rem" }}
+              >
+                ✕ CLOSE PANEL
+              </button>
+            </div>
+
+            {/* Project selection tabs inside modal */}
+            <div 
+              style={{
+                display: "flex",
+                background: "var(--card-bg)",
+                borderBottom: "1.5px solid var(--border-color)",
+                padding: "8px 12px",
+                gap: "8px",
+                overflowX: "auto"
+              }}
+            >
+              {(["roadwatch", "harmony", "jobportal"] as const).map((key) => {
+                const isActive = activeDetailProject === key;
+                const icon = key === "roadwatch" ? "🏍️" : key === "harmony" ? "🧠" : "📊";
+                const label = key === "roadwatch" ? "ROADWATCH" : key === "harmony" ? "HARMONY HUB" : "JOB PORTAL";
+                return (
+                  <button
+                    key={key}
+                    onClick={() => { playBipSound(); setActiveDetailProject(key); }}
+                    className={`analog-btn ${isActive ? "active" : ""}`}
+                    style={{ padding: "6px 12px", fontSize: "0.75rem" }}
+                  >
+                    {icon} {label}
+                  </button>
+                );
+              })}
+            </div>
+
+            {/* Split Screen Panel Content */}
+            {(() => {
+              const data = PROJECT_DETAILS_DATA[activeDetailProject];
+              return (
+                <div 
+                  className="flex-row-mobile-stack"
+                  style={{
+                    flexGrow: 1,
+                    display: "flex",
+                    overflow: "hidden"
+                  }}
+                >
+                  {/* Left Column: Specs */}
+                  <div 
+                    className="full-width-mobile"
+                    style={{
+                      flex: "1.3 1 0",
+                      padding: "24px",
+                      overflowY: "auto",
+                      borderRight: "2px solid var(--border-color)",
+                      display: "flex",
+                      flexDirection: "column",
+                      gap: "20px"
+                    }}
+                  >
+                    <div>
+                      <h2 style={{ fontSize: "1.4rem", fontWeight: "900", textTransform: "uppercase", marginBottom: "8px" }}>
+                        {data.title}
+                      </h2>
+                      <p style={{ fontSize: "0.85rem", lineHeight: 1.45, opacity: 0.9 }}>
+                        {data.pitch}
+                      </p>
+                    </div>
+
+                    {/* GitHub Link button */}
+                    <div>
+                      <a 
+                        href={data.github}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="analog-btn active"
+                        style={{ display: "inline-flex", textDecoration: "none", color: "var(--card-bg)", padding: "8px 16px", fontSize: "0.8rem", gap: "6px" }}
+                      >
+                        VIEW WORK ON GITHUB 🔗
+                      </a>
+                    </div>
+
+                    {/* Tech stack grid */}
+                    <div style={{ background: "var(--card-bg-muted)", border: "1.5px solid var(--border-color)", borderRadius: "12px", padding: "14px" }}>
+                      <h3 style={{ fontSize: "0.85rem", fontWeight: "bold", textTransform: "uppercase", marginBottom: "8px", color: "var(--color-amber-accent)" }}>
+                        ⚙️ Tech Stack & Dependencies
+                      </h3>
+                      <div style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
+                        {data.techStack.map((item, idx) => (
+                          <div key={idx} style={{ display: "flex", justifyContent: "space-between", fontSize: "0.78rem", borderBottom: "1px dashed var(--border-color)", paddingBottom: "3px" }}>
+                            <span style={{ fontWeight: "bold", opacity: 0.8 }}>{item.component}</span>
+                            <span>{item.tech}</span>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+
+                    {/* Features list */}
+                    <div>
+                      <h3 style={{ fontSize: "0.85rem", fontWeight: "bold", textTransform: "uppercase", marginBottom: "8px" }}>
+                        🚀 Key Features
+                      </h3>
+                      <ul style={{ paddingLeft: "16px", margin: 0, fontSize: "0.78rem", display: "flex", flexDirection: "column", gap: "6px", lineHeight: 1.4 }}>
+                        {data.features.map((feat, idx) => (
+                          <li key={idx}>{feat}</li>
+                        ))}
+                      </ul>
+                    </div>
+
+                    {/* Core Intelligence pipelines */}
+                    <div>
+                      <h3 style={{ fontSize: "0.85rem", fontWeight: "bold", textTransform: "uppercase", marginBottom: "8px" }}>
+                        🧠 Core Intelligence
+                      </h3>
+                      <ul style={{ paddingLeft: "16px", margin: 0, fontSize: "0.78rem", display: "flex", flexDirection: "column", gap: "6px", lineHeight: 1.4 }}>
+                        {data.coreIntelligence.map((intel, idx) => (
+                          <li key={idx}>{intel}</li>
+                        ))}
+                      </ul>
+                    </div>
+
+                    {/* Challenges faced */}
+                    <div>
+                      <h3 style={{ fontSize: "0.85rem", fontWeight: "bold", textTransform: "uppercase", marginBottom: "4px" }}>
+                        ⚖️ Development Challenges
+                      </h3>
+                      <p style={{ fontSize: "0.78rem", lineHeight: 1.45, opacity: 0.85 }}>
+                        {data.challenges}
+                      </p>
+                    </div>
+                  </div>
+
+                  {/* Right Column: Visual screenshot feed */}
+                  <div 
+                    className="full-width-mobile"
+                    style={{
+                      flex: "0.9 1 0",
+                      padding: "24px",
+                      background: "var(--card-bg-muted)",
+                      overflowY: "auto",
+                      display: "flex",
+                      flexDirection: "column",
+                      gap: "20px"
+                    }}
+                  >
+                    <h3 style={{ fontSize: "0.85rem", fontWeight: "bold", textTransform: "uppercase", color: "var(--text-muted)" }}>
+                      🖼️ Visual Assets & Demos
+                    </h3>
+                    <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
+                      {data.images.map((imgSrc, idx) => {
+                        const filename = imgSrc.split("/").pop();
+                        return (
+                          <div 
+                            key={idx}
+                            style={{
+                              background: "var(--card-bg)",
+                              border: "1.5px solid var(--border-color)",
+                              borderRadius: "12px",
+                              padding: "10px",
+                              boxShadow: "4px 4px 0px var(--card-shadow)",
+                              display: "flex",
+                              flexDirection: "column",
+                              gap: "8px"
+                            }}
+                          >
+                            <img 
+                              src={imgSrc} 
+                              alt={`${data.title} Asset ${idx + 1}`}
+                              style={{
+                                width: "100%",
+                                height: "auto",
+                                display: "block",
+                                borderRadius: "6px",
+                                border: "1px solid var(--border-color)"
+                              }}
+                              loading="lazy"
+                            />
+                            <div style={{ fontFamily: "var(--font-lcd)", fontSize: "0.6rem", color: "var(--text-muted)", textTransform: "uppercase", overflow: "hidden", textOverflow: "ellipsis" }}>
+                              {filename}
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </div>
+                </div>
+              );
+            })()}
+          </div>
+        </div>,
+        document.body
       )}
     </div>
   );

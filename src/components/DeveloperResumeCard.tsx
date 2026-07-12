@@ -1,15 +1,8 @@
 import React, { useState, useEffect, useRef } from "react";
-import { supabase, isSupabaseConfigured } from "../lib/supabaseClient";
-
-interface GuestbookEntry {
-  id: string;
-  name: string;
-  message: string;
-  created_at: string;
-}
 
 interface DeveloperResumeCardProps {
   onInteract?: () => void;
+  onLaunchDetails?: (projectKey: "roadwatch" | "harmony" | "jobportal") => void;
 }
 
 // Chatbot Knowledge Base
@@ -101,20 +94,7 @@ function matchTopic(query: string): string | null {
   return null;
 }
 
-const MOCK_ENTRIES = [
-  { id: "mock-1", name: "Infosys Recruiter", message: "Loved the interactive CV & SVG treemaps! 👍" },
-  { id: "mock-2", name: "WhatDigital Supervisor", message: "Outstanding execution on LLM chatbot architectures." },
-  { id: "mock-3", name: "GitHub Visitor", message: "Awesome YOLOv8 helmet detection main pipeline." },
-  { id: "mock-4", name: "Gen-AI Recruiter", message: "The local RAG chatbot is incredibly fast and fun!" },
-  { id: "mock-5", name: "Creative Dev", message: "Fascinating Neobrutalist cream design styling." }
-];
-
-export const DeveloperResumeCard: React.FC<DeveloperResumeCardProps> = ({ onInteract }) => {
-  const [entries, setEntries] = useState<GuestbookEntry[]>([]);
-  const [name, setName] = useState("");
-  const [message, setMessage] = useState("");
-  const [isSubmitting, setIsSubmitting] = useState(false);
-
+export const DeveloperResumeCard: React.FC<DeveloperResumeCardProps> = ({ onInteract, onLaunchDetails }) => {
   // Project Explorer state ('harmony' | 'roadwatch' | 'jobportal' | null)
   const [activeProject, setActiveProject] = useState<string | null>(null);
 
@@ -141,54 +121,11 @@ export const DeveloperResumeCard: React.FC<DeveloperResumeCardProps> = ({ onInte
     setLastTopic(null);
   };
 
-  const fetchSignatures = async () => {
-    if (!isSupabaseConfigured) {
-      return;
-    }
-    try {
-      const { data, error } = await supabase!
-        .from("guestbook")
-        .select("*")
-        .order("created_at", { ascending: false })
-        .limit(5);
-      if (error) throw error;
-      setEntries(data || []);
-    } catch (err: any) {
-      console.error("Error:", err);
-    }
-  };
-
-  useEffect(() => {
-    fetchSignatures();
-  }, []);
-
   // Scroll chatbot to end on update (scrollTop, NOT scrollIntoView which jerks the whole page)
   useEffect(() => {
     const el = chatContainerRef.current;
     if (el) el.scrollTop = el.scrollHeight;
   }, [chatLog, isTyping]);
-
-  const handleGuestbookSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!name.trim() || !message.trim()) return;
-    if (onInteract) onInteract();
-
-    setIsSubmitting(true);
-    try {
-      const { error } = await supabase!.from("guestbook").insert([
-        { name: name.trim(), message: message.trim() }
-      ]);
-      if (error) throw error;
-      
-      setName("");
-      setMessage("");
-      await fetchSignatures();
-    } catch (err: any) {
-      alert("Submission error: " + err.message);
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
 
   // Local Chatbot Query Resolver (using functional state updates to prevent stale closures)
   const handleChatSubmit = (e?: React.FormEvent, customQuery?: string) => {
@@ -328,89 +265,6 @@ export const DeveloperResumeCard: React.FC<DeveloperResumeCardProps> = ({ onInte
                 </p>
               </div>
             </div>
-
-            {/* Supabase Guestbook Card */}
-            <div style={{ background: "var(--color-amber)", border: "1.5px solid var(--border-color)", borderRadius: "16px", padding: "20px", boxShadow: "4px 4px 0px var(--card-shadow)" }}>
-              <h3 style={{ fontSize: "1rem", fontWeight: "900", color: "var(--text-dark)", marginBottom: "8px", display: "flex", alignItems: "center", gap: "6px" }}>
-                ✍️ Guestbook Signature Log
-              </h3>
-              
-              <form onSubmit={handleGuestbookSubmit} style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
-                <div style={{ display: "flex", gap: "8px" }}>
-                  <input
-                    type="text"
-                    placeholder="Your Name"
-                    value={name}
-                    onChange={(e) => setName(e.target.value)}
-                    required
-                    aria-label="Your Name"
-                    style={{
-                      flexGrow: 1,
-                      background: "var(--card-bg)",
-                      border: "1.5px solid var(--border-color)",
-                      borderRadius: "8px",
-                      padding: "6px 12px",
-                      fontSize: "0.8rem",
-                      outline: "none",
-                      color: "var(--text-dark)"
-                    }}
-                  />
-                  <button
-                    type="submit"
-                    disabled={isSubmitting}
-                    style={{
-                      background: "var(--color-amber-accent)",
-                      border: "1.5px solid var(--border-color)",
-                      borderRadius: "8px",
-                      padding: "6px 14px",
-                      fontSize: "0.8rem",
-                      fontWeight: "bold",
-                      color: "var(--card-bg)",
-                      cursor: "pointer",
-                      boxShadow: "2px 2px 0px var(--card-shadow)"
-                    }}
-                  >
-                    {isSubmitting ? "SIGNING..." : "SIGN"}
-                  </button>
-                </div>
-                <input
-                  type="text"
-                  placeholder="Leave a short comment..."
-                  value={message}
-                  onChange={(e) => setMessage(e.target.value)}
-                  required
-                  aria-label="Your Comment"
-                  style={{
-                  background: "var(--card-bg)",
-                  border: "1.5px solid var(--border-color)",
-                  borderRadius: "8px",
-                  padding: "6px 12px",
-                  fontSize: "0.8rem",
-                  outline: "none",
-                  color: "var(--text-dark)"
-                }}
-              />
-            </form>
-
-              {/* Guestbook signatures output */}
-              <div style={{ marginTop: "12px", borderTop: "1px dashed var(--border-color)", paddingTop: "8px" }}>
-                <div style={{ maxHeight: "80px", overflowY: "auto", display: "flex", flexDirection: "column", gap: "4px" }}>
-                  {entries.length > 0 ? (
-                    entries.map((ent) => (
-                      <div key={ent.id} style={{ fontFamily: "var(--font-lcd)", fontSize: "0.62rem", color: "var(--text-dark)", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
-                        &raquo; <span style={{ fontWeight: "bold" }}>{ent.name}</span>: {ent.message}
-                      </div>
-                    ))
-                  ) : (
-                    MOCK_ENTRIES.map((ent) => (
-                      <div key={ent.id} style={{ fontFamily: "var(--font-lcd)", fontSize: "0.62rem", color: "var(--text-dark)", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
-                        &raquo; <span style={{ fontWeight: "bold" }}>{ent.name}</span>: {ent.message}
-                      </div>
-                    ))
-                  )}
-                </div>
-              </div>
-            </div>
           </div>
 
           {/* Right Column: Project Explorer cards */}
@@ -448,6 +302,48 @@ export const DeveloperResumeCard: React.FC<DeveloperResumeCardProps> = ({ onInte
                     <div><strong>Model Training:</strong> Custom-trained YOLOv8 model for 4 classes: <code>with helmet</code>, <code>without helmet</code>, <code>rider</code>, and <code>number plate</code>.</div>
                     <div><strong>Indian Plate Regex:</strong> Matches pattern <code>XX00XX0000</code> to prevent duplicate CSV entries.</div>
                     <div><strong>Challenges faced:</strong> Preprocessed blurry number plate frames in OpenCV and tuned confidence thresholds to combat poor lighting.</div>
+                    <div style={{ display: "flex", gap: "10px", marginTop: "8px" }}>
+                      <button
+                        onClick={(e) => { e.stopPropagation(); if (onLaunchDetails) onLaunchDetails("roadwatch"); }}
+                        style={{
+                          flex: 1,
+                          background: "var(--color-amber-accent)",
+                          border: "1.5px solid var(--border-color)",
+                          borderRadius: "8px",
+                          padding: "6px 12px",
+                          fontSize: "0.75rem",
+                          fontWeight: "bold",
+                          cursor: "pointer",
+                          boxShadow: "2px 2px 0px var(--card-shadow)"
+                        }}
+                      >
+                        LAUNCH DETAILED PANEL 🚀
+                      </button>
+                      <a
+                        href="https://github.com/ChiragNSundar/Helmet-Violation-Detection-and-License-Plate-Recognition-Realtime"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        onClick={(e) => e.stopPropagation()}
+                        style={{
+                          flex: 1,
+                          display: "flex",
+                          justifyContent: "center",
+                          alignItems: "center",
+                          background: "var(--card-bg)",
+                          border: "1.5px solid var(--border-color)",
+                          borderRadius: "8px",
+                          padding: "6px 12px",
+                          fontSize: "0.75rem",
+                          fontWeight: "bold",
+                          textDecoration: "none",
+                          color: "var(--text-dark)",
+                          cursor: "pointer",
+                          boxShadow: "2px 2px 0px var(--card-shadow)"
+                        }}
+                      >
+                        GITHUB REPO 🔗
+                      </a>
+                    </div>
                   </div>
                 )}
               </div>
@@ -473,6 +369,48 @@ export const DeveloperResumeCard: React.FC<DeveloperResumeCardProps> = ({ onInte
                     <div><strong>Pitch:</strong> Supportive mental wellness platform helping users track progress and converse with an AI chatbot.</div>
                     <div><strong>AI RAG Integration:</strong> Employs Retrieval-Augmented Generation to process uploaded PDF document text pipelines, delivering context-aware, personalized LLM responses instead of generic answers.</div>
                     <div><strong>NLP & Analytics:</strong> Uses natural language processing to comprehend conversations and integrates interactive Plotly charts in a Python Streamlit UI wrapper.</div>
+                    <div style={{ display: "flex", gap: "10px", marginTop: "8px" }}>
+                      <button
+                        onClick={(e) => { e.stopPropagation(); if (onLaunchDetails) onLaunchDetails("harmony"); }}
+                        style={{
+                          flex: 1,
+                          background: "var(--color-amber-accent)",
+                          border: "1.5px solid var(--border-color)",
+                          borderRadius: "8px",
+                          padding: "6px 12px",
+                          fontSize: "0.75rem",
+                          fontWeight: "bold",
+                          cursor: "pointer",
+                          boxShadow: "2px 2px 0px var(--card-shadow)"
+                        }}
+                      >
+                        LAUNCH DETAILED PANEL 🚀
+                      </button>
+                      <a
+                        href="https://github.com/Mental-Wellbeing-App/MentalHealthApp"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        onClick={(e) => e.stopPropagation()}
+                        style={{
+                          flex: 1,
+                          display: "flex",
+                          justifyContent: "center",
+                          alignItems: "center",
+                          background: "var(--card-bg)",
+                          border: "1.5px solid var(--border-color)",
+                          borderRadius: "8px",
+                          padding: "6px 12px",
+                          fontSize: "0.75rem",
+                          fontWeight: "bold",
+                          textDecoration: "none",
+                          color: "var(--text-dark)",
+                          cursor: "pointer",
+                          boxShadow: "2px 2px 0px var(--card-shadow)"
+                        }}
+                      >
+                        GITHUB REPO 🔗
+                      </a>
+                    </div>
                   </div>
                 )}
               </div>
@@ -497,6 +435,48 @@ export const DeveloperResumeCard: React.FC<DeveloperResumeCardProps> = ({ onInte
                   <div style={{ marginTop: "10px", fontSize: "0.78rem", color: "var(--text-dark)", display: "flex", flexDirection: "column", gap: "8px", borderTop: "1px dashed var(--border-color)", paddingTop: "8px" }}>
                     <div><strong>Pitch:</strong> Interactive business intelligence dashboard visualizing job board metrics.</div>
                     <div><strong>Database Pipeline:</strong> Connected to MongoDB and MySQL databases, optimized query pipelines, and loaded geospatial, device usage, and engagement trends in Plotly & Dash.</div>
+                    <div style={{ display: "flex", gap: "10px", marginTop: "8px" }}>
+                      <button
+                        onClick={(e) => { e.stopPropagation(); if (onLaunchDetails) onLaunchDetails("jobportal"); }}
+                        style={{
+                          flex: 1,
+                          background: "var(--color-amber-accent)",
+                          border: "1.5px solid var(--border-color)",
+                          borderRadius: "8px",
+                          padding: "6px 12px",
+                          fontSize: "0.75rem",
+                          fontWeight: "bold",
+                          cursor: "pointer",
+                          boxShadow: "2px 2px 0px var(--card-shadow)"
+                        }}
+                      >
+                        LAUNCH DETAILED PANEL 🚀
+                      </button>
+                      <a
+                        href="https://github.com/ChiragNSundar/JobPortalDashboard"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        onClick={(e) => e.stopPropagation()}
+                        style={{
+                          flex: 1,
+                          display: "flex",
+                          justifyContent: "center",
+                          alignItems: "center",
+                          background: "var(--card-bg)",
+                          border: "1.5px solid var(--border-color)",
+                          borderRadius: "8px",
+                          padding: "6px 12px",
+                          fontSize: "0.75rem",
+                          fontWeight: "bold",
+                          textDecoration: "none",
+                          color: "var(--text-dark)",
+                          cursor: "pointer",
+                          boxShadow: "2px 2px 0px var(--card-shadow)"
+                        }}
+                      >
+                        GITHUB REPO 🔗
+                      </a>
+                    </div>
                   </div>
                 )}
               </div>
