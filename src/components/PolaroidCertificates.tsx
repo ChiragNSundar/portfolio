@@ -176,13 +176,13 @@ export const PolaroidCertificates: React.FC = () => {
           📧 EMAIL: chiragns12@gmail.com
         </a>
         <a 
-          href="https://github.com/ChiragNS"
+          href="https://github.com/ChiragNSundar"
           target="_blank"
           rel="noopener noreferrer"
           className="analog-btn"
           style={{ padding: "8px 16px", fontSize: "0.78rem", textDecoration: "none", color: "#18181b" }}
         >
-          💻 GITHUB: github.com/ChiragNS
+          💻 GITHUB: github.com/ChiragNSundar
         </a>
         <a 
           href="https://www.linkedin.com/in/chiragnsundar/"
