@@ -28,7 +28,7 @@ const PROJECT_DETAILS_DATA = {
   roadwatch: {
     title: "RoadWatch: Smart Helmet & License Plate Recognition",
     github: "https://github.com/ChiragNSundar/Helmet-Violation-Detection-and-License-Plate-Recognition-Realtime",
-    images: ["/rw/bike.gif", "/rw/image.png"],
+    images: ["/rw/bike.gif"],
     pitch: "An AI-powered traffic enforcement system designed for real-time monitoring of motorcycle helmet violations. It detects riders without helmets, recognizes their license plates via advanced OCR consensus logic, and logs violations with visual evidence.",
     techStack: [
       { component: "Language", tech: "Python 3.10.x" },
@@ -50,7 +50,19 @@ const PROJECT_DETAILS_DATA = {
       "Weather-Resilient CLAHE: LAB color space CLAHE normalisation and Unsharp Masking applied dynamically in rain/low light.",
       "Consensus Aggregator: Groups frame-by-frame readings using string-distance heuristics to clean OCR noise."
     ],
-    challenges: "Maintaining accurate OCR reading on plates that were blurry, dirty, or captured in bad lighting. Solved by integrating CLAHE image pre-processing and custom tuning confidence bounds."
+    challenges: "Maintaining accurate OCR reading on plates that were blurry, dirty, or captured in bad lighting. Solved by integrating CLAHE image pre-processing and custom tuning confidence bounds.",
+    projectStructure: `/Helmet-Violation-Detection-and-License-Plate-Recognition-Realtime
+├── app/
+│   ├── main.py                 # FastAPI application web server
+│   └── ...                     # API endpoints & frame pipelines
+├── Training _module/
+│   ├── scripts/
+│   │   └── main.py             # Standalone CLI detection script
+│   ├── coco128.yaml            # Dataset & classes configuration
+│   └── training.py             # YOLOv8 custom model training script
+├── best.pt                     # Trained custom weights (.pt weights)
+├── requirements.txt            # Python dependencies configuration
+└── .env.example                # Server & SMTP email alert templates`
   },
   harmony: {
     title: "Harmony Hub: Mental Health & Wellness Assistant",
@@ -81,7 +93,18 @@ const PROJECT_DETAILS_DATA = {
       "NLP Processing: Text queries analyzed naturally to return empathetic mental wellness replies rather than simple keyword matches.",
       "Visual Insights: Pandas processes logs on-the-fly to render interactive Streamlit graph metrics."
     ],
-    challenges: "Context injection accuracy for larger PDF uploads. Solved by refining text splitting algorithms and chunk size configurations."
+    challenges: "Context injection accuracy for larger PDF uploads. Solved by refining text splitting algorithms and chunk size configurations.",
+    projectStructure: `/HarmonyHealthApp
+├── main.py                     # Streamlit application entrypoint
+├── chatbot.py                  # Gemini Pro RAG chatbot processor
+├── auth.py                     # User session & authorization handler
+├── tracker/
+│   ├── mood.py                 # Mood entries log & calendar tracker
+│   └── habits.py               # Habit analytics & metrics plots
+├── utils/
+│   ├── pdf_parser.py           # Text extraction pipeline
+│   └── plot_helper.py          # Custom Plotly data visuals
+└── requirements.txt            # Project python pack list`
   },
   jobportal: {
     title: "Job Portal Business Intelligence Dashboard",
@@ -114,7 +137,23 @@ const PROJECT_DETAILS_DATA = {
       "Modular Layout Architecture: Separates dashboard pages (Daily_Overview, Monthly_Trend) to ease maintenance.",
       "Data Optimization: Uses optimized SQL query indices and Pandas aggregations to load thousands of rows quickly."
     ],
-    challenges: "Managing connections across multiple remote database servers. Solved by building a centralized SQL controller utilizing local backups as fallback options."
+    challenges: "Managing connections across multiple remote database servers. Solved by building a centralized SQL controller utilizing local backups as fallback options.",
+    projectStructure: `/JobPortalDashboard
+├── Data/
+│   ├── datasetsql.py           # Core SQL + Mongo connection load logic
+│   └── jobseeker_dashboard...  # Local backup dataset CSV
+├── jobpage_status/             # Dashboard Layout Pages
+│   ├── Daily_Overview.py       # Metrics timeline
+│   ├── Monthly_Trend.py        # Analytics trends
+│   ├── Location_Analysis.py    # Region distribution
+│   └── ... (Other dashboards)
+├── main_file/
+│   ├── app.py                  # Main Application startup file
+│   ├── mongoconnector.py       # MongoDB credentials helper
+│   └── sql_connector.py        # MySQL database helper connection
+├── .env.example                # Env settings configuration
+├── requirements.txt            # Requirements python list
+└── README.md                   # Setup documentation`
   }
 };
 
@@ -1250,6 +1289,30 @@ export const App: React.FC = () => {
                         ))}
                       </ul>
                     </div>
+
+                    {/* Project Structure Tree */}
+                    {data.projectStructure && (
+                      <div>
+                        <h3 style={{ fontSize: "0.85rem", fontWeight: "bold", textTransform: "uppercase", marginBottom: "8px" }}>
+                          📁 Project Structure
+                        </h3>
+                        <pre 
+                          style={{ 
+                            background: "var(--card-bg-muted)", 
+                            border: "1.5px solid var(--border-color)", 
+                            borderRadius: "8px", 
+                            padding: "12px", 
+                            fontSize: "0.72rem", 
+                            fontFamily: "monospace", 
+                            color: "var(--text-dark)",
+                            overflowX: "auto",
+                            whiteSpace: "pre"
+                          }}
+                        >
+                          {data.projectStructure}
+                        </pre>
+                      </div>
+                    )}
 
                     {/* Challenges faced */}
                     <div>
