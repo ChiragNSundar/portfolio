@@ -171,6 +171,16 @@ export const mixAndOriginalTracks: Track[] = [
   }
 ];
 
+export const originalVideos: CoverVideo[] = [
+  {
+    id: "original-1",
+    title: "No Bitches",
+    youtubeId: "srJudEKvoUk",
+    description: "Original Track by Hazard Chirag. Aggressive sub-bass layering, detuned lead synths, and punchy 808 transient saturation.",
+    genre: "Trap / Comedy Synth"
+  }
+];
+
 export const coverVideos: CoverVideo[] = [
   {
     id: "cover-1",
