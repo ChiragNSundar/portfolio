@@ -9,9 +9,21 @@ export const YoutubeCoversCard: React.FC<YoutubeCoversCardProps> = ({ onInteract
   const [currentIdx, setCurrentIdx] = useState(0);
   const activeVideo = coverVideos[currentIdx];
 
+  const [emailCopied, setEmailCopied] = useState(false);
+
   const handleSelectCover = (idx: number) => {
     setCurrentIdx(idx);
     if (onInteract) onInteract();
+  };
+
+  const handleEmailClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    navigator.clipboard.writeText("chiragns12@gmail.com");
+    setEmailCopied(true);
+    window.location.href = "mailto:chiragns12@gmail.com";
+    setTimeout(() => {
+      setEmailCopied(false);
+    }, 2000);
   };
 
   return (
@@ -229,6 +241,7 @@ export const YoutubeCoversCard: React.FC<YoutubeCoversCardProps> = ({ onInteract
       >
         <a 
           href="mailto:chiragns12@gmail.com"
+          onClick={handleEmailClick}
           className="analog-btn"
           style={{ 
             padding: "8px 16px", 
@@ -244,7 +257,7 @@ export const YoutubeCoversCard: React.FC<YoutubeCoversCardProps> = ({ onInteract
             <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
             <polyline points="22,6 12,13 2,6"/>
           </svg>
-          EMAIL
+          {emailCopied ? "COPIED!" : "EMAIL"}
         </a>
         <a 
           href="https://instagram.com/chirag.localhost"

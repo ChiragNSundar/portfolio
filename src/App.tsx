@@ -179,14 +179,14 @@ export const App: React.FC = () => {
     const tilt = tilts[idx] || { rx: 0, ry: 0 };
     
     return {
-      opacity: isActive ? 1 : 0.35,
-      filter: isActive ? "blur(0px)" : "blur(4px)",
+      opacity: isActive ? 1 : 0.6,
+      filter: "none",
       transform: isActive 
         ? `perspective(1600px) rotateX(${tilt.rx}deg) rotateY(${tilt.ry}deg) translateY(0) scale(1)` 
         : `perspective(1600px) rotateX(8deg) rotateY(-3deg) translateY(40px) scale(0.96)`,
       transition: isActive 
-        ? "transform 0.15s ease-out, opacity 0.6s ease, filter 0.6s ease" 
-        : "transform 0.9s cubic-bezier(0.19, 1, 0.22, 1), opacity 0.6s ease, filter 0.6s ease",
+        ? "transform 0.15s ease-out, opacity 0.6s ease" 
+        : "transform 0.9s cubic-bezier(0.19, 1, 0.22, 1), opacity 0.6s ease",
       transformStyle: "preserve-3d" as const,
       backfaceVisibility: "hidden" as const
     };

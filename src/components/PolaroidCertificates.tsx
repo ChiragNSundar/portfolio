@@ -1,7 +1,18 @@
-import React from "react";
+import React, { useState } from "react";
 import { resumeData } from "../data/resume";
 
 export const PolaroidCertificates: React.FC = () => {
+  const [emailCopied, setEmailCopied] = useState(false);
+
+  const handleEmailClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    navigator.clipboard.writeText("chiragns12@gmail.com");
+    setEmailCopied(true);
+    window.location.href = "mailto:chiragns12@gmail.com";
+    setTimeout(() => {
+      setEmailCopied(false);
+    }, 2000);
+  };
   // A curated color palette for the polaroid inner backgrounds
   const colors = [
     "linear-gradient(135deg, #f8bbd0, #f06292)", // rose pastels
@@ -168,6 +179,7 @@ export const PolaroidCertificates: React.FC = () => {
       >
         <a 
           href="mailto:chiragns12@gmail.com"
+          onClick={handleEmailClick}
           className="analog-btn"
           style={{ 
             padding: "8px 16px", 
@@ -183,7 +195,7 @@ export const PolaroidCertificates: React.FC = () => {
             <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
             <polyline points="22,6 12,13 2,6"/>
           </svg>
-          EMAIL
+          {emailCopied ? "COPIED!" : "EMAIL"}
         </a>
         <a 
           href="https://github.com/ChiragNSundar"
