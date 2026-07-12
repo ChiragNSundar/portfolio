@@ -12,6 +12,7 @@ import { audioEngine } from "./audio/audioEngine";
 interface GuestbookEntry {
   id: string;
   name: string;
+  email?: string;
   message: string;
   created_at: string;
 }
@@ -2101,6 +2102,68 @@ export const App: React.FC = () => {
                 display: "block"
               }}
             />
+          </div>
+        </div>
+      )}
+      {/* FL Studio Splash Overlay */}
+      {showFlSplash && (
+        <div style={{
+          position: "fixed",
+          top: 0,
+          left: 0,
+          width: "100vw",
+          height: "100vh",
+          background: "linear-gradient(135deg, #1a1a2e 0%, #16213e 40%, #0f3460 100%)",
+          zIndex: 9999,
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "center",
+          alignItems: "center",
+          gap: "24px",
+          animation: "fl-splash-in 0.3s ease-out"
+        }}>
+          {/* FL Studio Fruit Logo SVG */}
+          <div style={{ animation: "fl-logo-pulse 1.5s ease-in-out infinite", filter: "drop-shadow(0 0 30px rgba(255,165,0,0.5))" }}>
+            <svg width="120" height="120" viewBox="0 0 120 120" fill="none">
+              {/* Orange fruit body */}
+              <circle cx="60" cy="60" r="45" fill="url(#flGrad)" stroke="#ff8c00" strokeWidth="3"/>
+              {/* Stem */}
+              <path d="M60 15 Q58 5 55 2" stroke="#4a7c59" strokeWidth="3" strokeLinecap="round" fill="none"/>
+              {/* Leaf */}
+              <ellipse cx="52" cy="6" rx="8" ry="4" fill="#4a7c59" transform="rotate(-20, 52, 6)"/>
+              {/* Face - eyes */}
+              <circle cx="47" cy="52" r="4" fill="#1a1a2e"/>
+              <circle cx="73" cy="52" r="4" fill="#1a1a2e"/>
+              {/* Face - smile */}
+              <path d="M46 68 Q60 80 74 68" stroke="#1a1a2e" strokeWidth="3" strokeLinecap="round" fill="none"/>
+              {/* Highlight */}
+              <ellipse cx="45" cy="40" rx="8" ry="5" fill="rgba(255,255,255,0.3)" transform="rotate(-20, 45, 40)"/>
+              <defs>
+                <radialGradient id="flGrad" cx="40%" cy="35%">
+                  <stop offset="0%" stopColor="#ffb347"/>
+                  <stop offset="100%" stopColor="#ff6b00"/>
+                </radialGradient>
+              </defs>
+            </svg>
+          </div>
+          <div style={{
+            fontFamily: "var(--font-lcd)",
+            fontSize: "1.4rem",
+            fontWeight: "bold",
+            color: "#ff8c00",
+            letterSpacing: "4px",
+            textTransform: "uppercase",
+            textShadow: "0 0 20px rgba(255,140,0,0.5)"
+          }}>
+            AUDIO STUDIO
+          </div>
+          <div style={{
+            fontFamily: "var(--font-lcd)",
+            fontSize: "0.7rem",
+            color: "rgba(255,255,255,0.4)",
+            letterSpacing: "2px"
+          }}>
+            INITIALIZING MIXING CONSOLE...
           </div>
         </div>
       )}

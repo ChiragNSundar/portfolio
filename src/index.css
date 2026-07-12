@@ -324,3 +324,14 @@ a:focus-visible {
   box-shadow: 6px 6px 0px var(--card-shadow) !important;
 }
 
+/* FL Studio Splash Animations */
+@keyframes fl-splash-in {
+  0% { opacity: 0; }
+  100% { opacity: 1; }
+}
+
+@keyframes fl-logo-pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.08); }
+}
+
