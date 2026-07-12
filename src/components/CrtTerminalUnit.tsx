@@ -9,8 +9,6 @@ interface CrtTerminalUnitProps {
 export const CrtTerminalUnit: React.FC<CrtTerminalUnitProps> = ({ onInteract }) => {
   const [history, setHistory] = useState<string[]>([]);
   const [inputVal, setInputVal] = useState("");
-  
-  // Guestbook workflow state machine
   const [guestbookState, setGuestbookState] = useState<'idle' | 'awaiting_name' | 'awaiting_message'>('idle');
   const [tempName, setTempName] = useState('');
 
@@ -23,31 +21,27 @@ export const CrtTerminalUnit: React.FC<CrtTerminalUnitProps> = ({ onInteract }) 
       "MICROSOFT(R) MS-DOS(R) VERSION 6.22",
       "(C)COPYRIGHT MICROSOFT CORP 1981-1994.",
       "",
-      "WELCOME TO CHIRAG N SUNDAR'S DEVELOPER PROFILE TERMINAL.",
-      "TYPE 'help' FOR A LIST OF AVAILABLE COMMANDS.",
-      "OR USE THE F-KEY MODULES BELOW.",
+      "WELCOME TO CHIRAG N SUNDAR'S RESUME PORTAL.",
+      "TYPE 'help' FOR SYSTEM COMMANDS OR USE THE F-KEYS.",
       ""
     ];
 
     if (isSupabaseConfigured) {
-      lines.push("SUPABASE CONNECTIVITY: ONLINE (SECURE DIRECT ACCESS)");
+      lines.push("SUPABASE CHANNEL: CONNECTED");
     } else {
-      lines.push("SUPABASE CONNECTIVITY: LOCAL OFFLINE DEMO MODE");
-      lines.push("[NOTICE] ENV VARIABLES NOT SET. GUESTBOOK FALLS BACK TO LOCAL STORAGE.");
+      lines.push("SUPABASE CHANNEL: LOCAL OFFLINE MODE");
     }
     lines.push("");
 
     setHistory(lines);
   }, []);
 
-  // Scroll to bottom on updates
   useEffect(() => {
     if (consoleEndRef.current) {
       consoleEndRef.current.scrollIntoView({ behavior: "smooth" });
     }
   }, [history]);
 
-  // Focus input on clicking the terminal screen
   const handleTerminalClick = () => {
     if (inputRef.current) {
       inputRef.current.focus();
@@ -55,27 +49,21 @@ export const CrtTerminalUnit: React.FC<CrtTerminalUnitProps> = ({ onInteract }) 
     if (onInteract) onInteract();
   };
 
-  // Synthesize terminal click sound
   const playClickSound = () => {
     try {
       const AudioContextClass = window.AudioContext || (window as any).webkitAudioContext;
       const ctx = new AudioContextClass();
-      
       const osc = ctx.createOscillator();
       const gain = ctx.createGain();
-      
       osc.type = "sine";
-      osc.frequency.setValueAtTime(1200, ctx.currentTime);
-      osc.frequency.exponentialRampToValueAtTime(100, ctx.currentTime + 0.02);
-      
-      gain.gain.setValueAtTime(0.015, ctx.currentTime);
-      gain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + 0.02);
-      
+      osc.frequency.setValueAtTime(1100, ctx.currentTime);
+      osc.frequency.exponentialRampToValueAtTime(100, ctx.currentTime + 0.015);
+      gain.gain.setValueAtTime(0.01, ctx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + 0.015);
       osc.connect(gain);
       gain.connect(ctx.destination);
-      
       osc.start();
-      osc.stop(ctx.currentTime + 0.02);
+      osc.stop(ctx.currentTime + 0.015);
     } catch (e) {}
   };
 
@@ -114,25 +102,18 @@ export const CrtTerminalUnit: React.FC<CrtTerminalUnitProps> = ({ onInteract }) 
   };
 
   const submitGuestbookEntry = async (name: string, message: string) => {
-    setHistory(prev => [...prev, "RECORDING MESSAGE TO RETRO DATABASE SYSTEM..."]);
+    setHistory(prev => [...prev, "WRITING TO DATABASE STACKS..."]);
     
     if (isSupabaseConfigured && supabase) {
       try {
-        const { error } = await supabase
-          .from("guestbook")
-          .insert([{ name, message }]);
-
+        const { error } = await supabase.from("guestbook").insert([{ name, message }]);
         if (error) throw error;
-        setHistory(prev => [
-          ...prev, 
-          "GUESTBOOK WRITTEN TO SUPABASE BACKEND SUCCESSFULLY!",
-          ""
-        ]);
+        setHistory(prev => [...prev, "DATABASE RECORDED SUCCESSFULLY!", ""]);
       } catch (err: any) {
         setHistory(prev => [
           ...prev, 
-          `[DATABASE ERROR] COULD NOT INSERT: ${err.message || err}`,
-          "SAVING TO LOCAL STORAGE BACKUP INSTEAD...",
+          `[ERROR] ${err.message || err}`,
+          "SAVED IN LOCAL STORAGE BUFFER.",
           ""
         ]);
         saveLocalGuestbook(name, message);
@@ -140,7 +121,6 @@ export const CrtTerminalUnit: React.FC<CrtTerminalUnitProps> = ({ onInteract }) 
     } else {
       saveLocalGuestbook(name, message);
     }
-    
     setGuestbookState('idle');
     setTempName('');
   };
@@ -149,20 +129,11 @@ export const CrtTerminalUnit: React.FC<CrtTerminalUnitProps> = ({ onInteract }) 
     try {
       const localData = localStorage.getItem("guestbook");
       const entries = localData ? JSON.parse(localData) : [];
-      entries.push({ 
-        id: Math.random().toString(), 
-        name, 
-        message, 
-        created_at: new Date().toISOString() 
-      });
+      entries.push({ id: Math.random().toString(), name, message, created_at: new Date().toISOString() });
       localStorage.setItem("guestbook", JSON.stringify(entries));
-      setHistory(prev => [
-        ...prev,
-        "GUESTBOOK RECORDED IN LOCAL MEMORY BUFFER (OFFLINE).",
-        ""
-      ]);
+      setHistory(prev => [...prev, "LOCAL STORAGE GUESTBOOK SIGNED.", ""]);
     } catch (e) {
-      setHistory(prev => [...prev, "[CRITICAL] STORAGE BUFFER ACCESS DENIED.", ""]);
+      setHistory(prev => [...prev, "[BUFFER ERROR] STORAGE ACCESS DENIED.", ""]);
     }
   };
 
@@ -173,34 +144,25 @@ export const CrtTerminalUnit: React.FC<CrtTerminalUnitProps> = ({ onInteract }) 
           .from("guestbook")
           .select("*")
           .order("created_at", { ascending: false })
-          .limit(10);
+          .limit(6); // fit on visual scope
 
         if (error) throw error;
-        
         if (!data || data.length === 0) {
-          setHistory(prev => [...prev, "GUESTBOOK IS EMPTY. BE THE FIRST TO SIGN USING 'guestbook sign'!", ""]);
+          setHistory(prev => [...prev, "GUESTBOOK EMPTY. TYPE 'guestbook sign' TO SIGN.", ""]);
           return;
         }
 
-        const lines = ["--- SUPABASE GUESTBOOK ENTRIES (LAST 10) ---"];
+        const lines = ["--- GUESTBOOK REGISTRY (LAST 6) ---"];
         data.forEach(entry => {
-          const dateStr = new Date(entry.created_at).toLocaleDateString();
-          lines.push(`[${dateStr}] ${entry.name.toUpperCase()}:`);
-          lines.push(`  "${entry.message}"`);
+          lines.push(`[${entry.name.toUpperCase()}]: "${entry.message}"`);
         });
-        lines.push("---------------------------------------------", "");
+        lines.push("----------------------------------", "");
         setHistory(prev => [...prev, ...lines]);
       } catch (err: any) {
-        setHistory(prev => [
-          ...prev,
-          `[ERROR] FETCH FAILED: ${err.message || err}`,
-          "READING LOCAL STORAGE BACKUP DATABASE...",
-          ""
-        ]);
+        setHistory(prev => [...prev, `[FETCH ERROR] ${err.message || err}`, ""]);
         readLocalGuestbook();
       }
     } else {
-      setHistory(prev => [...prev, "[SYSTEM] SUPABASE COUPLING OFFLINE. ACCESING LOCAL STORAGE BUFFER...", ""]);
       readLocalGuestbook();
     }
   };
@@ -210,22 +172,17 @@ export const CrtTerminalUnit: React.FC<CrtTerminalUnitProps> = ({ onInteract }) 
       const localData = localStorage.getItem("guestbook");
       const entries = localData ? JSON.parse(localData) : [];
       if (entries.length === 0) {
-        setHistory(prev => [...prev, "NO LOCAL RECORDS FOUND. TYPE 'guestbook sign' TO RECORD A SIGNATURE.", ""]);
+        setHistory(prev => [...prev, "NO LOCAL RECORDS FOUND. SIGN USING 'guestbook sign'!", ""]);
         return;
       }
-      
-      const lines = ["--- LOCAL STORAGE GUESTBOOK ENTRIES (DEMO) ---"];
-      const lastTen = entries.slice(-10).reverse();
-      lastTen.forEach((entry: any) => {
-        const dateStr = new Date(entry.created_at).toLocaleDateString();
-        lines.push(`[${dateStr}] ${entry.name.toUpperCase()}:`);
-        lines.push(`  "${entry.message}"`);
+      const lines = ["--- GUESTBOOK (LOCAL DEMO) ---"];
+      const lastSix = entries.slice(-6).reverse();
+      lastSix.forEach((entry: any) => {
+        lines.push(`[${entry.name.toUpperCase()}]: "${entry.message}"`);
       });
-      lines.push("---------------------------------------------", "");
+      lines.push("------------------------------", "");
       setHistory(prev => [...prev, ...lines]);
-    } catch (e) {
-      setHistory(prev => [...prev, "[CRITICAL] ERROR RETRIEVING MEMORY BLOCK.", ""]);
-    }
+    } catch (e) {}
   };
 
   const executeCommand = (cmd: string) => {
@@ -239,11 +196,11 @@ export const CrtTerminalUnit: React.FC<CrtTerminalUnitProps> = ({ onInteract }) 
           "  about          Summary of qualifications & contacts",
           "  experience     Detailed job history",
           "  projects       Showcase of software engineering projects",
-          "  skills         Listing of languages, databases & tools",
+          "  skills         Listing of languages & tools",
           "  education      College degree & coursework",
-          "  certifications Infosys & freeCodeCamp credentials",
-          "  guestbook      Interact with the database visitor book (list/sign)",
-          "  clear          Clear the terminal screen"
+          "  certifications Infosys & FCC credentials",
+          "  guestbook      Interact with database (list/sign)",
+          "  clear          Clear console screen"
         );
         break;
       case "about":
@@ -260,9 +217,9 @@ export const CrtTerminalUnit: React.FC<CrtTerminalUnitProps> = ({ onInteract }) 
       case "experience":
         resumeData.experience.forEach(exp => {
           newHistory.push(
-            `----------------------------------------`,
+            `-----------------------------------`,
             `ROLE: ${exp.role}`,
-            `COMPANY: ${exp.company} (${exp.location})`,
+            `COMPANY: ${exp.company}`,
             `PERIOD: ${exp.period}`,
             `DETAILS:`
           );
@@ -275,12 +232,12 @@ export const CrtTerminalUnit: React.FC<CrtTerminalUnitProps> = ({ onInteract }) 
       case "projects":
         resumeData.projects.forEach(proj => {
           newHistory.push(
-            `----------------------------------------`,
+            `-----------------------------------`,
             `PROJECT: ${proj.title}`,
-            `TECH: ${proj.technologies.join(" | ")}`,
+            `TECH: ${proj.technologies.slice(0, 3).join(", ")}`,
             `IMPACT:`
           );
-          proj.bullets.forEach(bullet => {
+          proj.bullets.slice(0, 2).forEach(bullet => {
             newHistory.push(`  * ${bullet}`);
           });
         });
@@ -292,7 +249,7 @@ export const CrtTerminalUnit: React.FC<CrtTerminalUnitProps> = ({ onInteract }) 
           `  LANGUAGES: ${resumeData.skills.languages.join(", ")}`,
           `  FRAMEWORKS: ${resumeData.skills.frameworks.join(", ")}`,
           `  DATABASES: ${resumeData.skills.databases.join(", ")}`,
-          `  DEV TOOLS: ${resumeData.skills.tools.join(", ")}`,
+          `  DEV TOOLS: ${resumeData.skills.tools.slice(0, 5).join(", ")}`,
           ""
         );
         break;
@@ -302,7 +259,6 @@ export const CrtTerminalUnit: React.FC<CrtTerminalUnitProps> = ({ onInteract }) 
           `  INSTITUTION: ${resumeData.education.institution}`,
           `  DEGREE: ${resumeData.education.degree}`,
           `  GPA: ${resumeData.education.gpa}`,
-          `  PERIOD: ${resumeData.education.period}`,
           `  COURSEWORK: ${resumeData.education.coursework}`,
           ""
         );
@@ -317,21 +273,20 @@ export const CrtTerminalUnit: React.FC<CrtTerminalUnitProps> = ({ onInteract }) 
       case "guestbook":
       case "guestbook help":
         newHistory.push(
-          "GUESTBOOK COMMAND MODULES:",
+          "GUESTBOOK MODULE:",
           "  guestbook list  - View messages left by visitors",
-          "  guestbook sign  - Sign the guestbook (stores in Supabase database)",
+          "  guestbook sign  - Sign the visitor log",
           ""
         );
         break;
       case "guestbook list":
-        newHistory.push("QUERYING DATABASE RECORDS...");
+        newHistory.push("RETRIEVING REGISTRY STACKS...");
         setHistory(newHistory);
-        // Async fetch
         setTimeout(() => fetchGuestbook(), 100);
         return;
       case "guestbook sign":
         setGuestbookState('awaiting_name');
-        newHistory.push("INITIALIZING SECURE GUESTBOOK WRITE PATH...", "ENTER NAME> ");
+        newHistory.push("INITIALIZING DB PATH...", "ENTER NAME> ");
         setHistory(newHistory);
         return;
       case "clear":
@@ -340,96 +295,216 @@ export const CrtTerminalUnit: React.FC<CrtTerminalUnitProps> = ({ onInteract }) 
       case "":
         break;
       default:
-        newHistory.push(`'${cmd}' is not recognized as an internal or external command, operable program or batch file. Type 'help' for assistance.`, "");
+        newHistory.push(`'${cmd}' is not recognized as a command. Type 'help'.`, "");
     }
     setHistory(newHistory);
   };
 
   const handleHotkey = (category: string) => {
     playClickSound();
-    
-    // Reset guestbook states if clicking hotkeys
     setGuestbookState('idle');
     setTempName('');
-    
     executeCommand(category);
   };
 
   return (
     <div 
-      className="crt-screen crt-scanlines crt-flicker-animation"
+      className="console-panel"
       style={{
-        width: "100%",
-        height: "380px",
-        backgroundColor: "var(--color-amber-bg)",
         display: "flex",
         flexDirection: "column",
-        border: "5px solid #2a1608",
+        height: "360px",
+        border: "1px solid var(--color-gold-dark)",
+        boxShadow: "inset 0 0 15px rgba(0,0,0,0.95)"
       }}
-      onClick={handleTerminalClick}
     >
-      {/* Scrollable Output Screen */}
+      {/* 2-Column Split Console View */}
       <div 
-        className="terminal-container"
         style={{
-          flexGrow: 1,
-          overflowY: "auto",
-          padding: "12px",
           display: "flex",
-          flexDirection: "column",
-          gap: "4px"
+          flexGrow: 1,
+          height: "calc(100% - 45px)",
+          overflow: "hidden"
         }}
       >
-        {history.map((line, idx) => (
-          <div key={idx} style={{ minHeight: "1.2rem", whiteSpace: "pre-wrap" }}>
-            {line}
-          </div>
-        ))}
-        
-        {/* Active Line Prompt */}
-        <div style={{ display: "flex", alignItems: "center" }}>
-          <span>
-            {guestbookState === 'awaiting_name' 
-              ? "ENTER NAME> " 
-              : guestbookState === 'awaiting_message' 
-                ? "ENTER MESSAGE> " 
-                : "C:\\CHIRAG\\RESUME> "
-            }
-          </span>
-          <input
-            ref={inputRef}
-            type="text"
-            value={inputVal}
-            onChange={(e) => setInputVal(e.target.value)}
-            onKeyDown={handleKeyDown}
+        {/* Left Column: MS-DOS Resume CLI (60%) */}
+        <div 
+          className="crt-screen crt-scanlines crt-flicker-animation"
+          style={{
+            width: "58%",
+            height: "100%",
+            backgroundColor: "var(--color-amber-bg)",
+            display: "flex",
+            flexDirection: "column",
+            borderRight: "2px solid #202024"
+          }}
+          onClick={handleTerminalClick}
+        >
+          <div 
+            className="terminal-container"
             style={{
-              background: "transparent",
-              border: "none",
-              outline: "none",
-              color: "var(--color-gold-light)",
-              fontFamily: "var(--font-retro)",
-              fontSize: "1.25rem",
-              textShadow: "var(--glow-amber)",
               flexGrow: 1,
-              caretColor: "transparent"
+              padding: "10px",
+              fontSize: "1.1rem"
             }}
-          />
-          <span className="terminal-cursor"></span>
+          >
+            {history.map((line, idx) => (
+              <div key={idx} style={{ minHeight: "1.1rem", whiteSpace: "pre-wrap" }}>
+                {line}
+              </div>
+            ))}
+            
+            {/* Active Prompt */}
+            <div style={{ display: "flex", alignItems: "center" }}>
+              <span>
+                {guestbookState === 'awaiting_name' 
+                  ? "ENTER NAME> " 
+                  : guestbookState === 'awaiting_message' 
+                    ? "ENTER MESSAGE> " 
+                    : "C:\\CHIRAG\\RESUME> "
+                }
+              </span>
+              <input
+                ref={inputRef}
+                type="text"
+                value={inputVal}
+                onChange={(e) => setInputVal(e.target.value)}
+                onKeyDown={handleKeyDown}
+                style={{
+                  background: "transparent",
+                  border: "none",
+                  outline: "none",
+                  color: "var(--color-gold-light)",
+                  fontFamily: "var(--font-retro)",
+                  fontSize: "1.1rem",
+                  textShadow: "var(--glow-amber)",
+                  flexGrow: 1,
+                  caretColor: "transparent"
+                }}
+              />
+              <span className="terminal-cursor"></span>
+            </div>
+            <div ref={consoleEndRef} />
+          </div>
         </div>
-        <div ref={consoleEndRef} />
+
+        {/* Right Column: Signal Analytics Display (42%) */}
+        <div 
+          style={{
+            width: "42%",
+            height: "100%",
+            background: "#08080a",
+            padding: "8px",
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "space-between",
+            borderLeft: "1.5px solid #202024",
+            fontFamily: "var(--font-lcd)"
+          }}
+        >
+          {/* Section 1: Sunburst circular SVG */}
+          <div style={{ display: "flex", flexDirection: "column", alignItems: "center", width: "100%", flexGrow: 1, justifyContent: "center" }}>
+            <span style={{ fontSize: "0.55rem", color: "var(--color-gold)", letterSpacing: "1px", marginBottom: "4px", fontWeight: "bold" }}>
+              SYSTEM DYNAMICS / SKILL MAP
+            </span>
+            <svg width="105" height="105" viewBox="0 0 100 100">
+              <circle cx="50" cy="50" r="44" fill="none" stroke="#222" strokeWidth="10" />
+              
+              {/* Outer multi-color segments */}
+              <circle cx="50" cy="50" r="44" fill="none" stroke="#ff007f" strokeWidth="8" strokeDasharray="60 200" strokeDashoffset="0" className="sunburst-ring" />
+              <circle cx="50" cy="50" r="44" fill="none" stroke="#00ffff" strokeWidth="8" strokeDasharray="80 200" strokeDashoffset="70" className="sunburst-ring" />
+              <circle cx="50" cy="50" r="44" fill="none" stroke="#ffaa00" strokeWidth="8" strokeDasharray="40 200" strokeDashoffset="160" className="sunburst-ring" />
+              
+              {/* Middle segment ring */}
+              <circle cx="50" cy="50" r="32" fill="none" stroke="#222" strokeWidth="8" />
+              <circle cx="50" cy="50" r="32" fill="none" stroke="#00ff66" strokeWidth="6" strokeDasharray="90 200" strokeDashoffset="20" className="sunburst-ring" />
+              <circle cx="50" cy="50" r="32" fill="none" stroke="#b983ff" strokeWidth="6" strokeDasharray="60 200" strokeDashoffset="120" className="sunburst-ring" />
+
+              {/* Inner core */}
+              <circle cx="50" cy="50" r="18" fill="#151518" stroke="var(--color-gold-dark)" strokeWidth="1" />
+              <text x="50" y="52" fill="var(--color-gold-light)" fontSize="6.5" textAnchor="middle" fontWeight="bold">HUD</text>
+            </svg>
+          </div>
+
+          {/* Section 2: Treemap boxes SVG */}
+          <div style={{ display: "flex", flexDirection: "column", width: "100%", height: "120px" }}>
+            <span style={{ fontSize: "0.55rem", color: "var(--color-gold)", letterSpacing: "1px", marginBottom: "4px", fontWeight: "bold", textAlign: "center" }}>
+              DEVELOPMENT INTELMAP
+            </span>
+            <div 
+              style={{
+                display: "grid",
+                gridTemplateColumns: "2fr 1fr",
+                gridTemplateRows: "1.2fr 1fr",
+                gap: "4px",
+                flexGrow: 1
+              }}
+            >
+              {/* TensorFlow Box */}
+              <div 
+                style={{
+                  background: "rgba(185, 131, 255, 0.15)",
+                  border: "1px solid #b983ff",
+                  borderRadius: "2px",
+                  padding: "4px",
+                  display: "flex",
+                  flexDirection: "column",
+                  justifyContent: "space-between"
+                }}
+              >
+                <span style={{ color: "#b983ff", fontSize: "0.55rem", fontWeight: "bold" }}>TensorFlow.js</span>
+                <span style={{ color: "#fff", fontSize: "0.45rem", opacity: 0.6 }}>Biometrics</span>
+              </div>
+
+              {/* Node.js Box */}
+              <div 
+                style={{
+                  background: "rgba(0, 255, 120, 0.15)",
+                  border: "1px solid #00ff78",
+                  borderRadius: "2px",
+                  padding: "4px",
+                  display: "flex",
+                  flexDirection: "column",
+                  justifyContent: "space-between"
+                }}
+              >
+                <span style={{ color: "#00ff78", fontSize: "0.55rem", fontWeight: "bold" }}>Node.js</span>
+                <span style={{ color: "#fff", fontSize: "0.45rem", opacity: 0.6 }}>API</span>
+              </div>
+
+              {/* Python Box */}
+              <div 
+                style={{
+                  background: "rgba(255, 170, 0, 0.15)",
+                  border: "1px solid #ffaa00",
+                  borderRadius: "2px",
+                  padding: "4px",
+                  display: "flex",
+                  flexDirection: "column",
+                  justifyContent: "space-between",
+                  gridColumn: "span 2"
+                }}
+              >
+                <span style={{ color: "#ffaa00", fontSize: "0.55rem", fontWeight: "bold" }}>Python (GenAI / YOLO OpenCV)</span>
+                <span style={{ color: "#fff", fontSize: "0.45rem", opacity: 0.6 }}>Computer Vision & AI Agents</span>
+              </div>
+
+            </div>
+          </div>
+        </div>
       </div>
 
-      {/* Tactile Button Panel below screen */}
+      {/* Tactile Keycap Buttons Panel at the bottom */}
       <div 
         style={{
           backgroundColor: "#1c1c1f",
-          borderTop: "2px solid var(--color-wood-dark)",
+          borderTop: "2px solid #28282c",
           padding: "6px 12px",
           display: "flex",
           justifyContent: "space-between",
           alignItems: "center",
           gap: "8px",
-          overflowX: "auto"
+          height: "45px"
         }}
       >
         <button className="analog-btn" onClick={() => handleHotkey("about")}>
