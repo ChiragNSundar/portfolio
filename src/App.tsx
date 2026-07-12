@@ -398,7 +398,6 @@ export const App: React.FC = () => {
         >
           <YoutubeCoversCard 
             onInteract={unlockAudioContext}
-            active={activeSection === 2}
           />
         </section>
 
@@ -418,7 +417,6 @@ export const App: React.FC = () => {
         >
           <DeveloperResumeCard 
             onInteract={unlockAudioContext}
-            active={activeSection === 3}
           />
         </section>
 
