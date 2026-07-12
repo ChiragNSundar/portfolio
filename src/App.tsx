@@ -55,7 +55,7 @@ export const App: React.FC = () => {
 
     const observerOptions = {
       root: null,
-      rootMargin: "-25% 0px -25% 0px",
+      rootMargin: "-12% 0px -12% 0px", // triggers earlier when entering screen bounds
       threshold: 0.15
     };
 
@@ -76,6 +76,22 @@ export const App: React.FC = () => {
     return () => {
       observer.disconnect();
     };
+  }, [mode]);
+
+  // Fallback scroll listener to force-activate the last section when user reaches page end
+  useEffect(() => {
+    if (mode === 'select') return;
+
+    const handleScroll = () => {
+      const bottomThreshold = 50; // pixels from the bottom
+      const isAtBottom = (window.innerHeight + window.scrollY) >= (document.documentElement.scrollHeight - bottomThreshold);
+      if (isAtBottom) {
+        setActiveSection(2); // index 2 is always the last section (Certificates or YouTube Covers)
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
   }, [mode]);
 
   // Mouse parallax movement tracking
