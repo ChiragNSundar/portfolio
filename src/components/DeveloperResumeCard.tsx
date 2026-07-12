@@ -318,7 +318,7 @@ export const DeveloperResumeCard: React.FC<DeveloperResumeCardProps> = ({ onInte
               <div>
                 <div style={{ display: "flex", justifyContent: "space-between", fontWeight: "bold", fontSize: "0.85rem" }}>
                   <span>💼 Data Science & AI Intern (5 months)</span>
-                  <span style={{ color: "var(--color-amber-accent)" }}>Completed</span>
+                  <span style={{ color: "var(--color-amber-accent)" }}>Nov 2025 - Apr 2026</span>
                 </div>
                 <div style={{ fontSize: "0.75rem", color: "var(--text-muted)", fontWeight: "600", marginBottom: "6px" }}>
                   WhatDigital Technologies
