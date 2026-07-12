@@ -494,16 +494,36 @@ export const DeveloperResumeCard: React.FC<DeveloperResumeCardProps> = ({ onInte
               <span style={{ fontWeight: "900", fontSize: "1rem", display: "flex", alignItems: "center", gap: "6px" }}>
                 🤖 Ask Chirag AI
               </span>
-              <span style={{ fontSize: "0.6rem", background: "var(--color-amber)", border: "1px solid #18181b", padding: "2px 6px", borderRadius: "4px", fontWeight: "bold" }}>
-                FREE // NO KEY NEEDED
-              </span>
+              <div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
+                <button
+                  type="button"
+                  onClick={() => setIsChatExpanded(prev => !prev)}
+                  style={{
+                    background: "none",
+                    border: "1px solid #18181b",
+                    borderRadius: "4px",
+                    padding: "1px 5px",
+                    fontSize: "0.65rem",
+                    cursor: "pointer",
+                    fontWeight: "bold",
+                    lineHeight: 1.2
+                  }}
+                  title={isChatExpanded ? "Collapse chat" : "Expand chat"}
+                >
+                  {isChatExpanded ? "▾" : "▴"}
+                </button>
+                <span style={{ fontSize: "0.6rem", background: "var(--color-amber)", border: "1px solid #18181b", padding: "2px 6px", borderRadius: "4px", fontWeight: "bold" }}>
+                  FREE // NO KEY NEEDED
+                </span>
+              </div>
             </div>
 
             {/* Chat Messages scroll container */}
             <div 
               ref={chatContainerRef}
               style={{
-                height: "170px",
+                height: isChatExpanded ? "350px" : "170px",
+                transition: "height 0.3s ease",
                 overflowY: "auto",
                 border: "1.5px solid #18181b",
                 borderRadius: "12px",
