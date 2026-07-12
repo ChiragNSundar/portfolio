@@ -335,65 +335,48 @@ export const TapeDeckUnit: React.FC<TapeDeckUnitProps> = ({
               border: "1px solid #25252b",
               borderRadius: "20px",
               padding: "2px",
-              position: "relative",
               cursor: "pointer"
             }}
           >
-            {/* Dry Option */}
+            {/* Before Mix */}
             <button
               onClick={() => onMixRatioChange(0)}
               style={{
-                background: "transparent",
+                background: mixRatio === 0 ? "linear-gradient(135deg, #a855f7, #7c3aed)" : "transparent",
                 border: "none",
                 color: mixRatio === 0 ? "#ffffff" : "#7c7c8a",
                 fontFamily: "var(--font-body)",
-                fontSize: "0.75rem",
+                fontSize: "0.72rem",
                 fontWeight: "600",
                 padding: "6px 14px",
                 borderRadius: "16px",
                 cursor: "pointer",
-                transition: "color 0.2s",
-                zIndex: 2
+                transition: "all 0.2s",
+                boxShadow: mixRatio === 0 ? "0 0 10px rgba(168, 85, 247, 0.3)" : "none"
               }}
             >
-              Dry Vocal
+              Before Mix
             </button>
 
-            {/* With Preset Option */}
+            {/* After Mix Master */}
             <button
               onClick={() => onMixRatioChange(1)}
               style={{
-                background: "transparent",
+                background: mixRatio === 1 ? "linear-gradient(135deg, #a855f7, #7c3aed)" : "transparent",
                 border: "none",
                 color: mixRatio === 1 ? "#ffffff" : "#7c7c8a",
                 fontFamily: "var(--font-body)",
-                fontSize: "0.75rem",
+                fontSize: "0.72rem",
                 fontWeight: "600",
                 padding: "6px 14px",
                 borderRadius: "16px",
                 cursor: "pointer",
-                transition: "color 0.2s",
-                zIndex: 2
+                transition: "all 0.2s",
+                boxShadow: mixRatio === 1 ? "0 0 10px rgba(168, 85, 247, 0.3)" : "none"
               }}
             >
-              With Preset
+              After Mix Master
             </button>
-
-            {/* Sliding Pill Highlight background */}
-            <div 
-              style={{
-                position: "absolute",
-                top: "2px",
-                left: mixRatio === 0 ? "2px" : "80px", // offset slide
-                width: mixRatio === 0 ? "76px" : "90px", // match text width
-                height: "calc(100% - 4px)",
-                background: "linear-gradient(135deg, #a855f7, #7c3aed)",
-                borderRadius: "16px",
-                boxShadow: "0 0 10px rgba(168, 85, 247, 0.4)",
-                transition: "all 0.25s cubic-bezier(0.19, 1, 0.22, 1)",
-                zIndex: 1
-              }}
-            />
           </div>
         </div>
 
