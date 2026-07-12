@@ -28,6 +28,30 @@
   --font-lcd: 'Share Tech Mono', monospace;
   --font-display: 'Orbitron', sans-serif;
   --font-body: 'Outfit', sans-serif;
+
+  /* Theme variables */
+  --card-bg: #ffffff;
+  --card-bg-muted: #fafafa;
+  --border-color: #18181b;
+  --card-shadow: #18181b;
+  --grid-dot: #e4e4e7;
+}
+
+[data-theme="dark"] {
+  --bg-cream: #1e293b;
+  --text-dark: #f1f5f9;
+  --text-muted: #94a3b8;
+
+  --card-bg: #283548;
+  --card-bg-muted: #1f2937;
+  --border-color: #475569;
+  --card-shadow: #0f172a;
+  --grid-dot: #334155;
+
+  --color-lavender: #3b2854;
+  --color-mint: #153e35;
+  --color-amber: #4d380e;
+  --color-rose: #52182c;
 }
 
 * {
@@ -43,34 +67,34 @@ body {
   overflow-x: hidden;
 }
 
-/* Custom Scrollbar - Minimal Light Mode */
+/* Custom Scrollbar - Minimal Theme-Aware */
 ::-webkit-scrollbar {
   width: 8px;
 }
 ::-webkit-scrollbar-track {
-  background: #f4f4f5;
+  background: var(--card-bg-muted);
 }
 ::-webkit-scrollbar-thumb {
-  background: #d4d4d8;
+  background: var(--border-color);
   border-radius: 4px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #a1a1aa;
+  background: var(--text-muted);
 }
 
 /* Playful Flat Card Styling */
 .creative-card {
-  background-color: #ffffff;
-  border: 1.5px solid #18181b;
+  background-color: var(--card-bg);
+  border: 1.5px solid var(--border-color);
   border-radius: 24px;
-  box-shadow: 6px 6px 0px #18181b;
+  box-shadow: 6px 6px 0px var(--card-shadow);
   transition: transform 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275), 
               box-shadow 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
 .creative-card:hover {
   transform: translate(-3px, -3px);
-  box-shadow: 9px 9px 0px #18181b;
+  box-shadow: 9px 9px 0px var(--card-shadow);
 }
 
 /* Scroll-Fade-In 3D Zooming transitions (Thibaut inspired) */
@@ -113,11 +137,10 @@ body {
 
 /* Playful Analog-styled Buttons (Flat modern) */
 .analog-btn {
-  background: #ffffff;
-  border: 1.5px solid #18181b;
-  border-bottom: 4px solid #18181b;
-  border-radius: 12px;
-  color: #18181b;
+  background: var(--card-bg);
+  border: 1.5px solid var(--border-color);
+  border-bottom: 4px solid var(--border-color);
+  color: var(--text-dark);
   font-family: var(--font-body);
   font-size: 0.82rem;
   font-weight: 700;
@@ -130,7 +153,7 @@ body {
 }
 
 .analog-btn:hover {
-  background: #f4f4f5;
+  background: var(--card-bg-muted);
   transform: translateY(-1px);
   border-bottom-width: 5px;
 }
@@ -141,10 +164,10 @@ body {
 }
 
 .analog-btn.active {
-  background: #18181b;
-  color: #ffffff;
-  border-color: #18181b;
-  border-bottom-color: #000000;
+  background: var(--text-dark);
+  color: var(--card-bg);
+  border-color: var(--border-color);
+  border-bottom-color: var(--border-color);
 }
 
 /* Typing indicator animation */

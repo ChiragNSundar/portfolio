@@ -245,8 +245,8 @@ export const DeveloperResumeCard: React.FC<DeveloperResumeCardProps> = ({ onInte
         display: "flex",
         flexDirection: "column",
         gap: "28px",
-        borderColor: "#18181b",
-        boxShadow: "8px 8px 0px rgba(245, 159, 0, 0.15), 8px 8px 0px #18181b"
+        borderColor: "var(--border-color)",
+        boxShadow: "8px 8px 0px rgba(245, 159, 0, 0.15), 8px 8px 0px var(--card-shadow)"
       }}
     >
       {/* Dossier Header */}
@@ -278,8 +278,8 @@ export const DeveloperResumeCard: React.FC<DeveloperResumeCardProps> = ({ onInte
           
           {/* Left Column: Education & Intern Info */}
           <div style={{ flex: "1 1 350px", display: "flex", flexDirection: "column", gap: "20px" }}>
-            <div style={{ background: "#fcfcfa", border: "1.5px solid #18181b", borderRadius: "16px", padding: "20px" }}>
-              <h3 style={{ fontSize: "1.1rem", fontWeight: "900", marginBottom: "12px", borderBottom: "1.5px solid #18181b", paddingBottom: "4px" }}>
+            <div style={{ background: "var(--card-bg-muted)", border: "1.5px solid var(--border-color)", borderRadius: "16px", padding: "20px" }}>
+              <h3 style={{ fontSize: "1.1rem", fontWeight: "900", marginBottom: "12px", borderBottom: "1.5px solid var(--border-color)", paddingBottom: "4px" }}>
                 EDUCATION & PROFESSIONAL TIMELINE
               </h3>
               
@@ -294,6 +294,20 @@ export const DeveloperResumeCard: React.FC<DeveloperResumeCardProps> = ({ onInte
                 </div>
               </div>
 
+              {/* Current Job (RBCCI) */}
+              <div style={{ marginBottom: "14px" }}>
+                <div style={{ display: "flex", justifyContent: "space-between", fontWeight: "bold", fontSize: "0.85rem" }}>
+                  <span>🏦 AI Operations Specialist (Fulltime)</span>
+                  <span style={{ color: "var(--color-amber-accent)" }}>May 2026 - Current</span>
+                </div>
+                <div style={{ fontSize: "0.75rem", color: "var(--text-muted)", fontWeight: "600", marginBottom: "6px" }}>
+                  Rural Bank Of Calbayog City, Inc. (RBCCI) &middot; Freelance, Remote
+                </div>
+                <p style={{ fontSize: "0.78rem", color: "var(--text-dark)", opacity: 0.9, lineHeight: 1.35 }}>
+                  Architected a core banking ecosystem with automated AMLA compliance and a 7-step loan pipeline. Built a high-performance Node.js/SQLite backend and edge AI biometric identity verification (TensorFlow.js + MediaPipe).
+                </p>
+              </div>
+
               {/* Internship */}
               <div>
                 <div style={{ display: "flex", justifyContent: "space-between", fontWeight: "bold", fontSize: "0.85rem" }}>
@@ -303,15 +317,15 @@ export const DeveloperResumeCard: React.FC<DeveloperResumeCardProps> = ({ onInte
                 <div style={{ fontSize: "0.75rem", color: "var(--text-muted)", fontWeight: "600", marginBottom: "6px" }}>
                   WhatDigital Technologies
                 </div>
-                <p style={{ fontSize: "0.78rem", color: "#3f3f46", lineHeight: 1.35 }}>
+                <p style={{ fontSize: "0.78rem", color: "var(--text-dark)", opacity: 0.9, lineHeight: 1.35 }}>
                   Engineered production-ready web interfaces, chatbot pipelines utilizing large language models, and clean data-driven MongoDB/MySQL BI analytics dashboards.
                 </p>
               </div>
             </div>
 
             {/* Supabase Guestbook Card */}
-            <div style={{ background: "var(--color-amber)", border: "1.5px solid #18181b", borderRadius: "16px", padding: "20px", boxShadow: "4px 4px 0px #18181b" }}>
-              <h3 style={{ fontSize: "1rem", fontWeight: "900", color: "#7a5a07", marginBottom: "8px", display: "flex", alignItems: "center", gap: "6px" }}>
+            <div style={{ background: "var(--color-amber)", border: "1.5px solid var(--border-color)", borderRadius: "16px", padding: "20px", boxShadow: "4px 4px 0px var(--card-shadow)" }}>
+              <h3 style={{ fontSize: "1rem", fontWeight: "900", color: "var(--text-dark)", marginBottom: "8px", display: "flex", alignItems: "center", gap: "6px" }}>
                 ✍️ Guestbook Signature Log
               </h3>
               
@@ -325,12 +339,13 @@ export const DeveloperResumeCard: React.FC<DeveloperResumeCardProps> = ({ onInte
                     required
                     style={{
                       flexGrow: 1,
-                      background: "#ffffff",
-                      border: "1.5px solid #18181b",
+                      background: "var(--card-bg)",
+                      border: "1.5px solid var(--border-color)",
                       borderRadius: "8px",
                       padding: "6px 12px",
                       fontSize: "0.8rem",
-                      outline: "none"
+                      outline: "none",
+                      color: "var(--text-dark)"
                     }}
                   />
                   <button
@@ -338,14 +353,14 @@ export const DeveloperResumeCard: React.FC<DeveloperResumeCardProps> = ({ onInte
                     disabled={isSubmitting}
                     style={{
                       background: "var(--color-amber-accent)",
-                      border: "1.5px solid #18181b",
+                      border: "1.5px solid var(--border-color)",
                       borderRadius: "8px",
                       padding: "6px 14px",
                       fontSize: "0.8rem",
                       fontWeight: "bold",
-                      color: "#000000",
+                      color: "var(--card-bg)",
                       cursor: "pointer",
-                      boxShadow: "2px 2px 0px #18181b"
+                      boxShadow: "2px 2px 0px var(--card-shadow)"
                     }}
                   >
                     {isSubmitting ? "SIGNING..." : "SIGN"}
@@ -358,28 +373,29 @@ export const DeveloperResumeCard: React.FC<DeveloperResumeCardProps> = ({ onInte
                   onChange={(e) => setMessage(e.target.value)}
                   required
                   style={{
-                    background: "#ffffff",
-                    border: "1.5px solid #18181b",
-                    borderRadius: "8px",
-                    padding: "6px 12px",
-                    fontSize: "0.8rem",
-                    outline: "none"
-                  }}
-                />
-              </form>
+                  background: "var(--card-bg)",
+                  border: "1.5px solid var(--border-color)",
+                  borderRadius: "8px",
+                  padding: "6px 12px",
+                  fontSize: "0.8rem",
+                  outline: "none",
+                  color: "var(--text-dark)"
+                }}
+              />
+            </form>
 
               {/* Guestbook signatures output */}
-              <div style={{ marginTop: "12px", borderTop: "1px dashed #c29528", paddingTop: "8px" }}>
+              <div style={{ marginTop: "12px", borderTop: "1px dashed var(--border-color)", paddingTop: "8px" }}>
                 <div style={{ maxHeight: "80px", overflowY: "auto", display: "flex", flexDirection: "column", gap: "4px" }}>
                   {entries.length > 0 ? (
                     entries.map((ent) => (
-                      <div key={ent.id} style={{ fontFamily: "var(--font-lcd)", fontSize: "0.62rem", color: "#543b00", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
+                      <div key={ent.id} style={{ fontFamily: "var(--font-lcd)", fontSize: "0.62rem", color: "var(--text-dark)", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
                         &raquo; <span style={{ fontWeight: "bold" }}>{ent.name}</span>: {ent.message}
                       </div>
                     ))
                   ) : (
                     MOCK_ENTRIES.map((ent) => (
-                      <div key={ent.id} style={{ fontFamily: "var(--font-lcd)", fontSize: "0.62rem", color: "#543b00", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
+                      <div key={ent.id} style={{ fontFamily: "var(--font-lcd)", fontSize: "0.62rem", color: "var(--text-dark)", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
                         &raquo; <span style={{ fontWeight: "bold" }}>{ent.name}</span>: {ent.message}
                       </div>
                     ))
@@ -391,8 +407,8 @@ export const DeveloperResumeCard: React.FC<DeveloperResumeCardProps> = ({ onInte
 
           {/* Right Column: Project Explorer cards */}
           <div style={{ flex: "1.2 1 400px", display: "flex", flexDirection: "column", gap: "12px" }}>
-            <div style={{ background: "#ffffff", border: "1.5px solid #18181b", borderRadius: "16px", padding: "20px", display: "flex", flexDirection: "column", gap: "10px" }}>
-              <h3 style={{ fontSize: "1.1rem", fontWeight: "900", borderBottom: "1.5px solid #18181b", paddingBottom: "4px" }}>
+            <div style={{ background: "var(--card-bg)", border: "1.5px solid var(--border-color)", borderRadius: "16px", padding: "20px", display: "flex", flexDirection: "column", gap: "10px" }}>
+              <h3 style={{ fontSize: "1.1rem", fontWeight: "900", borderBottom: "1.5px solid var(--border-color)", paddingBottom: "4px" }}>
                 DETAILED PROJECT EXPLORER
               </h3>
               <p style={{ fontSize: "0.78rem", color: "var(--text-muted)" }}>
@@ -403,11 +419,11 @@ export const DeveloperResumeCard: React.FC<DeveloperResumeCardProps> = ({ onInte
               <div 
                 onClick={() => setActiveProject(activeProject === "roadwatch" ? null : "roadwatch")}
                 style={{
-                  border: "1.5px solid #18181b",
+                  border: "1.5px solid var(--border-color)",
                   borderRadius: "12px",
                   padding: "12px",
                   cursor: "pointer",
-                  backgroundColor: activeProject === "roadwatch" ? "var(--color-amber)" : "#fafafa",
+                  backgroundColor: activeProject === "roadwatch" ? "var(--color-amber)" : "var(--card-bg-muted)",
                   transition: "background-color 0.2s"
                 }}
               >
@@ -416,7 +432,7 @@ export const DeveloperResumeCard: React.FC<DeveloperResumeCardProps> = ({ onInte
                   <span>{activeProject === "roadwatch" ? "▼" : "▶"}</span>
                 </div>
                 {activeProject === "roadwatch" && (
-                  <div style={{ marginTop: "10px", fontSize: "0.78rem", color: "#3f3f46", display: "flex", flexDirection: "column", gap: "8px", borderTop: "1px dashed #18181b", paddingTop: "8px" }}>
+                  <div style={{ marginTop: "10px", fontSize: "0.78rem", color: "var(--text-dark)", display: "flex", flexDirection: "column", gap: "8px", borderTop: "1px dashed var(--border-color)", paddingTop: "8px" }}>
                     <div><strong>Pitch:</strong> Real-time traffic monitoring system detecting helmet violations automatically using YOLOv8, extracting license plates via EasyOCR/PaddleOCR, and sending SMS alerts via an asynchronous FastAPI backend.</div>
                     <div><strong>Model Training:</strong> Custom-trained YOLOv8 model for 4 classes: <code>with helmet</code>, <code>without helmet</code>, <code>rider</code>, and <code>number plate</code>.</div>
                     <div><strong>Indian Plate Regex:</strong> Matches pattern <code>XX00XX0000</code> to prevent duplicate CSV entries.</div>
@@ -429,11 +445,11 @@ export const DeveloperResumeCard: React.FC<DeveloperResumeCardProps> = ({ onInte
               <div 
                 onClick={() => setActiveProject(activeProject === "harmony" ? null : "harmony")}
                 style={{
-                  border: "1.5px solid #18181b",
+                  border: "1.5px solid var(--border-color)",
                   borderRadius: "12px",
                   padding: "12px",
                   cursor: "pointer",
-                  backgroundColor: activeProject === "harmony" ? "var(--color-amber)" : "#fafafa",
+                  backgroundColor: activeProject === "harmony" ? "var(--color-amber)" : "var(--card-bg-muted)",
                   transition: "background-color 0.2s"
                 }}
               >
@@ -442,7 +458,7 @@ export const DeveloperResumeCard: React.FC<DeveloperResumeCardProps> = ({ onInte
                   <span>{activeProject === "harmony" ? "▼" : "▶"}</span>
                 </div>
                 {activeProject === "harmony" && (
-                  <div style={{ marginTop: "10px", fontSize: "0.78rem", color: "#3f3f46", display: "flex", flexDirection: "column", gap: "8px", borderTop: "1px dashed #18181b", paddingTop: "8px" }}>
+                  <div style={{ marginTop: "10px", fontSize: "0.78rem", color: "var(--text-dark)", display: "flex", flexDirection: "column", gap: "8px", borderTop: "1px dashed var(--border-color)", paddingTop: "8px" }}>
                     <div><strong>Pitch:</strong> Supportive mental wellness platform helping users track progress and converse with an AI chatbot.</div>
                     <div><strong>AI RAG Integration:</strong> Employs Retrieval-Augmented Generation to process uploaded PDF document text pipelines, delivering context-aware, personalized LLM responses instead of generic answers.</div>
                     <div><strong>NLP & Analytics:</strong> Uses natural language processing to comprehend conversations and integrates interactive Plotly charts in a Python Streamlit UI wrapper.</div>
@@ -454,11 +470,11 @@ export const DeveloperResumeCard: React.FC<DeveloperResumeCardProps> = ({ onInte
               <div 
                 onClick={() => setActiveProject(activeProject === "jobportal" ? null : "jobportal")}
                 style={{
-                  border: "1.5px solid #18181b",
+                  border: "1.5px solid var(--border-color)",
                   borderRadius: "12px",
                   padding: "12px",
                   cursor: "pointer",
-                  backgroundColor: activeProject === "jobportal" ? "var(--color-amber)" : "#fafafa",
+                  backgroundColor: activeProject === "jobportal" ? "var(--color-amber)" : "var(--card-bg-muted)",
                   transition: "background-color 0.2s"
                 }}
               >
@@ -467,7 +483,7 @@ export const DeveloperResumeCard: React.FC<DeveloperResumeCardProps> = ({ onInte
                   <span>{activeProject === "jobportal" ? "▼" : "▶"}</span>
                 </div>
                 {activeProject === "jobportal" && (
-                  <div style={{ marginTop: "10px", fontSize: "0.78rem", color: "#3f3f46", display: "flex", flexDirection: "column", gap: "8px", borderTop: "1px dashed #18181b", paddingTop: "8px" }}>
+                  <div style={{ marginTop: "10px", fontSize: "0.78rem", color: "var(--text-dark)", display: "flex", flexDirection: "column", gap: "8px", borderTop: "1px dashed var(--border-color)", paddingTop: "8px" }}>
                     <div><strong>Pitch:</strong> Interactive business intelligence dashboard visualizing job board metrics.</div>
                     <div><strong>Database Pipeline:</strong> Connected to MongoDB and MySQL databases, optimized query pipelines, and loaded geospatial, device usage, and engagement trends in Plotly & Dash.</div>
                   </div>
@@ -486,8 +502,8 @@ export const DeveloperResumeCard: React.FC<DeveloperResumeCardProps> = ({ onInte
           <div 
             style={{
               flex: "1.5 1 450px",
-              background: "#ffffff",
-              border: "1.5px solid #18181b",
+              background: "var(--card-bg)",
+              border: "1.5px solid var(--border-color)",
               borderRadius: "16px",
               padding: "20px",
               display: "flex",
@@ -495,11 +511,11 @@ export const DeveloperResumeCard: React.FC<DeveloperResumeCardProps> = ({ onInte
               gap: "12px"
             }}
           >
-            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", borderBottom: "1.5px solid #18181b", paddingBottom: "6px" }}>
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", borderBottom: "1.5px solid var(--border-color)", paddingBottom: "6px" }}>
               <span style={{ fontWeight: "900", fontSize: "1rem", display: "flex", alignItems: "center", gap: "6px" }}>
                 🤖 Ask Chirag AI
               </span>
-              <span style={{ fontSize: "0.6rem", background: "var(--color-amber)", border: "1px solid #18181b", padding: "2px 6px", borderRadius: "4px", fontWeight: "bold" }}>
+              <span style={{ fontSize: "0.6rem", background: "var(--color-amber)", border: "1px solid var(--border-color)", padding: "2px 6px", borderRadius: "4px", fontWeight: "bold" }}>
                 FREE // NO KEY NEEDED
               </span>
             </div>
@@ -510,9 +526,9 @@ export const DeveloperResumeCard: React.FC<DeveloperResumeCardProps> = ({ onInte
               style={{
                 height: "350px",
                 overflowY: "auto",
-                border: "1.5px solid #18181b",
+                border: "1.5px solid var(--border-color)",
                 borderRadius: "12px",
-                background: "#fafafa",
+                background: "var(--card-bg-muted)",
                 padding: "10px",
                 display: "flex",
                 flexDirection: "column",
@@ -524,14 +540,15 @@ export const DeveloperResumeCard: React.FC<DeveloperResumeCardProps> = ({ onInte
                   key={idx} 
                   style={{
                     alignSelf: chat.sender === "user" ? "flex-end" : "flex-start",
-                    background: chat.sender === "user" ? "var(--color-amber)" : "#ffffff",
-                    border: "1.5px solid #18181b",
+                    background: chat.sender === "user" ? "var(--color-amber)" : "var(--card-bg)",
+                    border: "1.5px solid var(--border-color)",
                     borderRadius: chat.sender === "user" ? "12px 12px 2px 12px" : "12px 12px 12px 2px",
                     padding: "8px 12px",
                     maxWidth: "85%",
                     fontSize: "0.78rem",
                     lineHeight: 1.35,
-                    boxShadow: "2px 2px 0px rgba(0,0,0,0.05)"
+                    boxShadow: "2px 2px 0px rgba(0,0,0,0.05)",
+                    color: "var(--text-dark)"
                   }}
                 >
                   <div style={{ fontSize: "0.6rem", fontWeight: "bold", color: chat.sender === "user" ? "#7a5a07" : "var(--text-muted)", marginBottom: "2px" }}>
@@ -546,8 +563,8 @@ export const DeveloperResumeCard: React.FC<DeveloperResumeCardProps> = ({ onInte
                 <div 
                   style={{
                     alignSelf: "flex-start",
-                    background: "#ffffff",
-                    border: "1.5px solid #18181b",
+                    background: "var(--card-bg)",
+                    border: "1.5px solid var(--border-color)",
                     borderRadius: "12px 12px 12px 2px",
                     padding: "8px 12px",
                     maxWidth: "85%",
@@ -575,16 +592,17 @@ export const DeveloperResumeCard: React.FC<DeveloperResumeCardProps> = ({ onInte
                   type="button"
                   onClick={() => handleChatSubmit(undefined, sug.query)}
                   style={{
-                    background: "#ffffff",
-                    border: "1px solid #18181b",
+                    background: "var(--card-bg)",
+                    border: "1px solid var(--border-color)",
                     borderRadius: "20px",
                     padding: "3px 10px",
                     fontSize: "0.65rem",
                     cursor: "pointer",
-                    transition: "background 0.15s"
+                    transition: "background 0.15s",
+                    color: "var(--text-dark)"
                   }}
-                  onMouseEnter={(e) => e.currentTarget.style.background = "#f4f4f5"}
-                  onMouseLeave={(e) => e.currentTarget.style.background = "#ffffff"}
+                  onMouseEnter={(e) => e.currentTarget.style.background = "var(--card-bg-muted)"}
+                  onMouseLeave={(e) => e.currentTarget.style.background = "var(--card-bg)"}
                 >
                   {sug.label}
                 </button>
@@ -600,25 +618,26 @@ export const DeveloperResumeCard: React.FC<DeveloperResumeCardProps> = ({ onInte
                 onChange={(e) => setChatInput(e.target.value)}
                 style={{
                   flexGrow: 1,
-                  background: "#ffffff",
-                  border: "1.5px solid #18181b",
+                  background: "var(--card-bg)",
+                  border: "1.5px solid var(--border-color)",
                   borderRadius: "8px",
                   padding: "8px 12px",
                   fontSize: "0.8rem",
-                  outline: "none"
+                  outline: "none",
+                  color: "var(--text-dark)"
                 }}
               />
               <button
                 type="submit"
                 style={{
                   background: "var(--color-amber-accent)",
-                  border: "1.5px solid #18181b",
+                  border: "1.5px solid var(--border-color)",
                   borderRadius: "8px",
                   padding: "8px 16px",
                   fontSize: "0.8rem",
                   fontWeight: "bold",
                   cursor: "pointer",
-                  boxShadow: "3px 3px 0px #18181b"
+                  boxShadow: "3px 3px 0px var(--card-shadow)"
                 }}
               >
                 ASK
@@ -627,14 +646,15 @@ export const DeveloperResumeCard: React.FC<DeveloperResumeCardProps> = ({ onInte
                 type="button"
                 onClick={handleClearChat}
                 style={{
-                  background: "#f4f4f5",
-                  border: "1.5px solid #18181b",
+                  background: "var(--card-bg-muted)",
+                  border: "1.5px solid var(--border-color)",
                   borderRadius: "8px",
                   padding: "8px 14px",
                   fontSize: "0.8rem",
                   fontWeight: "bold",
                   cursor: "pointer",
-                  boxShadow: "3px 3px 0px #18181b"
+                  boxShadow: "3px 3px 0px var(--card-shadow)",
+                  color: "var(--text-dark)"
                 }}
                 title="Clear Chat Logs"
               >
@@ -647,7 +667,7 @@ export const DeveloperResumeCard: React.FC<DeveloperResumeCardProps> = ({ onInte
           <div style={{ flex: "1.2 1 300px", display: "flex", flexDirection: "column", gap: "18px" }}>
             
             {/* Tech Stack Deck */}
-            <div style={{ background: "#ffffff", border: "1.5px solid #18181b", borderRadius: "16px", padding: "16px" }}>
+            <div style={{ background: "var(--card-bg)", border: "1.5px solid var(--border-color)", borderRadius: "16px", padding: "16px" }}>
               <span style={{ fontSize: "0.68rem", fontWeight: "bold", color: "var(--color-amber-accent)", letterSpacing: "1px", display: "block", marginBottom: "10px", textTransform: "uppercase" }}>
                 💻 Tech Stack Deck
               </span>
@@ -666,7 +686,7 @@ export const DeveloperResumeCard: React.FC<DeveloperResumeCardProps> = ({ onInte
                   { name: "SQLAlchemy", bg: "#D71F1F", color: "#ffffff" },
                   { name: "Pandas", bg: "#150458", color: "#ffffff" },
                   { name: "NumPy", bg: "#013243", color: "#ffffff" },
-                  { name: "Matplotlib", bg: "#ffffff", color: "#000000", border: "1px solid #18181b" },
+                  { name: "Matplotlib", bg: "var(--card-bg)", color: "var(--text-dark)", border: "1px solid var(--border-color)" },
                   { name: "YOLO", bg: "#002F6C", color: "#ffffff" },
                   { name: "OpenCV", bg: "#5C3EE8", color: "#ffffff" },
                   { name: "Plotly", bg: "#3F4F75", color: "#ffffff" },
@@ -690,8 +710,8 @@ export const DeveloperResumeCard: React.FC<DeveloperResumeCardProps> = ({ onInte
                       borderRadius: "6px",
                       background: tech.bg,
                       color: tech.color,
-                      border: tech.border || "1.5px solid #18181b",
-                      boxShadow: "2px 2px 0px #18181b",
+                      border: tech.border || "1.5px solid var(--border-color)",
+                      boxShadow: "2px 2px 0px var(--card-shadow)",
                       textTransform: "uppercase"
                     }}
                   >
@@ -702,23 +722,23 @@ export const DeveloperResumeCard: React.FC<DeveloperResumeCardProps> = ({ onInte
             </div>
 
             {/* GitHub Stats & Heatmap */}
-            <div style={{ background: "#ffffff", border: "1.5px solid #18181b", borderRadius: "16px", padding: "16px", display: "flex", flexDirection: "column", gap: "12px" }}>
+            <div style={{ background: "var(--card-bg)", border: "1.5px solid var(--border-color)", borderRadius: "16px", padding: "16px", display: "flex", flexDirection: "column", gap: "12px" }}>
               <span style={{ fontSize: "0.68rem", fontWeight: "bold", color: "var(--color-amber-accent)", letterSpacing: "1px", textTransform: "uppercase" }}>
                 📊 GitHub Stats & Heatmap
               </span>
               
               {/* GitHub bio summary */}
-              <p style={{ fontSize: "0.65rem", color: "#4b5563", fontStyle: "italic", borderLeft: "2.5px solid var(--color-amber-accent)", paddingLeft: "8px", margin: 0, lineHeight: 1.4 }}>
+              <p style={{ fontSize: "0.65rem", color: "var(--text-muted)", fontStyle: "italic", borderLeft: "2.5px solid var(--color-amber-accent)", paddingLeft: "8px", margin: 0, lineHeight: 1.4 }}>
                 "BE-CSE 🚀 Data Science & Tech Enthusiast | 💻 Building with Python | 🤖 AI | SQL | MongoDB 🔧 Love creating impactful projects"
               </p>
 
               {/* Commit counters row */}
               <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "10px" }}>
-                <div style={{ background: "#fafafa", border: "1.5px solid #18181b", borderRadius: "10px", padding: "8px", textAlign: "center" }}>
+                <div style={{ background: "var(--card-bg-muted)", border: "1.5px solid var(--border-color)", borderRadius: "10px", padding: "8px", textAlign: "center" }}>
                   <div style={{ fontSize: "1.3rem", fontWeight: "900", color: "#db2777" }}>610</div>
                   <div style={{ fontSize: "0.55rem", color: "var(--text-muted)", textTransform: "uppercase", fontWeight: "bold", letterSpacing: "0.5px" }}>Total Commits</div>
                 </div>
-                <div style={{ background: "#fafafa", border: "1.5px solid #18181b", borderRadius: "10px", padding: "8px", textAlign: "center" }}>
+                <div style={{ background: "var(--card-bg-muted)", border: "1.5px solid var(--border-color)", borderRadius: "10px", padding: "8px", textAlign: "center" }}>
                   <div style={{ fontSize: "1.3rem", fontWeight: "900", color: "#eab308" }}>10</div>
                   <div style={{ fontSize: "0.55rem", color: "var(--text-muted)", textTransform: "uppercase", fontWeight: "bold", letterSpacing: "0.5px" }}>Longest Streak</div>
                 </div>
@@ -729,10 +749,10 @@ export const DeveloperResumeCard: React.FC<DeveloperResumeCardProps> = ({ onInte
                 <span style={{ fontSize: "0.55rem", fontWeight: "900", color: "var(--text-muted)", display: "block", marginBottom: "6px", letterSpacing: "0.5px" }}>
                   576 CONTRIBUTIONS IN THE LAST YEAR:
                 </span>
-                <div style={{ display: "flex", gap: "2.2px", flexWrap: "wrap", width: "100%", background: "#fcfcfa", border: "1.5px solid #18181b", borderRadius: "8px", padding: "8px" }}>
+                <div style={{ display: "flex", gap: "2.2px", flexWrap: "wrap", width: "100%", background: "var(--card-bg-muted)", border: "1.5px solid var(--border-color)", borderRadius: "8px", padding: "8px" }}>
                   {Array.from({ length: 63 }).map((_, i) => {
                     // Seed dynamic greens to match your exact commit heatmap grid
-                    const shades = ["#ebedf0", "#ebedf0", "#c6e48b", "#7bc96f", "#239a3b", "#196127"];
+                    const shades = ["var(--grid-dot)", "var(--grid-dot)", "#2e6f40", "#39d353", "#26a641", "#0e4429"];
                     const randSeed = (i * 3 + (i % 5) * 7) % shades.length;
                     const bg = shades[randSeed];
                     return (

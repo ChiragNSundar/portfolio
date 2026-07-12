@@ -105,8 +105,8 @@ export const AudioEngineCard: React.FC<AudioEngineCardProps> = ({
         display: "flex",
         flexDirection: "column",
         gap: "24px",
-        borderColor: "#18181b",
-        boxShadow: "8px 8px 0px rgba(147, 51, 234, 0.15), 8px 8px 0px #18181b"
+        borderColor: "var(--border-color)",
+        boxShadow: "8px 8px 0px rgba(147, 51, 234, 0.15), 8px 8px 0px var(--card-shadow)"
       }}
     >
       {/* Category Tag & Title */}
@@ -135,8 +135,8 @@ export const AudioEngineCard: React.FC<AudioEngineCardProps> = ({
         style={{
           display: "flex",
           flexDirection: "column",
-          background: "#fafafa",
-          border: "1.5px solid #18181b",
+          background: "var(--card-bg-muted)",
+          border: "1.5px solid var(--border-color)",
           borderRadius: "16px",
           padding: "20px",
           gap: "18px"
@@ -153,8 +153,8 @@ export const AudioEngineCard: React.FC<AudioEngineCardProps> = ({
             style={{
               display: "flex",
               alignItems: "center",
-              background: "#eaeaea",
-              border: "1.5px solid #18181b",
+              background: "var(--card-bg-muted)",
+              border: "1.5px solid var(--border-color)",
               borderRadius: "20px",
               padding: "2px"
             }}
@@ -167,7 +167,7 @@ export const AudioEngineCard: React.FC<AudioEngineCardProps> = ({
               style={{
                 background: mixRatio === 0 ? "var(--color-lavender-accent)" : "transparent",
                 border: "none",
-                color: mixRatio === 0 ? "#ffffff" : "#555",
+                color: mixRatio === 0 ? "#ffffff" : "var(--text-muted)",
                 fontFamily: "var(--font-body)",
                 fontSize: "0.75rem",
                 fontWeight: "700",
@@ -188,7 +188,7 @@ export const AudioEngineCard: React.FC<AudioEngineCardProps> = ({
               style={{
                 background: mixRatio === 1 ? "var(--color-lavender-accent)" : "transparent",
                 border: "none",
-                color: mixRatio === 1 ? "#ffffff" : "#555",
+                color: mixRatio === 1 ? "#ffffff" : "var(--text-muted)",
                 fontFamily: "var(--font-body)",
                 fontSize: "0.75rem",
                 fontWeight: "700",
@@ -207,8 +207,8 @@ export const AudioEngineCard: React.FC<AudioEngineCardProps> = ({
         {currentTrack && (
           <div 
             style={{ 
-              background: "#ffffff", 
-              border: "1.5px solid #18181b", 
+              background: "var(--card-bg)", 
+              border: "1.5px solid var(--border-color)", 
               borderRadius: "12px", 
               padding: "10px 14px",
               display: "flex",
@@ -222,8 +222,8 @@ export const AudioEngineCard: React.FC<AudioEngineCardProps> = ({
               <span style={{ fontSize: "0.6rem", fontWeight: "bold", color: "var(--color-lavender-accent)", textTransform: "uppercase", letterSpacing: "0.5px" }}>
                 LOADED WORKPIECE:
               </span>
-              <span style={{ fontSize: "0.85rem", fontWeight: "900", color: "#18181b" }}>
-                {currentTrack.title} &mdash; <span style={{ color: "#52525b" }}>{currentTrack.artist}</span>
+              <span style={{ fontSize: "0.85rem", fontWeight: "900", color: "var(--text-dark)" }}>
+                {currentTrack.title} &mdash; <span style={{ color: "var(--text-muted)" }}>{currentTrack.artist}</span>
               </span>
               <span style={{ fontSize: "0.65rem", color: "var(--text-muted)", marginTop: "2px" }}>
                 Style: {currentTrack.genre}
@@ -237,14 +237,14 @@ export const AudioEngineCard: React.FC<AudioEngineCardProps> = ({
                 rel="noopener noreferrer"
                 style={{
                   background: "#ff0000",
-                  border: "1.5px solid #18181b",
+                  border: "1.5px solid var(--border-color)",
                   borderRadius: "8px",
                   color: "#ffffff",
                   fontSize: "0.65rem",
                   fontWeight: "bold",
                   padding: "5px 10px",
                   cursor: "pointer",
-                  boxShadow: "2px 2px 0px #18181b",
+                  boxShadow: "2px 2px 0px var(--card-shadow)",
                   display: "inline-flex",
                   alignItems: "center",
                   gap: "4px",
@@ -266,12 +266,12 @@ export const AudioEngineCard: React.FC<AudioEngineCardProps> = ({
               height: "48px",
               borderRadius: "50%",
               background: "var(--color-lavender-accent)",
-              border: "1.5px solid #18181b",
+              border: "1.5px solid var(--border-color)",
               cursor: "pointer",
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
-              boxShadow: "3px 3px 0px #18181b",
+              boxShadow: "3px 3px 0px var(--card-shadow)",
               color: "#ffffff",
               fontSize: "1.1rem",
               transition: "transform 0.1s"
@@ -297,7 +297,7 @@ export const AudioEngineCard: React.FC<AudioEngineCardProps> = ({
                     width="3.5"
                     height={h}
                     rx="1.5"
-                    fill={isPassed ? "var(--color-lavender-accent)" : "#e4e4e7"}
+                    fill={isPassed ? "var(--color-lavender-accent)" : "var(--grid-dot)"}
                     style={{ transition: "fill 0.3s ease" }}
                   />
                 );
@@ -311,7 +311,7 @@ export const AudioEngineCard: React.FC<AudioEngineCardProps> = ({
         </div>
 
         {/* Volume Fader Row */}
-        <div style={{ display: "flex", alignItems: "center", gap: "10px", borderTop: "1px dashed #e4e4e7", paddingTop: "12px" }}>
+        <div style={{ display: "flex", alignItems: "center", gap: "10px", borderTop: "1px dashed var(--border-color)", paddingTop: "12px" }}>
           <span style={{ fontSize: "0.75rem", fontWeight: "bold" }}>Volume:</span>
           <input
             type="range"
@@ -346,15 +346,15 @@ export const AudioEngineCard: React.FC<AudioEngineCardProps> = ({
                   if (onInteract) onInteract();
                 }}
                 style={{
-                  background: isActive ? "var(--color-lavender)" : "#ffffff",
-                  border: isActive ? "2px solid var(--color-lavender-accent)" : "1.5px solid #18181b",
+                  background: isActive ? "var(--color-lavender)" : "var(--card-bg)",
+                  border: isActive ? "2px solid var(--color-lavender-accent)" : "1.5px solid var(--border-color)",
                   borderRadius: "12px",
                   padding: "12px 8px",
                   cursor: "pointer",
                   display: "flex",
                   alignItems: "center",
                   gap: "10px",
-                  boxShadow: isActive ? "none" : "3px 3px 0px #18181b",
+                  boxShadow: isActive ? "none" : "3px 3px 0px var(--card-shadow)",
                   transition: "all 0.15s ease",
                   transform: isActive ? "translate(2px, 2px)" : "none"
                 }}

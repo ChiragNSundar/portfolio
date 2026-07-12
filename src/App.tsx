@@ -7,9 +7,72 @@ import type { Track } from "./data/tracks";
 import { mixAndOriginalTracks } from "./data/tracks";
 import { audioEngine } from "./audio/audioEngine";
 
+// Scrambled text animation component for high-quality transitions
+const ScrambledText: React.FC<{ text: string }> = ({ text }) => {
+  const [displayedText, setDisplayedText] = useState(text);
+
+  useEffect(() => {
+    let frame = 0;
+    const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#%&";
+    const targetText = text.toUpperCase();
+    const length = targetText.length;
+    
+    const interval = setInterval(() => {
+      frame++;
+      const current = targetText.split("").map((char, index) => {
+        if (char === "\n" || char === " ") return char;
+        if (index > frame / 2.5) {
+          return chars[Math.floor(Math.random() * chars.length)];
+        }
+        return targetText[index];
+      }).join("");
+
+      setDisplayedText(current);
+
+      if (frame >= length * 2.5) {
+        clearInterval(interval);
+        setDisplayedText(text);
+      }
+    }, 25);
+
+    return () => clearInterval(interval);
+  }, [text]);
+
+  return <>{displayedText}</>;
+};
+
 export const App: React.FC = () => {
   // Console Role Mode: 'select' = Decision screen, 'engineer' = Coding portfolio, 'producer' = Audio mixing portfolio
   const [mode, setMode] = useState<'select' | 'engineer' | 'producer'>('select');
+  const [isDark, setIsDark] = useState(false);
+
+  // Load theme from localStorage or system settings
+  useEffect(() => {
+    const saved = localStorage.getItem("theme");
+    const preferDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+    if (saved === "dark" || (!saved && preferDark)) {
+      setIsDark(true);
+      document.documentElement.setAttribute("data-theme", "dark");
+    } else {
+      setIsDark(false);
+      document.documentElement.removeAttribute("data-theme");
+    }
+  }, []);
+
+  const toggleDarkMode = () => {
+    playBipSound();
+    setIsDark(prev => {
+      const next = !prev;
+      if (next) {
+        document.documentElement.setAttribute("data-theme", "dark");
+        localStorage.setItem("theme", "dark");
+      } else {
+        document.documentElement.removeAttribute("data-theme");
+        localStorage.setItem("theme", "light");
+      }
+      return next;
+    });
+  };
 
   const [currentTrack, setCurrentTrack] = useState<Track | null>(null);
   const [isPlaying, setIsPlaying] = useState(false);
@@ -232,9 +295,26 @@ export const App: React.FC = () => {
             justifyContent: "center",
             alignItems: "center",
             padding: "60px 20px",
-            gap: "36px"
+            gap: "36px",
+            position: "relative"
           }}
         >
+          {/* Top-Right Dark Mode Switcher */}
+          <button
+            onClick={toggleDarkMode}
+            className="analog-btn"
+            style={{
+              position: "absolute",
+              top: "24px",
+              right: "24px",
+              padding: "6px 14px",
+              fontSize: "0.75rem",
+              zIndex: 10
+            }}
+            aria-label="Toggle Dark Mode"
+          >
+            {isDark ? "☀️ LIGHT" : "🌙 DARK"}
+          </button>
           {/* Top Header Section */}
           <div style={{ textAlign: "center", display: "flex", flexDirection: "column", alignItems: "center", marginBottom: "12px" }}>
             <div 
@@ -363,24 +443,91 @@ export const App: React.FC = () => {
       {/* PORTFOLIO CONSOLE VIEWS (Rendered when a mode is active) */}
       {mode !== 'select' && (
         <>
+          {/* Mobile top bar navigation */}
+          <nav 
+            className="mobile-nav" 
+            style={{
+              position: "fixed",
+              top: 0,
+              left: 0,
+              width: "100vw",
+              background: "var(--card-bg)",
+              borderBottom: "2px solid var(--border-color)",
+              padding: "8px 16px",
+              display: "none",
+              justifyContent: "space-between",
+              alignItems: "center",
+              zIndex: 100,
+              boxShadow: "0 2px 8px rgba(0,0,0,0.05)"
+            }}
+          >
+            <div style={{ display: "flex", gap: "6px" }}>
+              <button
+                onClick={() => { playBipSound(); setMode('select'); setActiveSection(0); }}
+                className="analog-btn"
+                style={{ padding: "4px 8px", fontSize: "0.58rem" }}
+              >
+                🔄 ROLE
+              </button>
+              <button
+                onClick={toggleDarkMode}
+                className="analog-btn"
+                style={{ padding: "4px 8px", fontSize: "0.58rem" }}
+              >
+                {isDark ? "☀️" : "🌙"}
+              </button>
+            </div>
+            <div style={{ display: "flex", gap: "4px" }}>
+              {getMenuItems().map((item) => {
+                const isActive = activeSection === item.index;
+                return (
+                  <button
+                    key={item.index}
+                    onClick={() => scrollToSection(item.index)}
+                    className={`analog-btn ${isActive ? "active" : ""}`}
+                    style={{ padding: "4px 8px", fontSize: "0.58rem" }}
+                  >
+                    {item.label.split(" ")[1] || item.label}
+                  </button>
+                );
+              })}
+            </div>
+          </nav>
+
           {/* Floating Navigation panel with switch console selector */}
           <nav
+            className="sidebar-nav"
             style={{
               position: "fixed",
               right: "30px",
               top: "50%",
               transform: "translateY(-50%)",
-              background: "#ffffff",
-              border: "2px solid #18181b",
+              background: "var(--card-bg)",
+              border: "2px solid var(--border-color)",
               borderRadius: "16px",
               padding: "18px 14px",
               display: "flex",
               flexDirection: "column",
-              gap: "16px",
-              boxShadow: "6px 6px 0px #18181b",
+              gap: "12px",
+              boxShadow: "6px 6px 0px var(--card-shadow)",
               zIndex: 100
             }}
           >
+            {/* Dark Mode toggle inside navigation */}
+            <button
+              onClick={toggleDarkMode}
+              className="analog-btn"
+              style={{
+                padding: "6px 10px",
+                fontSize: "0.58rem",
+                justifyContent: "center",
+                fontWeight: "900"
+              }}
+              aria-label="Toggle Dark Mode"
+            >
+              {isDark ? "☀️ LIGHT" : "🌙 DARK"}
+            </button>
+
             {/* Back to Console choice selector */}
             <button
               onClick={() => { playBipSound(); setMode('select'); setActiveSection(0); }}
@@ -395,7 +542,7 @@ export const App: React.FC = () => {
               🔄 SWITCH ROLE
             </button>
 
-            <div style={{ borderBottom: "1.5px solid #18181b", margin: "4px 0" }} />
+            <div style={{ borderBottom: "1.5px solid var(--border-color)", margin: "4px 0" }} />
 
             {getMenuItems().map((item) => {
               const isActive = activeSection === item.index;
@@ -415,9 +562,9 @@ export const App: React.FC = () => {
                       width: "12px",
                       height: "12px",
                       borderRadius: "50%",
-                      background: isActive ? item.color : "#e4e4e7",
+                      background: isActive ? item.color : "var(--card-bg-muted)",
                       boxShadow: isActive ? `0 0 10px ${item.color}, 0 0 4px ${item.color}` : "inset 0 1px 2px rgba(0,0,0,0.1)",
-                      border: "1.5px solid #18181b",
+                      border: "1.5px solid var(--border-color)",
                       transition: "all 0.25s ease"
                     }}
                   />
@@ -467,8 +614,8 @@ export const App: React.FC = () => {
             >
               <div 
                 style={{
-                  background: "#ffffff",
-                  border: "1.5px solid #18181b",
+                  background: "var(--card-bg)",
+                  border: "1.5px solid var(--border-color)",
                   borderRadius: "12px",
                   padding: "6px 14px",
                   fontFamily: "var(--font-lcd)",
@@ -476,7 +623,7 @@ export const App: React.FC = () => {
                   color: mode === 'engineer' ? "var(--color-amber-accent)" : "var(--color-lavender-accent)",
                   fontWeight: "bold",
                   marginBottom: "24px",
-                  boxShadow: "3px 3px 0px #18181b"
+                  boxShadow: "3px 3px 0px var(--card-shadow)"
                 }}
               >
                 ROLE: {mode === 'engineer' ? "SOFTWARE ENGINEER" : "MUSIC PRODUCER"} CONSOLE <span className="bouncy-emoji">{mode === 'engineer' ? "💻" : "🎚️"}</span>
@@ -491,10 +638,11 @@ export const App: React.FC = () => {
                   letterSpacing: "-2px",
                   color: "var(--text-dark)",
                   marginBottom: "16px",
-                  textTransform: "uppercase"
+                  textTransform: "uppercase",
+                  whiteSpace: "pre-line"
                 }}
               >
-                CHIRAG N<br/>SUNDAR
+                <ScrambledText text={mode === 'producer' ? "HAZARD\nCHIRAG" : "CHIRAG N\nSUNDAR"} />
               </h1>
 
               <p 

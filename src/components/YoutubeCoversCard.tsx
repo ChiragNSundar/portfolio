@@ -34,8 +34,8 @@ export const YoutubeCoversCard: React.FC<YoutubeCoversCardProps> = ({ onInteract
         display: "flex",
         flexDirection: "column",
         gap: "24px",
-        borderColor: "#18181b",
-        boxShadow: "8px 8px 0px rgba(12, 166, 120, 0.15), 8px 8px 0px #18181b"
+        borderColor: "var(--border-color)",
+        boxShadow: "8px 8px 0px rgba(12, 166, 120, 0.15), 8px 8px 0px var(--card-shadow)"
       }}
     >
       {/* Category Tag & Title */}
@@ -80,7 +80,7 @@ export const YoutubeCoversCard: React.FC<YoutubeCoversCardProps> = ({ onInteract
             flexBasis: "0",
             position: "relative",
             backgroundColor: "#000",
-            border: "1.5px solid #18181b",
+            border: "1.5px solid var(--border-color)",
             borderRadius: "16px",
             height: "310px",
             overflow: "hidden",
@@ -109,8 +109,8 @@ export const YoutubeCoversCard: React.FC<YoutubeCoversCardProps> = ({ onInteract
         <div 
           style={{
             width: "220px",
-            background: "#fafafa",
-            border: "1.5px solid #18181b",
+            background: "var(--card-bg-muted)",
+            border: "1.5px solid var(--border-color)",
             borderRadius: "16px",
             padding: "16px",
             display: "flex",
@@ -127,7 +127,7 @@ export const YoutubeCoversCard: React.FC<YoutubeCoversCardProps> = ({ onInteract
                 fontSize: "0.7rem",
                 color: "var(--color-mint-accent)",
                 fontWeight: "bold",
-                borderBottom: "1px dashed #d4d4d8",
+                borderBottom: "1px dashed var(--border-color)",
                 paddingBottom: "6px",
                 marginBottom: "10px",
                 display: "flex",
@@ -144,7 +144,7 @@ export const YoutubeCoversCard: React.FC<YoutubeCoversCardProps> = ({ onInteract
                 rel="noopener noreferrer"
                 style={{
                   background: "#ff0000",
-                  border: "1.5px solid #18181b",
+                  border: "1.5px solid var(--border-color)",
                   borderRadius: "8px",
                   color: "#ffffff",
                   fontFamily: "var(--font-body)",
@@ -152,7 +152,7 @@ export const YoutubeCoversCard: React.FC<YoutubeCoversCardProps> = ({ onInteract
                   fontWeight: "bold",
                   padding: "4px 8px",
                   cursor: "pointer",
-                  boxShadow: "2px 2px 0px #18181b",
+                  boxShadow: "2px 2px 0px var(--card-shadow)",
                   display: "inline-flex",
                   alignItems: "center",
                   gap: "4px",
@@ -217,7 +217,7 @@ export const YoutubeCoversCard: React.FC<YoutubeCoversCardProps> = ({ onInteract
               fontFamily: "var(--font-lcd)", 
               fontSize: "0.55rem", 
               color: "var(--text-muted)",
-              borderTop: "1px dashed #d4d4d8",
+              borderTop: "1px dashed var(--border-color)",
               paddingTop: "6px",
               textAlign: "center"
             }}
@@ -236,7 +236,7 @@ export const YoutubeCoversCard: React.FC<YoutubeCoversCardProps> = ({ onInteract
           justifyContent: "center", 
           marginTop: "16px", 
           paddingTop: "16px", 
-          borderTop: "1.5px dashed #e4e4e7" 
+          borderTop: "1.5px dashed var(--border-color)" 
         }}
       >
         <a 
@@ -247,7 +247,7 @@ export const YoutubeCoversCard: React.FC<YoutubeCoversCardProps> = ({ onInteract
             padding: "8px 16px", 
             fontSize: "0.75rem", 
             textDecoration: "none", 
-            color: "#18181b",
+            color: "var(--text-dark)",
             display: "inline-flex",
             alignItems: "center",
             gap: "8px"
@@ -268,7 +268,7 @@ export const YoutubeCoversCard: React.FC<YoutubeCoversCardProps> = ({ onInteract
             padding: "8px 16px", 
             fontSize: "0.75rem", 
             textDecoration: "none", 
-            color: "#18181b",
+            color: "var(--text-dark)",
             display: "inline-flex",
             alignItems: "center",
             gap: "8px"
@@ -290,7 +290,7 @@ export const YoutubeCoversCard: React.FC<YoutubeCoversCardProps> = ({ onInteract
             padding: "8px 16px", 
             fontSize: "0.75rem", 
             textDecoration: "none", 
-            color: "#18181b",
+            color: "var(--text-dark)",
             display: "inline-flex",
             alignItems: "center",
             gap: "8px"
