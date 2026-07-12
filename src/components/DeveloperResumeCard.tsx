@@ -31,12 +31,14 @@ const CHATBOT_KB: Record<string, string> = {
   contact: "You can reach Chirag at chiragns12@gmail.com. Find him on GitHub at github.com/ChiragNSundar and on LinkedIn at linkedin.com/in/chiragnsundar/.",
   techstack: "Chirag's tech stack includes: Python, TypeScript, JavaScript, React, Node.js, Vite, Streamlit, Plotly/Dash, MongoDB, MySQL, PostgreSQL (Supabase), YOLOv8, OpenCV, LangChain, Three.js, HTML/CSS, Git, and Vercel.",
   certifications: "Chirag holds certifications from Infosys Springboard (Python, AI/ML Foundations) and freeCodeCamp (Responsive Web Design, JavaScript Algorithms).",
-  summary: "Chirag N Sundar is a Software Engineer (B.E. CS, RNSIT, GPA 8.89) who interned at WhatDigital Technologies for 5 months building AI chatbots and BI dashboards. Key projects: Harmony Hub (RAG chatbot), RoadWatch (YOLOv8 helmet detection + license plate OCR), and a Job Portal Analytics Dashboard. Core skills: Python, React/TS, computer vision, generative AI."
+  summary: "Chirag N Sundar is a Software Engineer (B.E. CS, RNSIT, GPA 8.89) who interned at WhatDigital Technologies for 5 months building AI chatbots and BI dashboards. Key projects: Harmony Hub (RAG chatbot), RoadWatch (YOLOv8 helmet detection + license plate OCR), and a Job Portal Analytics Dashboard. Core skills: Python, React/TS, computer vision, generative AI.",
+  projects: "Chirag's key projects are:\n\n1. Harmony Hub — A mental health RAG chatbot that retrieves info from uploaded PDFs to give context-aware AI responses, built with Streamlit + LangChain.\n2. RoadWatch — Real-time YOLOv8 helmet detection + Indian license plate OCR system using OpenCV.\n3. Job Portal Analytics Dashboard — Plotly/Dash dashboard connected to MongoDB and MySQL for visualizing job market trends."
 };
 
 // Synonym groups: each group maps to a CHATBOT_KB key
 const TOPIC_SYNONYMS: { topic: string; keywords: string[] }[] = [
-  { topic: "intro",     keywords: ["who are you", "about you", "yourself", "introduce", "about chirag", "who is chirag", "tell me about"] },
+  { topic: "projects",  keywords: ["project", "built", "portfolio", "tell me about your", "what did you build", "what have you made"] },
+  { topic: "intro",     keywords: ["who are you", "about you", "yourself", "introduce", "about chirag", "who is chirag"] },
   { topic: "summary",   keywords: ["summary", "everything", "overview", "tell me everything", "all about", "quick summary", "brief"] },
   { topic: "rag",       keywords: ["rag", "retrieval", "harmony", "hub", "augmented generation"] },
   { topic: "nlp",       keywords: ["nlp", "natural language"] },
@@ -58,7 +60,8 @@ const TOPIC_SYNONYMS: { topic: string; keywords: string[] }[] = [
 
 // Contextual follow-up suggestions per topic
 const FOLLOW_UPS: Record<string, { label: string; query: string }[]> = {
-  intro:     [{ label: "Projects 🚀", query: "Tell me about your projects" }, { label: "Tech Stack 🛠️", query: "What technologies do you use?" }],
+  projects:  [{ label: "Internship 💼", query: "Where did you intern?" }, { label: "Tech Stack 🛠️", query: "What technologies do you use?" }, { label: "Challenges 💪", query: "What challenges did you face?" }],
+  intro:     [{ label: "Projects 🚀", query: "What projects have you built?" }, { label: "Tech Stack 🛠️", query: "What technologies do you use?" }],
   summary:   [{ label: "Internship 💼", query: "Where did you intern?" }, { label: "Certifications 📜", query: "What certifications do you have?" }],
   rag:       [{ label: "RoadWatch 🏍️", query: "Tell me about RoadWatch" }, { label: "NLP Details 🧠", query: "How was NLP used in Harmony Hub?" }],
   nlp:       [{ label: "RAG Explained 🧠", query: "What is RAG?" }, { label: "Streamlit 📊", query: "Why Streamlit?" }],
@@ -122,7 +125,6 @@ export const DeveloperResumeCard: React.FC<DeveloperResumeCardProps> = ({ onInte
   const [chatInput, setChatInput] = useState("");
   const [isTyping, setIsTyping] = useState(false);
   const [lastTopic, setLastTopic] = useState<string | null>(null);
-  const [isChatExpanded, setIsChatExpanded] = useState(false);
   const chatContainerRef = useRef<HTMLDivElement>(null);
 
   const handleClearChat = () => {
@@ -494,36 +496,16 @@ export const DeveloperResumeCard: React.FC<DeveloperResumeCardProps> = ({ onInte
               <span style={{ fontWeight: "900", fontSize: "1rem", display: "flex", alignItems: "center", gap: "6px" }}>
                 🤖 Ask Chirag AI
               </span>
-              <div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
-                <button
-                  type="button"
-                  onClick={() => setIsChatExpanded(prev => !prev)}
-                  style={{
-                    background: "none",
-                    border: "1px solid #18181b",
-                    borderRadius: "4px",
-                    padding: "1px 5px",
-                    fontSize: "0.65rem",
-                    cursor: "pointer",
-                    fontWeight: "bold",
-                    lineHeight: 1.2
-                  }}
-                  title={isChatExpanded ? "Collapse chat" : "Expand chat"}
-                >
-                  {isChatExpanded ? "▾" : "▴"}
-                </button>
-                <span style={{ fontSize: "0.6rem", background: "var(--color-amber)", border: "1px solid #18181b", padding: "2px 6px", borderRadius: "4px", fontWeight: "bold" }}>
-                  FREE // NO KEY NEEDED
-                </span>
-              </div>
+              <span style={{ fontSize: "0.6rem", background: "var(--color-amber)", border: "1px solid #18181b", padding: "2px 6px", borderRadius: "4px", fontWeight: "bold" }}>
+                FREE // NO KEY NEEDED
+              </span>
             </div>
 
             {/* Chat Messages scroll container */}
             <div 
               ref={chatContainerRef}
               style={{
-                height: isChatExpanded ? "350px" : "170px",
-                transition: "height 0.3s ease",
+                height: "350px",
                 overflowY: "auto",
                 border: "1.5px solid #18181b",
                 borderRadius: "12px",
