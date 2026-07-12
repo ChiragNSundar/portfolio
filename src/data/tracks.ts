@@ -167,7 +167,7 @@ export const mixAndOriginalTracks: Track[] = [
     description: "Original Track by Hazard Chirag. Focus: Aggressive sub-bass layering, detuned lead synths, and punchy 808 transient saturation.",
     spotifyUrl: "https://spotify.com",
     soundCloudUrl: "https://soundcloud.com",
-    youtubeUrl: "https://www.youtube.com/@HazardChirag"
+    youtubeUrl: "https://youtu.be/srJudEKvoUk?si=Mc8EW9WZt63ZupuK"
   }
 ];
 
