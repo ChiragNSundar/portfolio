@@ -49,14 +49,14 @@ export const App: React.FC = () => {
     };
   }, []);
 
-  // Setup IntersectionObserver to track active scrolling section
+  // Setup IntersectionObserver using direct DOM queries to bypass conditional mount ref gotchas
   useEffect(() => {
     if (mode === 'select') return;
 
     const observerOptions = {
       root: null,
-      rootMargin: "-12% 0px -12% 0px", // triggers earlier when entering screen bounds
-      threshold: 0.15
+      rootMargin: "-20% 0px -20% 0px",
+      threshold: 0.1
     };
 
     const callback = (entries: IntersectionObserverEntry[]) => {
@@ -69,9 +69,8 @@ export const App: React.FC = () => {
     };
 
     const observer = new IntersectionObserver(callback, observerOptions);
-    sectionRefs.forEach(ref => {
-      if (ref.current) observer.observe(ref.current);
-    });
+    const elements = document.querySelectorAll("section[data-section-idx]");
+    elements.forEach(el => observer.observe(el));
 
     return () => {
       observer.disconnect();
@@ -83,7 +82,7 @@ export const App: React.FC = () => {
     if (mode === 'select') return;
 
     const handleScroll = () => {
-      const bottomThreshold = 50; // pixels from the bottom
+      const bottomThreshold = 60; // pixels from the bottom
       const isAtBottom = (window.innerHeight + window.scrollY) >= (document.documentElement.scrollHeight - bottomThreshold);
       if (isAtBottom) {
         setActiveSection(2); // index 2 is always the last section (Certificates or YouTube Covers)
@@ -153,7 +152,8 @@ export const App: React.FC = () => {
 
   const scrollToSection = (idx: number) => {
     playBipSound();
-    sectionRefs[idx].current?.scrollIntoView({ behavior: "smooth", block: "center" });
+    const el = document.querySelector(`section[data-section-idx="${idx}"]`);
+    el?.scrollIntoView({ behavior: "smooth", block: "center" });
   };
 
   const playBipSound = () => {
@@ -179,11 +179,11 @@ export const App: React.FC = () => {
     const tilt = tilts[idx] || { rx: 0, ry: 0 };
     
     return {
-      opacity: isActive ? 1 : 0.08,
-      filter: isActive ? "blur(0px)" : "blur(8px)",
+      opacity: isActive ? 1 : 0.35,
+      filter: isActive ? "blur(0px)" : "blur(4px)",
       transform: isActive 
         ? `perspective(1600px) rotateX(${tilt.rx}deg) rotateY(${tilt.ry}deg) translateY(0) scale(1)` 
-        : `perspective(1600px) rotateX(15deg) rotateY(-5deg) translateY(80px) scale(0.92)`,
+        : `perspective(1600px) rotateX(8deg) rotateY(-3deg) translateY(40px) scale(0.96)`,
       transition: isActive 
         ? "transform 0.15s ease-out, opacity 0.6s ease, filter 0.6s ease" 
         : "transform 0.9s cubic-bezier(0.19, 1, 0.22, 1), opacity 0.6s ease, filter 0.6s ease",
@@ -620,6 +620,9 @@ export const App: React.FC = () => {
                 </section>
               </>
             )}
+
+            {/* Scroll bottom spacer to provide scrolling headroom */}
+            <div style={{ height: "160px" }} />
 
           </div>
 
