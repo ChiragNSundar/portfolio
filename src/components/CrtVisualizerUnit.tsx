@@ -6,12 +6,14 @@ interface CrtVisualizerUnitProps {
   currentTrack: Track | null;
   isPlaying: boolean;
   mixRatio: number;
+  active?: boolean;
 }
 
 export const CrtVisualizerUnit: React.FC<CrtVisualizerUnitProps> = ({
   currentTrack,
   isPlaying,
-  mixRatio
+  mixRatio,
+  active
 }) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const animationRef = useRef<number | null>(null);
@@ -145,7 +147,7 @@ export const CrtVisualizerUnit: React.FC<CrtVisualizerUnitProps> = ({
 
   return (
     <div 
-      className="crt-screen crt-scanlines crt-flicker-animation"
+      className={`crt-screen crt-scanlines crt-flicker-animation ${active ? "crt-boot-effect" : "screen-power-off"}`}
       style={{
         width: "100%",
         height: "270px",

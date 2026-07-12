@@ -3,9 +3,10 @@ import { coverVideos } from "../data/tracks";
 
 interface CrtTvUnitProps {
   onInteract?: () => void;
+  active?: boolean;
 }
 
-export const CrtTvUnit: React.FC<CrtTvUnitProps> = ({ onInteract }) => {
+export const CrtTvUnit: React.FC<CrtTvUnitProps> = ({ onInteract, active }) => {
   const [powerOn, setPowerOn] = useState(false);
   const [currentIdx, setCurrentIdx] = useState(0);
   const [isFlickering, setIsFlickering] = useState(false);
@@ -101,7 +102,7 @@ export const CrtTvUnit: React.FC<CrtTvUnitProps> = ({ onInteract }) => {
     >
       {/* Left Column: Curved CRT Screen */}
       <div 
-        className="crt-screen crt-scanlines"
+        className={`crt-screen crt-scanlines ${active ? "crt-boot-effect" : "screen-power-off"}`}
         style={{
           flexGrow: 1,
           position: "relative",

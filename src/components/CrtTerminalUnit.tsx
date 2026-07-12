@@ -4,9 +4,10 @@ import { supabase, isSupabaseConfigured } from "../lib/supabaseClient";
 
 interface CrtTerminalUnitProps {
   onInteract?: () => void;
+  active?: boolean;
 }
 
-export const CrtTerminalUnit: React.FC<CrtTerminalUnitProps> = ({ onInteract }) => {
+export const CrtTerminalUnit: React.FC<CrtTerminalUnitProps> = ({ onInteract, active }) => {
   const [history, setHistory] = useState<string[]>([]);
   const [inputVal, setInputVal] = useState("");
   const [guestbookState, setGuestbookState] = useState<'idle' | 'awaiting_name' | 'awaiting_message'>('idle');
@@ -329,7 +330,7 @@ export const CrtTerminalUnit: React.FC<CrtTerminalUnitProps> = ({ onInteract }) 
       >
         {/* Left Column: MS-DOS Resume CLI (60%) */}
         <div 
-          className="crt-screen crt-scanlines crt-flicker-animation"
+          className={`crt-screen crt-scanlines crt-flicker-animation ${active ? "crt-boot-effect" : "screen-power-off"}`}
           style={{
             width: "58%",
             height: "100%",

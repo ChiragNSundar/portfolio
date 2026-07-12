@@ -155,6 +155,25 @@ export const App: React.FC = () => {
     } catch (e) {}
   };
 
+  // Coordinated scroll transitions style generator
+  const getSectionStyles = (idx: number) => {
+    const isActive = activeSection === idx;
+    const tilt = tilts[idx] || { rx: 0, ry: 0 };
+    
+    return {
+      opacity: isActive ? 1 : 0.08,
+      filter: isActive ? "blur(0px)" : "blur(8px)",
+      transform: isActive 
+        ? `perspective(1600px) rotateX(${tilt.rx}deg) rotateY(${tilt.ry}deg) translateY(0) scale(1)` 
+        : `perspective(1600px) rotateX(22deg) rotateY(-8deg) translateY(120px) scale(0.85)`,
+      transition: isActive 
+        ? "transform 0.15s ease-out, opacity 0.8s ease, filter 0.8s ease" 
+        : "transform 1.0s cubic-bezier(0.19, 1, 0.22, 1), opacity 0.8s ease, filter 0.8s ease",
+      transformStyle: "preserve-3d" as const,
+      backfaceVisibility: "hidden" as const
+    };
+  };
+
   const menuItems = [
     { label: "01 INTRO", index: 0 },
     { label: "02 MIXES", index: 1 },
@@ -257,7 +276,7 @@ export const App: React.FC = () => {
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
-          gap: "120px", // gap between sections
+          gap: "120px",
           padding: "60px 20px"
         }}
       >
@@ -274,12 +293,10 @@ export const App: React.FC = () => {
             alignItems: "center",
             textAlign: "center",
             maxWidth: "800px",
-            transform: `perspective(1000px) rotateX(${tilts[0].rx}deg) rotateY(${tilts[0].ry}deg)`,
-            transition: "transform 0.15s ease-out",
-            zIndex: 10
+            zIndex: 10,
+            ...getSectionStyles(0)
           }}
         >
-          {/* Glowing Retro Badge */}
           <div 
             style={{
               border: "1.5px solid var(--color-gold)",
@@ -359,9 +376,7 @@ export const App: React.FC = () => {
             display: "flex",
             flexDirection: "column",
             gap: "20px",
-            transformStyle: "preserve-3d",
-            transform: `perspective(1500px) rotateX(${tilts[1].rx}deg) rotateY(${tilts[1].ry}deg)`,
-            transition: "transform 0.15s ease-out"
+            ...getSectionStyles(1)
           }}
         >
           <div style={{ borderLeft: "4px solid var(--color-gold)", paddingLeft: "10px" }}>
@@ -387,6 +402,7 @@ export const App: React.FC = () => {
             currentTrack={currentTrack}
             isPlaying={isPlaying}
             mixRatio={mixRatio}
+            active={activeSection === 1}
           />
         </section>
 
@@ -401,9 +417,7 @@ export const App: React.FC = () => {
             display: "flex",
             flexDirection: "column",
             gap: "20px",
-            transformStyle: "preserve-3d",
-            transform: `perspective(1500px) rotateX(${tilts[2].rx}deg) rotateY(${tilts[2].ry}deg)`,
-            transition: "transform 0.15s ease-out"
+            ...getSectionStyles(2)
           }}
         >
           <div style={{ borderLeft: "4px solid var(--color-gold)", paddingLeft: "10px" }}>
@@ -412,7 +426,10 @@ export const App: React.FC = () => {
             </h2>
           </div>
 
-          <CrtTvUnit onInteract={unlockAudioContext} />
+          <CrtTvUnit 
+            onInteract={unlockAudioContext}
+            active={activeSection === 2}
+          />
         </section>
 
 
@@ -426,9 +443,7 @@ export const App: React.FC = () => {
             display: "flex",
             flexDirection: "column",
             gap: "20px",
-            transformStyle: "preserve-3d",
-            transform: `perspective(1500px) rotateX(${tilts[3].rx}deg) rotateY(${tilts[3].ry}deg)`,
-            transition: "transform 0.15s ease-out"
+            ...getSectionStyles(3)
           }}
         >
           <div style={{ borderLeft: "4px solid var(--color-gold)", paddingLeft: "10px" }}>
@@ -437,7 +452,10 @@ export const App: React.FC = () => {
             </h2>
           </div>
 
-          <CrtTerminalUnit onInteract={unlockAudioContext} />
+          <CrtTerminalUnit 
+            onInteract={unlockAudioContext}
+            active={activeSection === 3}
+          />
         </section>
 
 
@@ -451,9 +469,7 @@ export const App: React.FC = () => {
             display: "flex",
             flexDirection: "column",
             gap: "20px",
-            transformStyle: "preserve-3d",
-            transform: `perspective(1500px) rotateX(${tilts[4].rx}deg) rotateY(${tilts[4].ry}deg)`,
-            transition: "transform 0.15s ease-out"
+            ...getSectionStyles(4)
           }}
         >
           <div style={{ borderLeft: "4px solid var(--color-gold)", paddingLeft: "10px" }}>
@@ -486,13 +502,11 @@ export const App: React.FC = () => {
           boxShadow: "0 -5px 15px rgba(0,0,0,0.5)"
         }}
       >
-        {/* Toggle Lights */}
         <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
           <span className="led-dot" style={{ background: isPlaying ? "#00ff78" : "#444", boxShadow: isPlaying ? "0 0 6px #00ff78" : "none" }} />
           <span style={{ fontFamily: "var(--font-lcd)", fontSize: "0.6rem", color: "#666" }}>SYS AUDIO STREAMING</span>
         </div>
 
-        {/* Readout log banner */}
         <div 
           style={{
             flexGrow: 1,
@@ -507,8 +521,8 @@ export const App: React.FC = () => {
             alignItems: "center"
           }}
         >
-          <marquee 
-            scrollamount="2.5" 
+          <span 
+            className="scrolling-text"
             style={{ 
               fontFamily: "var(--font-lcd)", 
               fontSize: "0.55rem", 
@@ -517,10 +531,9 @@ export const App: React.FC = () => {
             }}
           >
             CHIRAG N SUNDAR PORTFOLIO ENGINE // STATUS: STEADY // SECTIONS LOADED: 5 // BIOMETRICS: SHIELDED // MIX STATUS: LOCKSTEP SYNC
-          </marquee>
+          </span>
         </div>
 
-        {/* Console info */}
         <div style={{ fontFamily: "var(--font-lcd)", fontSize: "0.6rem", color: "#555", display: "flex", gap: "12px" }}>
           <span>BAUD: 9600</span>
           <span>&copy; 2026</span>
