@@ -37,23 +37,6 @@
   --grid-dot: #e4e4e7;
 }
 
-[data-theme="dark"] {
-  --bg-cream: #1e293b;
-  --text-dark: #f1f5f9;
-  --text-muted: #94a3b8;
-
-  --card-bg: #283548;
-  --card-bg-muted: #1f2937;
-  --border-color: #475569;
-  --card-shadow: #0f172a;
-  --grid-dot: #334155;
-
-  --color-lavender: #3b2854;
-  --color-mint: #153e35;
-  --color-amber: #4d380e;
-  --color-rose: #52182c;
-}
-
 * {
   box-sizing: border-box;
   margin: 0;

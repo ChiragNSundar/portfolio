@@ -292,22 +292,6 @@ export const App: React.FC = () => {
             position: "relative"
           }}
         >
-          {/* Top-Right Dark Mode Switcher */}
-          <button
-            onClick={toggleDarkMode}
-            className="analog-btn"
-            style={{
-              position: "absolute",
-              top: "24px",
-              right: "24px",
-              padding: "6px 14px",
-              fontSize: "0.75rem",
-              zIndex: 10
-            }}
-            aria-label="Toggle Dark Mode"
-          >
-            {isDark ? "☀️ LIGHT" : "🌙 DARK"}
-          </button>
           {/* Top Header Section */}
           <div style={{ textAlign: "center", display: "flex", flexDirection: "column", alignItems: "center", marginBottom: "12px" }}>
             <div 
@@ -463,13 +447,6 @@ export const App: React.FC = () => {
               >
                 🔄 ROLE
               </button>
-              <button
-                onClick={toggleDarkMode}
-                className="analog-btn"
-                style={{ padding: "4px 8px", fontSize: "0.58rem" }}
-              >
-                {isDark ? "☀️" : "🌙"}
-              </button>
             </div>
             <div style={{ display: "flex", gap: "4px" }}>
               {getMenuItems().map((item) => {
@@ -507,21 +484,6 @@ export const App: React.FC = () => {
               zIndex: 100
             }}
           >
-            {/* Dark Mode toggle inside navigation */}
-            <button
-              onClick={toggleDarkMode}
-              className="analog-btn"
-              style={{
-                padding: "6px 10px",
-                fontSize: "0.58rem",
-                justifyContent: "center",
-                fontWeight: "900"
-              }}
-              aria-label="Toggle Dark Mode"
-            >
-              {isDark ? "☀️ LIGHT" : "🌙 DARK"}
-            </button>
-
             {/* Back to Console choice selector */}
             <button
               onClick={() => { playBipSound(); setMode('select'); setActiveSection(0); }}
