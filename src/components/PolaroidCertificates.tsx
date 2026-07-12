@@ -168,8 +168,6 @@ export const PolaroidCertificates: React.FC = () => {
       >
         <a 
           href="mailto:chiragns12@gmail.com"
-          target="_blank"
-          rel="noopener noreferrer"
           className="analog-btn"
           style={{ padding: "8px 16px", fontSize: "0.78rem", textDecoration: "none", color: "#18181b" }}
         >
