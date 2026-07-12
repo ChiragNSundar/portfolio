@@ -14,7 +14,7 @@ interface DeveloperResumeCardProps {
 
 // Chatbot Knowledge Base
 const CHATBOT_KB: Record<string, string> = {
-  intro: "Hi my name is Chirag, I am a Software Engineer specializing in Web App Development, Data Analytics, and Generative AI workflows. I recently completed my B.E. in Computer Science & engineering from RNSIT, maintaining a GPA of 8.89, and have worked as a Data Science & AI Intern at WhatDigital Technologies (5 months).",
+  intro: "Hi, I'm Chirag — a Software Engineer specializing in Web App Development, Data Analytics, and Generative AI. I graduated with a B.E. in CS from RNSIT (GPA 8.89). I previously interned at WhatDigital Technologies (Data Science & AI, 5 months) and currently work as an AI Operations Specialist at Rural Bank of Calbayog City, Inc. (RBCCI), where I architect core banking systems with AMLA compliance and edge AI biometric verification.",
   rag: "RAG stands for Retrieval-Augmented Generation. Instead of giving generic AI responses, in Harmony Hub, the chatbot first retrieves relevant information from uploaded documents (using a PDF parser text pipeline) and then generates context-aware answers. This makes responses accurate and personalized.",
   nlp: "NLP (Natural Language Processing) was used in Harmony Hub to understand user input, analyze text queries, and improve chatbot interactions, facilitating natural, empathetic conversations instead of simple keyword-based replies.",
   streamlit: "I chose Streamlit for Harmony Hub because it allowed me to build an interactive, responsive web interface rapidly in Python, focusing my efforts on AI RAG functionality and analytics visualization.",
@@ -25,13 +25,14 @@ const CHATBOT_KB: Record<string, string> = {
   learning: "I approach new tech by first understanding the fundamentals, then building small prototypes, and finally integrating it into actual projects. Hands-on development is my core learning vector.",
   strengths: "My strengths are: \n1. Problem-Solving & Logical thinking.\n2. Teamwork (taking initiative to coordinate tasks in college projects to keep everyone aligned).\n3. Attention to detail.",
   weaknesses: "My weaknesses are: \n1. Perfectionism (sometimes spending too much time on small details. I balance this by setting time limits).\n2. Asking for help (earlier I hesitated to reach out, but now I actively collaborate to get faster results).",
-  internship: "I worked as a Data Science & AI Intern at WhatDigital Technologies for 5 months. I engineered chatbots, generative AI integrations, and built database-backed business intelligence dashboards.",
+  internship: "Previously, Chirag worked as a Data Science & AI Intern at WhatDigital Technologies Private Limited (Nov 2025 – Apr 2026, Bengaluru). He engineered production-ready analytics dashboards, an AI Job Description Bot, and a predictive intelligence platform with ML-based revenue forecasting and subscription lifecycle analysis.",
   education: "I graduated with a B.E. in Computer Science & Engineering from RNSIT with an aggregate GPA of 8.89. My coursework focused on Algorithms, Database Systems, Artificial Intelligence, and Computer Vision.",
   jobportal: "The Job Portal Analytics Dashboard was built using Plotly and Dash. It connected to MongoDB and MySQL databases to visualize traffic trends, geospatial job demands, device analytics, and user engagement metrics.",
   contact: "You can reach Chirag at chiragns12@gmail.com. Find him on GitHub at github.com/ChiragNSundar and on LinkedIn at linkedin.com/in/chiragnsundar/.",
-  techstack: "Chirag's tech stack includes: Python, TypeScript, JavaScript, React, Node.js, Vite, Streamlit, Plotly/Dash, MongoDB, MySQL, PostgreSQL (Supabase), YOLOv8, OpenCV, LangChain, Three.js, HTML/CSS, Git, and Vercel.",
+  techstack: "Chirag's tech stack includes: Python, TypeScript, JavaScript, React, Node.js/Express, Vite, Streamlit, Plotly/Dash, MongoDB, MySQL, PostgreSQL (Supabase), SQLite, YOLOv8, OpenCV, TensorFlow.js, MediaPipe Face Mesh, LangChain, Three.js, HTML/CSS, Git, and Vercel.",
   certifications: "Chirag holds certifications from Infosys Springboard (Python, AI/ML Foundations) and freeCodeCamp (Responsive Web Design, JavaScript Algorithms).",
-  summary: "Chirag N Sundar is a Software Engineer (B.E. CS, RNSIT, GPA 8.89) who interned at WhatDigital Technologies for 5 months building AI chatbots and BI dashboards. Key projects: Harmony Hub (RAG chatbot), RoadWatch (YOLOv8 helmet detection + license plate OCR), and a Job Portal Analytics Dashboard. Core skills: Python, React/TS, computer vision, generative AI.",
+  summary: "Chirag N Sundar is a Software Engineer (B.E. CS, RNSIT, GPA 8.89) currently working as an AI Operations Specialist at RBCCI (Rural Bank of Calbayog City, Inc.), building core banking ecosystems with AMLA compliance monitoring and edge AI biometric verification. Previously interned at WhatDigital Technologies (5 months) building AI chatbots and BI dashboards. Key projects: Harmony Hub (RAG chatbot), RoadWatch (YOLOv8 helmet detection), Job Portal Analytics Dashboard. Core skills: Python, React/TS, Node.js, computer vision, generative AI.",
+  currentrole: "Chirag currently works as an AI Operations Specialist (Fulltime) at Rural Bank of Calbayog City, Inc. (RBCCI), a freelance remote position since May 2026. Key responsibilities:\n\n1. Architected a production-ready, client-server core banking ecosystem — modular ledger prototype, automated AMLA transaction compliance monitoring, and a dynamic 7-step digital loan pipeline that drastically accelerated credit review cycles.\n2. Engineered a high-performance Node.js/Express backend integrated with SQLite to replace fragmented browser storage, centralizing critical financial records across multiple branches while optimizing security and database lookup speeds.\n3. Implemented edge AI biometric identity verification using client-side TensorFlow.js and MediaPipe Face Mesh, mapping 79 facial coordinates to 237-dimensional vectors to securely authenticate bank clients offline via Cosine Similarity.",
   projects: "Chirag's key projects are:\n\n1. Harmony Hub — A mental health RAG chatbot that retrieves info from uploaded PDFs to give context-aware AI responses, built with Streamlit + LangChain.\n2. RoadWatch — Real-time YOLOv8 helmet detection + Indian license plate OCR system using OpenCV.\n3. Job Portal Analytics Dashboard — Plotly/Dash dashboard connected to MongoDB and MySQL for visualizing job market trends."
 };
 
@@ -46,7 +47,8 @@ const TOPIC_SYNONYMS: { topic: string; keywords: string[] }[] = [
   { topic: "yolo",      keywords: ["yolo", "helmet", "roadwatch", "road watch", "detect", "computer vision", "object detection"] },
   { topic: "regex",     keywords: ["license", "plate", "ocr", "regex", "indian", "number plate"] },
   { topic: "jobportal", keywords: ["job portal", "mongo", "mysql", "dashboard", "analytics", "plotly", "dash"] },
-  { topic: "internship",keywords: ["intern", "whatdigital", "work experience", "experience", "work"] },
+  { topic: "currentrole", keywords: ["current", "rbcci", "rural bank", "calbayog", "banking", "amla", "biometric", "loan", "where do you work", "working at", "current job", "current role", "fulltime"] },
+  { topic: "internship",keywords: ["intern", "whatdigital", "previous job", "past role", "previous role"] },
   { topic: "education", keywords: ["education", "college", "rnsit", "gpa", "degree", "university", "graduated", "coursework"] },
   { topic: "challenges",keywords: ["challenge", "difficult", "trouble", "hard", "problem", "obstacle"] },
   { topic: "pride",     keywords: ["proud", "achievement", "accomplishment", "best work"] },
@@ -69,7 +71,8 @@ const FOLLOW_UPS: Record<string, { label: string; query: string }[]> = {
   yolo:      [{ label: "License Plate OCR 🔍", query: "How does the license plate regex work?" }, { label: "Challenges 💪", query: "What challenges did you face?" }],
   regex:     [{ label: "RoadWatch 🏍️", query: "How does RoadWatch detect helmets?" }, { label: "Proud Of 🏆", query: "What are you most proud of?" }],
   jobportal: [{ label: "Tech Stack 🛠️", query: "What technologies do you use?" }, { label: "Internship 💼", query: "Where did you intern?" }],
-  internship:[{ label: "Projects 🚀", query: "Tell me about your projects" }, { label: "Education 🎓", query: "Where did you study?" }],
+  internship:[{ label: "Current Role 🏦", query: "Where do you currently work?" }, { label: "Education 🎓", query: "Where did you study?" }],
+  currentrole:[{ label: "Previous Intern 💼", query: "Tell me about your WhatDigital internship" }, { label: "Tech Stack 🛠️", query: "What technologies do you use?" }, { label: "Projects 🚀", query: "What projects have you built?" }],
   education: [{ label: "Certifications 📜", query: "What certifications do you have?" }, { label: "Strengths ⚡", query: "What are your strengths?" }],
   challenges:[{ label: "Proud Of 🏆", query: "What are you most proud of?" }, { label: "Learning 📚", query: "How do you learn new tech?" }],
   pride:     [{ label: "Challenges 💪", query: "What challenges did you face?" }, { label: "Strengths ⚡", query: "What are your strengths?" }],
