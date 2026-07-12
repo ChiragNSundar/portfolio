@@ -56,7 +56,7 @@ export const DeveloperResumeCard: React.FC<DeveloperResumeCardProps> = ({ onInte
   ]);
   const [chatInput, setChatInput] = useState("");
   const [isTyping, setIsTyping] = useState(false);
-  const chatEndRef = useRef<HTMLDivElement>(null);
+  const chatContainerRef = useRef<HTMLDivElement>(null);
 
   const handleClearChat = () => {
     setChatLog([
@@ -89,9 +89,10 @@ export const DeveloperResumeCard: React.FC<DeveloperResumeCardProps> = ({ onInte
     fetchSignatures();
   }, []);
 
-  // Scroll chatbot to end on update
+  // Scroll chatbot to end on update (scrollTop, NOT scrollIntoView which jerks the whole page)
   useEffect(() => {
-    chatEndRef.current?.scrollIntoView({ behavior: "smooth" });
+    const el = chatContainerRef.current;
+    if (el) el.scrollTop = el.scrollHeight;
   }, [chatLog, isTyping]);
 
   const handleGuestbookSubmit = async (e: React.FormEvent) => {
@@ -450,6 +451,7 @@ export const DeveloperResumeCard: React.FC<DeveloperResumeCardProps> = ({ onInte
 
             {/* Chat Messages scroll container */}
             <div 
+              ref={chatContainerRef}
               style={{
                 height: "170px",
                 overflowY: "auto",
@@ -508,7 +510,6 @@ export const DeveloperResumeCard: React.FC<DeveloperResumeCardProps> = ({ onInte
                   </div>
                 </div>
               )}
-              <div ref={chatEndRef} />
             </div>
 
             {/* Suggestion Chips */}
