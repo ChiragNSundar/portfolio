@@ -12,6 +12,7 @@ export interface Track {
   description: string;
   spotifyUrl?: string;
   soundCloudUrl?: string;
+  youtubeUrl?: string;
 }
 
 export interface CoverVideo {
@@ -165,7 +166,8 @@ export const mixAndOriginalTracks: Track[] = [
     color: "#e64980",
     description: "Original Track by Hazard Chirag. Focus: Aggressive sub-bass layering, detuned lead synths, and punchy 808 transient saturation.",
     spotifyUrl: "https://spotify.com",
-    soundCloudUrl: "https://soundcloud.com"
+    soundCloudUrl: "https://soundcloud.com",
+    youtubeUrl: "https://www.youtube.com/@HazardChirag"
   }
 ];
 

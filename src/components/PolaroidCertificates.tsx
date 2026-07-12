@@ -185,22 +185,13 @@ export const PolaroidCertificates: React.FC = () => {
           💻 GITHUB: github.com/ChiragNS
         </a>
         <a 
-          href="https://instagram.com/chirag.localhost"
+          href="https://www.linkedin.com/in/chiragnsundar/"
           target="_blank"
           rel="noopener noreferrer"
           className="analog-btn"
           style={{ padding: "8px 16px", fontSize: "0.78rem", textDecoration: "none", color: "#18181b" }}
         >
-          📸 INSTA: @chirag.localhost
-        </a>
-        <a 
-          href="https://www.youtube.com/@HazardChirag"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="analog-btn"
-          style={{ padding: "8px 16px", fontSize: "0.78rem", textDecoration: "none", color: "#18181b" }}
-        >
-          🎵 YOUTUBE: @HazardChirag
+          🔗 LINKEDIN: chiragnsundar
         </a>
       </div>
     </div>

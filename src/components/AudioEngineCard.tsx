@@ -173,6 +173,60 @@ export const AudioEngineCard: React.FC<AudioEngineCardProps> = ({
           </div>
         </div>
 
+        {/* Loaded Track Info & YouTube Stream Button */}
+        {currentTrack && (
+          <div 
+            style={{ 
+              background: "#ffffff", 
+              border: "1.5px solid #18181b", 
+              borderRadius: "12px", 
+              padding: "10px 14px",
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+              flexWrap: "wrap",
+              gap: "8px"
+            }}
+          >
+            <div style={{ display: "flex", flexDirection: "column" }}>
+              <span style={{ fontSize: "0.6rem", fontWeight: "bold", color: "var(--color-lavender-accent)", textTransform: "uppercase", letterSpacing: "0.5px" }}>
+                LOADED WORKPIECE:
+              </span>
+              <span style={{ fontSize: "0.85rem", fontWeight: "900", color: "#18181b" }}>
+                {currentTrack.title} &mdash; <span style={{ color: "#52525b" }}>{currentTrack.artist}</span>
+              </span>
+              <span style={{ fontSize: "0.65rem", color: "var(--text-muted)", marginTop: "2px" }}>
+                Style: {currentTrack.genre}
+              </span>
+            </div>
+            
+            {currentTrack.youtubeUrl && (
+              <a 
+                href={currentTrack.youtubeUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{
+                  background: "#ff0000",
+                  border: "1.5px solid #18181b",
+                  borderRadius: "8px",
+                  color: "#ffffff",
+                  fontSize: "0.65rem",
+                  fontWeight: "bold",
+                  padding: "5px 10px",
+                  cursor: "pointer",
+                  boxShadow: "2px 2px 0px #18181b",
+                  display: "inline-flex",
+                  alignItems: "center",
+                  gap: "4px",
+                  textDecoration: "none"
+                }}
+              >
+                📺 Stream on YouTube
+              </a>
+            )}
+          </div>
+        )}
+
         {/* Playback Progress Row */}
         <div style={{ display: "flex", alignItems: "center", gap: "16px" }}>
           <button

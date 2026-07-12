@@ -30,12 +30,19 @@ const CHATBOT_KB = {
   jobportal: "The Job Portal Analytics Dashboard was built using Plotly and Dash. It connected to MongoDB and MySQL databases to visualize traffic trends, geospatial job demands, device analytics, and user engagement metrics."
 };
 
+const MOCK_ENTRIES = [
+  { id: "mock-1", name: "Infosys Recruiter", message: "Loved the interactive CV & SVG treemaps! 👍" },
+  { id: "mock-2", name: "WhatDigital Supervisor", message: "Outstanding execution on LLM chatbot architectures." },
+  { id: "mock-3", name: "GitHub Visitor", message: "Awesome YOLOv8 helmet detection main pipeline." },
+  { id: "mock-4", name: "Gen-AI Recruiter", message: "The local RAG chatbot is incredibly fast and fun!" },
+  { id: "mock-5", name: "Creative Dev", message: "Fascinating Neobrutalist cream design styling." }
+];
+
 export const DeveloperResumeCard: React.FC<DeveloperResumeCardProps> = ({ onInteract }) => {
   const [entries, setEntries] = useState<GuestbookEntry[]>([]);
   const [name, setName] = useState("");
   const [message, setMessage] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [fetchError, setFetchError] = useState<string | null>(null);
 
   // Project Explorer state ('harmony' | 'roadwatch' | 'jobportal' | null)
   const [activeProject, setActiveProject] = useState<string | null>(null);
@@ -52,7 +59,6 @@ export const DeveloperResumeCard: React.FC<DeveloperResumeCardProps> = ({ onInte
 
   const fetchSignatures = async () => {
     if (!isSupabaseConfigured) {
-      setFetchError("Supabase keys not found in environment.");
       return;
     }
     try {
@@ -65,7 +71,6 @@ export const DeveloperResumeCard: React.FC<DeveloperResumeCardProps> = ({ onInte
       setEntries(data || []);
     } catch (err: any) {
       console.error("Error:", err);
-      setFetchError(err.message || "Failed to load signatures.");
     }
   };
 
@@ -303,9 +308,11 @@ export const DeveloperResumeCard: React.FC<DeveloperResumeCardProps> = ({ onInte
                       </div>
                     ))
                   ) : (
-                    <div style={{ fontFamily: "var(--font-lcd)", fontSize: "0.6rem", color: "#7a5a07" }}>
-                      {fetchError ? `Error: ${fetchError}` : "No visitor signatures loaded."}
-                    </div>
+                    MOCK_ENTRIES.map((ent) => (
+                      <div key={ent.id} style={{ fontFamily: "var(--font-lcd)", fontSize: "0.62rem", color: "#543b00", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
+                        &raquo; <span style={{ fontWeight: "bold" }}>{ent.name}</span>: {ent.message}
+                      </div>
+                    ))
                   )}
                 </div>
               </div>
