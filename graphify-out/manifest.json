@@ -1,0 +1,122 @@
+{
+  ".oxlintrc.json": {
+    "mtime": 1783850527.9206455,
+    "ast_hash": "029f4905006c1fffd96bc863e2d98d3e",
+    "semantic_hash": "029f4905006c1fffd96bc863e2d98d3e"
+  },
+  "package.json": {
+    "mtime": 1783850747.521801,
+    "ast_hash": "8ed076f12307df065e9ee2514196ec54",
+    "semantic_hash": "8ed076f12307df065e9ee2514196ec54"
+  },
+  "src/App.tsx": {
+    "mtime": 1783855475.0419357,
+    "ast_hash": "c28161271a3f4db5a28fd0ea2d22aa24",
+    "semantic_hash": "c28161271a3f4db5a28fd0ea2d22aa24"
+  },
+  "src/audio/audioEngine.ts": {
+    "mtime": 1783850719.9510758,
+    "ast_hash": "b770eae6bcbfa933312792f5e5888f93",
+    "semantic_hash": "b770eae6bcbfa933312792f5e5888f93"
+  },
+  "src/components/AudioEngineCard.tsx": {
+    "mtime": 1783855736.073953,
+    "ast_hash": "4bc60884f393d686a20ae24ceb88ff0e",
+    "semantic_hash": "4bc60884f393d686a20ae24ceb88ff0e"
+  },
+  "src/components/DeveloperResumeCard.tsx": {
+    "mtime": 1783855778.6340892,
+    "ast_hash": "ce1f66ab7fc22674f62e7426349f6c8f",
+    "semantic_hash": "ce1f66ab7fc22674f62e7426349f6c8f"
+  },
+  "src/components/PolaroidCertificates.tsx": {
+    "mtime": 1783855728.7666657,
+    "ast_hash": "52811ecda9c0a9cc6f75d61904d9625d",
+    "semantic_hash": "52811ecda9c0a9cc6f75d61904d9625d"
+  },
+  "src/components/YoutubeCoversCard.tsx": {
+    "mtime": 1783855453.261675,
+    "ast_hash": "395b77e91311ec780cf3b392868c3c7f",
+    "semantic_hash": "395b77e91311ec780cf3b392868c3c7f"
+  },
+  "src/data/resume.ts": {
+    "mtime": 1783850585.805855,
+    "ast_hash": "52e7f57f4009fcb01554c6f44dc53d56",
+    "semantic_hash": "52e7f57f4009fcb01554c6f44dc53d56"
+  },
+  "src/data/tracks.ts": {
+    "mtime": 1783855315.1732385,
+    "ast_hash": "f5b5b3e082814c5b6023eada09d7a95b",
+    "semantic_hash": "f5b5b3e082814c5b6023eada09d7a95b"
+  },
+  "src/lib/supabaseClient.ts": {
+    "mtime": 1783850752.4216292,
+    "ast_hash": "9ff9114bcffe53ab381d7f6fef285127",
+    "semantic_hash": "9ff9114bcffe53ab381d7f6fef285127"
+  },
+  "src/main.tsx": {
+    "mtime": 1783850528.1444838,
+    "ast_hash": "787e5a07efeb2bf6209d5937195f2f68",
+    "semantic_hash": "787e5a07efeb2bf6209d5937195f2f68"
+  },
+  "supabase-migration.sql": {
+    "mtime": 1783850757.4235258,
+    "ast_hash": "f60e2132d04342bf4124466ec8f67fb2",
+    "semantic_hash": "f60e2132d04342bf4124466ec8f67fb2"
+  },
+  "tsconfig.app.json": {
+    "mtime": 1783850527.9428616,
+    "ast_hash": "5f2dafd737dea8a4ddcbb10f5113ac5a",
+    "semantic_hash": "5f2dafd737dea8a4ddcbb10f5113ac5a"
+  },
+  "tsconfig.json": {
+    "mtime": 1783850527.949372,
+    "ast_hash": "a3d39fa780ebff65444de257f291ce6c",
+    "semantic_hash": "a3d39fa780ebff65444de257f291ce6c"
+  },
+  "tsconfig.node.json": {
+    "mtime": 1783850527.9553945,
+    "ast_hash": "f9cb81ddcea69ffdab672fc8c48dca66",
+    "semantic_hash": "f9cb81ddcea69ffdab672fc8c48dca66"
+  },
+  "vite.config.ts": {
+    "mtime": 1783850528.1304471,
+    "ast_hash": "88439104b3c207f17d33ef3160e3b080",
+    "semantic_hash": "88439104b3c207f17d33ef3160e3b080"
+  },
+  "README.md": {
+    "mtime": 1783855925.573419,
+    "ast_hash": "345f26b6694848ff7c336ed6c890efd4",
+    "semantic_hash": "345f26b6694848ff7c336ed6c890efd4"
+  },
+  "index.html": {
+    "mtime": 1783854499.5702887,
+    "ast_hash": "4dd5276046a11ffec027a3a6789ec395",
+    "semantic_hash": "4dd5276046a11ffec027a3a6789ec395"
+  },
+  "public/favicon.svg": {
+    "mtime": 1783850528.0346792,
+    "ast_hash": "7e840862161341271697daa99a40d76b",
+    "semantic_hash": "7e840862161341271697daa99a40d76b"
+  },
+  "public/icons.svg": {
+    "mtime": 1783850528.0613422,
+    "ast_hash": "3b4fcfcf393eca4d264dca4a4663bc37",
+    "semantic_hash": "3b4fcfcf393eca4d264dca4a4663bc37"
+  },
+  "src/assets/hero.png": {
+    "mtime": 1783850527.9956956,
+    "ast_hash": "aead493361b27e7510691c5d7072dfc1",
+    "semantic_hash": "aead493361b27e7510691c5d7072dfc1"
+  },
+  "src/assets/react.svg": {
+    "mtime": 1783850528.0832565,
+    "ast_hash": "f0402b67b6ce880f65666bb49e841696",
+    "semantic_hash": "f0402b67b6ce880f65666bb49e841696"
+  },
+  "src/assets/vite.svg": {
+    "mtime": 1783850528.1032512,
+    "ast_hash": "9960a24288958394ac50e57ff638b036",
+    "semantic_hash": "9960a24288958394ac50e57ff638b036"
+  }
+}
