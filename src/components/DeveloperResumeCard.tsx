@@ -105,20 +105,21 @@ export const DeveloperResumeCard: React.FC<DeveloperResumeCardProps> = ({ onInte
     }
   };
 
-  // Local Chatbot Query Resolver
+  // Local Chatbot Query Resolver (using functional state updates to prevent stale closures)
   const handleChatSubmit = (e?: React.FormEvent, customQuery?: string) => {
     if (e) e.preventDefault();
-    const rawQuery = customQuery || chatInput;
-    if (!rawQuery.trim()) return;
+    
+    // Safety check: extract search text safely
+    const rawQuery = (typeof customQuery === "string" ? customQuery : chatInput).trim();
+    if (!rawQuery) return;
 
     if (onInteract) onInteract();
 
-    const userMessage = rawQuery.trim();
+    const userMessage = rawQuery;
     const query = userMessage.toLowerCase();
     
-    // Add user message to log
-    const updatedLog = [...chatLog, { sender: "user" as const, text: userMessage }];
-    setChatLog(updatedLog);
+    // Add user message to log immediately
+    setChatLog(prev => [...prev, { sender: "user" as const, text: userMessage }]);
     setChatInput("");
 
     let botResponse = "";
@@ -477,7 +478,8 @@ export const DeveloperResumeCard: React.FC<DeveloperResumeCardProps> = ({ onInte
               {suggestions.map((sug, sIdx) => (
                 <button
                   key={sIdx}
-                  onClick={(e) => handleChatSubmit(e, sug.query)}
+                  type="button"
+                  onClick={() => handleChatSubmit(undefined, sug.query)}
                   style={{
                     background: "#ffffff",
                     border: "1px solid #18181b",
@@ -496,7 +498,7 @@ export const DeveloperResumeCard: React.FC<DeveloperResumeCardProps> = ({ onInte
             </div>
 
             {/* Input form */}
-            <form onSubmit={handleChatSubmit} style={{ display: "flex", gap: "8px" }}>
+            <form onSubmit={(e) => handleChatSubmit(e)} style={{ display: "flex", gap: "8px" }}>
               <input
                 type="text"
                 placeholder="Ask me something (e.g., 'What is RAG?' or 'Where did you intern?')..."
