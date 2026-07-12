@@ -235,7 +235,7 @@ export const App: React.FC = () => {
                   onClick={() => setConsolePower(!consolePower)} 
                   style={{
                     width: "18px", height: "18px", background: consolePower ? "radial-gradient(circle, #4299e1, #2b6cb0)" : "radial-gradient(circle, #4a5568, #2d3748)", 
-                    border: "1.5px solid #000", borderRadius: "2px", cursor: "pointer", boxShadow: "0 2px 4px rgba(0,0,0,0.5)",
+                    border: "1.5px solid #000", borderRadius: "2px", cursor: "pointer",
                     boxShadow: consolePower ? "0 0 6px #4299e1" : "0 2px 4px rgba(0,0,0,0.5)"
                   }} 
                   title="Master Console Power"
@@ -270,17 +270,19 @@ export const App: React.FC = () => {
                 overflow: "hidden"
               }}
             >
-              <marquee 
-                scrollamount="2" 
-                style={{ 
-                  fontFamily: "var(--font-lcd)", 
-                  fontSize: "0.55rem", 
-                  color: consolePower ? "rgb(0, 255, 120)" : "rgba(0,255,120,0.1)",
-                  textShadow: consolePower ? "0 0 3px rgba(0,255,120,0.8)" : "none" 
-                }}
-              >
-                BJONSTRAC LENN // SIGNAL ANALYTICS: RUNNING // ENCRYPTION KEY: STABLE // BIOMETRIC PROFILES LOADED // CODESOURCE SECURE // READY
-              </marquee>
+              <div style={{ overflow: "hidden", width: "100%", height: "12px" }}>
+                <span 
+                  className="scrolling-text"
+                  style={{ 
+                    fontFamily: "var(--font-lcd)", 
+                    fontSize: "0.55rem", 
+                    color: consolePower ? "rgb(0, 255, 120)" : "rgba(0,255,120,0.1)",
+                    textShadow: consolePower ? "0 0 3px rgba(0,255,120,0.8)" : "none" 
+                  }}
+                >
+                  BJONSTRAC LENN // SIGNAL ANALYTICS: RUNNING // ENCRYPTION KEY: STABLE // BIOMETRIC PROFILES LOADED // CODESOURCE SECURE // READY
+                </span>
+              </div>
               <div 
                 style={{ 
                   display: "flex", 

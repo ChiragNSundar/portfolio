@@ -272,3 +272,15 @@ body {
   border-bottom: 3px solid #09090a;
   padding: 10px 20px;
 }
+
+/* CSS Scrolling Marquee Text */
+@keyframes scrollText {
+  0% { transform: translateX(100%); }
+  100% { transform: translateX(-100%); }
+}
+
+.scrolling-text {
+  display: inline-block;
+  white-space: nowrap;
+  animation: scrollText 16s linear infinite;
+}
