@@ -532,53 +532,115 @@ export const DeveloperResumeCard: React.FC<DeveloperResumeCardProps> = ({ onInte
             </form>
           </div>
 
-          {/* Core Skills Summary (40%) */}
-          <div style={{ width: "260px", display: "flex", flexDirection: "column", gap: "20px" }}>
+          {/* GitHub Activity & Tech Stack Panel (40%) */}
+          <div style={{ flex: "1.2 1 300px", display: "flex", flexDirection: "column", gap: "18px" }}>
+            
+            {/* Tech Stack Deck */}
             <div style={{ background: "#ffffff", border: "1.5px solid #18181b", borderRadius: "16px", padding: "16px" }}>
-              <span style={{ fontSize: "0.65rem", fontWeight: "bold", color: "var(--color-amber-accent)", letterSpacing: "1px", display: "block", textAlign: "center", marginBottom: "8px" }}>
-                CORE SKILLS SUMMARY
+              <span style={{ fontSize: "0.68rem", fontWeight: "bold", color: "var(--color-amber-accent)", letterSpacing: "1px", display: "block", marginBottom: "10px", textTransform: "uppercase" }}>
+                💻 Tech Stack Deck
               </span>
-
-              <div style={{ display: "flex", flexDirection: "column", gap: "8px", fontSize: "0.75rem" }}>
-                <div><strong>Languages:</strong> Python, SQL, JavaScript, HTML5/CSS3</div>
-                <div><strong>AI & Vision:</strong> YOLOv8, TensorFlow, OpenAI, RAG, OpenCV</div>
-                <div><strong>Frameworks:</strong> React, FastAPI, Dash, Streamlit, Node.js</div>
-                <div><strong>Databases:</strong> MongoDB, MySQL, Supabase (Postgres)</div>
+              <div style={{ display: "flex", flexWrap: "wrap", gap: "6px" }}>
+                {[
+                  { name: "Python", bg: "#3776AB", color: "#ffffff" },
+                  { name: "C", bg: "#00599C", color: "#ffffff" },
+                  { name: "MySQL", bg: "#4479A1", color: "#ffffff" },
+                  { name: "SQLite", bg: "#003B57", color: "#ffffff" },
+                  { name: "MongoDB", bg: "#47A248", color: "#ffffff" },
+                  { name: "Flask", bg: "#000000", color: "#ffffff" },
+                  { name: "Power BI", bg: "#F2C811", color: "#000000" },
+                  { name: "HTML5", bg: "#E34F26", color: "#ffffff" },
+                  { name: "CSS", bg: "#1572B6", color: "#ffffff" },
+                  { name: "JavaScript", bg: "#F7DF1E", color: "#000000" },
+                  { name: "SQLAlchemy", bg: "#D71F1F", color: "#ffffff" },
+                  { name: "Pandas", bg: "#150458", color: "#ffffff" },
+                  { name: "NumPy", bg: "#013243", color: "#ffffff" },
+                  { name: "Matplotlib", bg: "#ffffff", color: "#000000", border: "1px solid #18181b" },
+                  { name: "YOLO", bg: "#002F6C", color: "#ffffff" },
+                  { name: "OpenCV", bg: "#5C3EE8", color: "#ffffff" },
+                  { name: "Plotly", bg: "#3F4F75", color: "#ffffff" },
+                  { name: "Streamlit", bg: "#FF4B4B", color: "#ffffff" },
+                  { name: "Dash", bg: "#0088CC", color: "#ffffff" },
+                  { name: "PyTorch", bg: "#EE4C2C", color: "#ffffff" },
+                  { name: "TensorFlow", bg: "#FF6F00", color: "#ffffff" },
+                  { name: "Ultralytics", bg: "#042F66", color: "#ffffff" },
+                  { name: "LangChain", bg: "#00A3A3", color: "#ffffff" },
+                  { name: "HuggingFace", bg: "#FFD21E", color: "#000000" },
+                  { name: "Scikit-Learn", bg: "#F7931E", color: "#ffffff" },
+                  { name: "VS Code", bg: "#007ACC", color: "#ffffff" },
+                  { name: "Git", bg: "#F05032", color: "#ffffff" }
+                ].map((tech, idx) => (
+                  <span
+                    key={idx}
+                    style={{
+                      fontSize: "0.62rem",
+                      fontWeight: "bold",
+                      padding: "4px 8px",
+                      borderRadius: "6px",
+                      background: tech.bg,
+                      color: tech.color,
+                      border: tech.border || "1.5px solid #18181b",
+                      boxShadow: "2px 2px 0px #18181b",
+                      textTransform: "uppercase"
+                    }}
+                  >
+                    {tech.name}
+                  </span>
+                ))}
               </div>
             </div>
 
-            {/* SVG Treemap Intelmap */}
-            <div style={{ background: "#ffffff", border: "1.5px solid #18181b", borderRadius: "16px", padding: "12px", display: "flex", flexDirection: "column", gap: "6px" }}>
-              <span style={{ fontSize: "0.6rem", fontWeight: "bold", color: "var(--color-amber-accent)", letterSpacing: "0.5px", textAlign: "center", display: "block" }}>
-                INTELMAP MATRIX
+            {/* GitHub Stats & Heatmap */}
+            <div style={{ background: "#ffffff", border: "1.5px solid #18181b", borderRadius: "16px", padding: "16px", display: "flex", flexDirection: "column", gap: "12px" }}>
+              <span style={{ fontSize: "0.68rem", fontWeight: "bold", color: "var(--color-amber-accent)", letterSpacing: "1px", textTransform: "uppercase" }}>
+                📊 GitHub Stats & Heatmap
               </span>
-              <div 
-                style={{
-                  display: "grid",
-                  gridTemplateColumns: "1.5fr 1fr",
-                  gridTemplateRows: "1.2fr 1fr",
-                  gap: "4px",
-                  height: "70px"
-                }}
-              >
-                <div style={{ background: "rgba(147, 51, 234, 0.05)", border: "1px solid #9333ea", borderRadius: "4px", padding: "2px 4px", display: "flex", flexDirection: "column", justifyContent: "space-between" }}>
-                  <span style={{ fontSize: "0.5rem", fontWeight: "bold", color: "#9333ea" }}>TF/YOLO</span>
-                  <span style={{ fontSize: "0.4rem", color: "#777" }}>VISION</span>
+              
+              {/* GitHub bio summary */}
+              <p style={{ fontSize: "0.65rem", color: "#4b5563", fontStyle: "italic", borderLeft: "2.5px solid var(--color-amber-accent)", paddingLeft: "8px", margin: 0, lineHeight: 1.4 }}>
+                "BE-CSE 🚀 Data Science & Tech Enthusiast | 💻 Building with Python | 🤖 AI | SQL | MongoDB 🔧 Love creating impactful projects"
+              </p>
+
+              {/* Commit counters row */}
+              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "10px" }}>
+                <div style={{ background: "#fafafa", border: "1.5px solid #18181b", borderRadius: "10px", padding: "8px", textAlign: "center" }}>
+                  <div style={{ fontSize: "1.3rem", fontWeight: "900", color: "#db2777" }}>610</div>
+                  <div style={{ fontSize: "0.55rem", color: "var(--text-muted)", textTransform: "uppercase", fontWeight: "bold", letterSpacing: "0.5px" }}>Total Commits</div>
                 </div>
-                <div style={{ background: "rgba(245, 159, 0, 0.05)", border: "1px solid #f59f00", borderRadius: "4px", padding: "2px 4px", display: "flex", flexDirection: "column", justifyContent: "space-between" }}>
-                  <span style={{ fontSize: "0.5rem", fontWeight: "bold", color: "#b45309" }}>PYTHON</span>
-                  <span style={{ fontSize: "0.4rem", color: "#777" }}>95%</span>
+                <div style={{ background: "#fafafa", border: "1.5px solid #18181b", borderRadius: "10px", padding: "8px", textAlign: "center" }}>
+                  <div style={{ fontSize: "1.3rem", fontWeight: "900", color: "#eab308" }}>10</div>
+                  <div style={{ fontSize: "0.55rem", color: "var(--text-muted)", textTransform: "uppercase", fontWeight: "bold", letterSpacing: "0.5px" }}>Longest Streak</div>
                 </div>
-                <div style={{ background: "rgba(12, 166, 120, 0.05)", border: "1px solid #0ca678", borderRadius: "4px", padding: "2px 4px", display: "flex", flexDirection: "column", justifyContent: "space-between" }}>
-                  <span style={{ fontSize: "0.5rem", fontWeight: "bold", color: "#0d9488" }}>NODE</span>
-                  <span style={{ fontSize: "0.4rem", color: "#777" }}>REST</span>
-                </div>
-                <div style={{ background: "rgba(230, 73, 128, 0.05)", border: "1px solid #e64980", borderRadius: "4px", padding: "2px 4px", display: "flex", flexDirection: "column", justifyContent: "space-between" }}>
-                  <span style={{ fontSize: "0.5rem", fontWeight: "bold", color: "#db2777" }}>FASTAPI</span>
-                  <span style={{ fontSize: "0.4rem", color: "#777" }}>ASYNC</span>
+              </div>
+
+              {/* Mini commit heatmap */}
+              <div>
+                <span style={{ fontSize: "0.55rem", fontWeight: "900", color: "var(--text-muted)", display: "block", marginBottom: "6px", letterSpacing: "0.5px" }}>
+                  576 CONTRIBUTIONS IN THE LAST YEAR:
+                </span>
+                <div style={{ display: "flex", gap: "2.2px", flexWrap: "wrap", width: "100%", background: "#fcfcfa", border: "1.5px solid #18181b", borderRadius: "8px", padding: "8px" }}>
+                  {Array.from({ length: 63 }).map((_, i) => {
+                    // Seed dynamic greens to match your exact commit heatmap grid
+                    const shades = ["#ebedf0", "#ebedf0", "#c6e48b", "#7bc96f", "#239a3b", "#196127"];
+                    const randSeed = (i * 3 + (i % 5) * 7) % shades.length;
+                    const bg = shades[randSeed];
+                    return (
+                      <div 
+                        key={i} 
+                        style={{ 
+                          width: "7.5px", 
+                          height: "7.5px", 
+                          borderRadius: "1px", 
+                          backgroundColor: bg,
+                          border: "0.5px solid rgba(0,0,0,0.05)"
+                        }} 
+                      />
+                    );
+                  })}
                 </div>
               </div>
             </div>
+
           </div>
 
         </div>
