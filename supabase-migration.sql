@@ -3,7 +3,9 @@ CREATE TABLE IF NOT EXISTS public.guestbook (
     id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
     created_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL,
     name TEXT NOT NULL,
-    message TEXT NOT NULL
+    email TEXT,
+    message TEXT NOT NULL,
+    role TEXT
 );
 
 -- Enable Row Level Security (RLS) to secure the table

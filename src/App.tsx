@@ -14,6 +14,7 @@ interface GuestbookEntry {
   name: string;
   email?: string;
   message: string;
+  role?: string;
   created_at: string;
 }
 
@@ -668,7 +669,7 @@ export const App: React.FC = () => {
 
   const fetchSignatures = async () => {
     if (!isSupabaseConfigured) {
-      const local = localStorage.getItem("local_signatures");
+      const local = localStorage.getItem(`local_signatures_${mode}`);
       setEntries(local ? JSON.parse(local) : []);
       return;
     }
@@ -676,6 +677,7 @@ export const App: React.FC = () => {
       const { data, error } = await supabase!
         .from("guestbook")
         .select("*")
+        .eq("role", mode)
         .order("created_at", { ascending: false })
         .limit(6);
       if (error) throw error;
@@ -695,28 +697,35 @@ export const App: React.FC = () => {
   useEffect(() => {
     const syncOfflineSignatures = async () => {
       if (!isSupabaseConfigured || !navigator.onLine) return;
-      const queued = localStorage.getItem("offline_signatures");
-      if (!queued) return;
+      
+      const roles = ['engineer', 'producer'];
+      for (const r of roles) {
+        const queuedKey = `offline_signatures_${r}`;
+        const queued = localStorage.getItem(queuedKey);
+        if (!queued) continue;
 
-      try {
-        const signaturesList = JSON.parse(queued);
-        if (signaturesList.length === 0) return;
+        try {
+          const signaturesList = JSON.parse(queued);
+          if (signaturesList.length === 0) continue;
 
-        console.log(`Syncing ${signaturesList.length} offline signatures...`);
-        const { error } = await supabase!.from("guestbook").insert(
-          signaturesList.map((sig: any) => ({
-            name: sig.name,
-            message: sig.message
-          }))
-        );
+          console.log(`Syncing ${signaturesList.length} offline signatures for ${r}...`);
+          const { error } = await supabase!.from("guestbook").insert(
+            signaturesList.map((sig: any) => ({
+              name: sig.name,
+              message: sig.message,
+              email: sig.email,
+              role: sig.role
+            }))
+          );
 
-        if (!error) {
-          localStorage.removeItem("offline_signatures");
-          await fetchSignatures();
-          console.log("Successfully synchronized offline signatures.");
+          if (!error) {
+            localStorage.removeItem(queuedKey);
+            await fetchSignatures();
+            console.log(`Successfully synchronized offline signatures for ${r}.`);
+          }
+        } catch (err) {
+          console.error(`Error syncing offline signatures for ${r}:`, err);
         }
-      } catch (err) {
-        console.error("Error syncing offline signatures:", err);
       }
     };
 
@@ -756,6 +765,7 @@ export const App: React.FC = () => {
       name: guestName.trim(),
       email: guestEmail.trim(),
       message: guestMessage.trim(),
+      role: mode,
       created_at: new Date().toISOString()
     };
 
@@ -765,11 +775,14 @@ export const App: React.FC = () => {
       setGuestMessage("");
     };
 
+    const localKey = `local_signatures_${mode}`;
+    const offlineKey = `offline_signatures_${mode}`;
+
     if (!isSupabaseConfigured) {
-      const local = localStorage.getItem("local_signatures");
+      const local = localStorage.getItem(localKey);
       const list = local ? JSON.parse(local) : [];
       list.unshift(entryData);
-      localStorage.setItem("local_signatures", JSON.stringify(list));
+      localStorage.setItem(localKey, JSON.stringify(list));
       setEntries(prev => [entryData as any, ...prev.slice(0, 5)]);
       clearFields();
       setIsGuestbookSubmitting(false);
@@ -777,31 +790,31 @@ export const App: React.FC = () => {
     }
 
     if (!navigator.onLine) {
-      const queued = localStorage.getItem("offline_signatures");
+      const queued = localStorage.getItem(offlineKey);
       const signaturesList = queued ? JSON.parse(queued) : [];
       signaturesList.push(entryData);
-      localStorage.setItem("offline_signatures", JSON.stringify(signaturesList));
+      localStorage.setItem(offlineKey, JSON.stringify(signaturesList));
 
       setEntries(prev => [entryData as any, ...prev.slice(0, 5)]);
       clearFields();
       setIsGuestbookSubmitting(false);
-      console.log("Offline: Queued guestbook signature locally.");
+      console.log(`Offline: Queued guestbook signature locally for ${mode}.`);
       return;
     }
 
     try {
       const { error } = await supabase!.from("guestbook").insert([
-        { name: guestName.trim(), email: guestEmail.trim(), message: guestMessage.trim() }
+        { name: guestName.trim(), email: guestEmail.trim(), message: guestMessage.trim(), role: mode }
       ]);
       if (error) throw error;
       
       clearFields();
       await fetchSignatures();
     } catch (err: any) {
-      const queued = localStorage.getItem("offline_signatures");
+      const queued = localStorage.getItem(offlineKey);
       const signaturesList = queued ? JSON.parse(queued) : [];
       signaturesList.push(entryData);
-      localStorage.setItem("offline_signatures", JSON.stringify(signaturesList));
+      localStorage.setItem(offlineKey, JSON.stringify(signaturesList));
 
       setEntries(prev => [entryData as any, ...prev.slice(0, 5)]);
       clearFields();
