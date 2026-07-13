@@ -10,8 +10,8 @@
     "semantic_hash": "8ed076f12307df065e9ee2514196ec54"
   },
   "src/App.tsx": {
-    "mtime": 1783928214.9461021,
-    "ast_hash": "3413e37a68f7dd90cea3459b62d792db",
+    "mtime": 1783872852.0896592,
+    "ast_hash": "b7f4172ec2f63c45ff36170952b8ee90",
     "semantic_hash": ""
   },
   "src/audio/audioEngine.ts": {
@@ -35,8 +35,8 @@
     "semantic_hash": ""
   },
   "src/components/YoutubeCoversCard.tsx": {
-    "mtime": 1783874778.0274303,
-    "ast_hash": "7c5147b85ba4486278a251f8ff39e9d5",
+    "mtime": 1783872838.3366902,
+    "ast_hash": "fc0efa93c1b7a919bc5f8a7d9fa5cb2e",
     "semantic_hash": ""
   },
   "src/data/resume.ts": {
@@ -45,9 +45,9 @@
     "semantic_hash": "52e7f57f4009fcb01554c6f44dc53d56"
   },
   "src/data/tracks.ts": {
-    "mtime": 1783874723.4633348,
-    "ast_hash": "47d91accafb5c056b85cfb40f438059a",
-    "semantic_hash": ""
+    "mtime": 1783855315.1732385,
+    "ast_hash": "f5b5b3e082814c5b6023eada09d7a95b",
+    "semantic_hash": "f5b5b3e082814c5b6023eada09d7a95b"
   },
   "src/lib/supabaseClient.ts": {
     "mtime": 1783850752.4216292,
@@ -85,8 +85,8 @@
     "semantic_hash": "88439104b3c207f17d33ef3160e3b080"
   },
   "README.md": {
-    "mtime": 1783928304.8319669,
-    "ast_hash": "eab64ba747787a31c25887bb03d39b41",
+    "mtime": 1783872025.0259554,
+    "ast_hash": "9224ae782983b272fc7e195c6eb2c186",
     "semantic_hash": ""
   },
   "index.html": {
@@ -242,21 +242,6 @@
   "public/service-worker.js": {
     "mtime": 1783872361.2131844,
     "ast_hash": "66d297aff635c3128ae8dbb9f65b6944",
-    "semantic_hash": ""
-  },
-  "public/fl_logo.png": {
-    "mtime": 1783875416.1964605,
-    "ast_hash": "d07bdfff9fe774a094952909021d579a",
-    "semantic_hash": ""
-  },
-  "audio/fl_studio_start.mp3": {
-    "mtime": 1783875317.380649,
-    "ast_hash": "51044134977aae0a83d765a06789c5d3",
-    "semantic_hash": ""
-  },
-  "public/fl_studio_start.mp3": {
-    "mtime": 1783875317.380649,
-    "ast_hash": "51044134977aae0a83d765a06789c5d3",
     "semantic_hash": ""
   }
 }
