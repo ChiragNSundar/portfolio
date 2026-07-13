@@ -1116,29 +1116,16 @@ export const App: React.FC = () => {
               onClick={() => {
                 playBipSound();
                 setShowFlSplash(true);
-                // Play FL Studio iconic startup sound (short synth chord)
+                // Play actual FL Studio startup sound
                 try {
-                  const AudioCtx = window.AudioContext || (window as any).webkitAudioContext;
-                  const ctx = new AudioCtx();
-                  const notes = [261.63, 329.63, 392.00, 523.25]; // C4, E4, G4, C5 major chord
-                  notes.forEach((freq, i) => {
-                    const osc = ctx.createOscillator();
-                    const gain = ctx.createGain();
-                    osc.type = i === 3 ? "triangle" : "sine";
-                    osc.frequency.setValueAtTime(freq, ctx.currentTime);
-                    gain.gain.setValueAtTime(0, ctx.currentTime);
-                    gain.gain.linearRampToValueAtTime(0.12, ctx.currentTime + 0.05);
-                    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 1.8);
-                    osc.connect(gain);
-                    gain.connect(ctx.destination);
-                    osc.start(ctx.currentTime + i * 0.08);
-                    osc.stop(ctx.currentTime + 2.0);
-                  });
+                  const audio = new Audio('/fl_studio_start.mp3');
+                  audio.volume = 0.5;
+                  audio.play();
                 } catch (e) {}
                 setTimeout(() => {
                   setShowFlSplash(false);
                   setMode('producer');
-                }, 2200);
+                }, 2500);
               }}
               style={{
                 flex: "1 1 350px",
@@ -2105,7 +2092,7 @@ export const App: React.FC = () => {
           </div>
         </div>
       )}
-      {/* FL Studio Splash Overlay */}
+      {/* FL Studio Splash — floating logo, page stays visible */}
       {showFlSplash && (
         <div style={{
           position: "fixed",
@@ -2113,58 +2100,23 @@ export const App: React.FC = () => {
           left: 0,
           width: "100vw",
           height: "100vh",
-          background: "linear-gradient(135deg, #1a1a2e 0%, #16213e 40%, #0f3460 100%)",
           zIndex: 9999,
           display: "flex",
-          flexDirection: "column",
           justifyContent: "center",
           alignItems: "center",
-          gap: "24px",
+          pointerEvents: "none",
           animation: "fl-splash-in 0.3s ease-out"
         }}>
-          {/* FL Studio Fruit Logo SVG */}
-          <div style={{ animation: "fl-logo-pulse 1.5s ease-in-out infinite", filter: "drop-shadow(0 0 30px rgba(255,165,0,0.5))" }}>
-            <svg width="120" height="120" viewBox="0 0 120 120" fill="none">
-              {/* Orange fruit body */}
-              <circle cx="60" cy="60" r="45" fill="url(#flGrad)" stroke="#ff8c00" strokeWidth="3"/>
-              {/* Stem */}
-              <path d="M60 15 Q58 5 55 2" stroke="#4a7c59" strokeWidth="3" strokeLinecap="round" fill="none"/>
-              {/* Leaf */}
-              <ellipse cx="52" cy="6" rx="8" ry="4" fill="#4a7c59" transform="rotate(-20, 52, 6)"/>
-              {/* Face - eyes */}
-              <circle cx="47" cy="52" r="4" fill="#1a1a2e"/>
-              <circle cx="73" cy="52" r="4" fill="#1a1a2e"/>
-              {/* Face - smile */}
-              <path d="M46 68 Q60 80 74 68" stroke="#1a1a2e" strokeWidth="3" strokeLinecap="round" fill="none"/>
-              {/* Highlight */}
-              <ellipse cx="45" cy="40" rx="8" ry="5" fill="rgba(255,255,255,0.3)" transform="rotate(-20, 45, 40)"/>
-              <defs>
-                <radialGradient id="flGrad" cx="40%" cy="35%">
-                  <stop offset="0%" stopColor="#ffb347"/>
-                  <stop offset="100%" stopColor="#ff6b00"/>
-                </radialGradient>
-              </defs>
-            </svg>
-          </div>
-          <div style={{
-            fontFamily: "var(--font-lcd)",
-            fontSize: "1.4rem",
-            fontWeight: "bold",
-            color: "#ff8c00",
-            letterSpacing: "4px",
-            textTransform: "uppercase",
-            textShadow: "0 0 20px rgba(255,140,0,0.5)"
-          }}>
-            AUDIO STUDIO
-          </div>
-          <div style={{
-            fontFamily: "var(--font-lcd)",
-            fontSize: "0.7rem",
-            color: "rgba(255,255,255,0.4)",
-            letterSpacing: "2px"
-          }}>
-            INITIALIZING MIXING CONSOLE...
-          </div>
+          <img
+            src="/fl_logo.png"
+            alt="FL Studio"
+            style={{
+              width: "160px",
+              height: "auto",
+              animation: "fl-logo-pulse 1.5s ease-in-out infinite",
+              filter: "drop-shadow(0 0 40px rgba(255,140,0,0.6)) drop-shadow(0 0 80px rgba(255,140,0,0.25))"
+            }}
+          />
         </div>
       )}
     </div>
