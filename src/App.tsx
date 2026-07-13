@@ -530,13 +530,16 @@ const ScreenshotWithSkeleton: React.FC<{
   const imgRef = useRef<HTMLImageElement>(null);
 
   useEffect(() => {
-    // Reset load state on image switch
     setLoaded(false);
-    
-    // Check if browser has already cached/completed loading this image
-    if (imgRef.current && imgRef.current.complete) {
-      setLoaded(true);
-    }
+
+    // After React renders with loaded=false, check if the image is already cached
+    const rafId = requestAnimationFrame(() => {
+      if (imgRef.current && imgRef.current.complete && imgRef.current.naturalWidth > 0) {
+        setLoaded(true);
+      }
+    });
+
+    return () => cancelAnimationFrame(rafId);
   }, [imgSrc]);
 
   return (
@@ -572,7 +575,6 @@ const ScreenshotWithSkeleton: React.FC<{
           border: "1px solid var(--border-color)",
           transition: "transform 0.2s ease"
         }}
-        loading="lazy"
       />
     </div>
   );
