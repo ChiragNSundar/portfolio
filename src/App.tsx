@@ -1654,16 +1654,16 @@ export const App: React.FC = () => {
 
               {/* Guestbook signatures list */}
               <div style={{ marginTop: "16px", borderTop: "1.5px dashed var(--border-color)", paddingTop: "12px" }}>
-                <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(240px, 1fr))", gap: "8px", maxHeight: "120px", overflowY: "auto" }}>
+                <div style={{ display: "flex", flexDirection: "column", gap: "6px", maxHeight: "150px", overflowY: "auto" }}>
                   {entries.length > 0 ? (
                     entries.map((ent) => (
-                      <div key={ent.id} style={{ fontFamily: "var(--font-lcd)", fontSize: "0.68rem", color: "var(--text-dark)", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
+                      <div key={ent.id} style={{ fontFamily: "var(--font-lcd)", fontSize: "0.7rem", color: "var(--text-dark)", lineHeight: 1.4, padding: "4px 0", borderBottom: "1px dotted rgba(0,0,0,0.08)" }}>
                         &raquo; <span style={{ fontWeight: "bold" }}>{ent.name}</span>: {ent.message}
                       </div>
                     ))
                   ) : (
                     MOCK_ENTRIES.map((ent) => (
-                      <div key={ent.id} style={{ fontFamily: "var(--font-lcd)", fontSize: "0.68rem", color: "var(--text-dark)", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
+                      <div key={ent.id} style={{ fontFamily: "var(--font-lcd)", fontSize: "0.7rem", color: "var(--text-dark)", lineHeight: 1.4, padding: "4px 0", borderBottom: "1px dotted rgba(0,0,0,0.08)" }}>
                         &raquo; <span style={{ fontWeight: "bold" }}>{ent.name}</span>: {ent.message}
                       </div>
                     ))
