@@ -18,12 +18,20 @@ interface GuestbookEntry {
   created_at: string;
 }
 
-const MOCK_ENTRIES = [
+const ENGINEER_MOCK_ENTRIES = [
   { id: "mock-1", name: "Infosys Recruiter", message: "Loved the interactive CV & SVG treemaps! 👍" },
   { id: "mock-2", name: "WhatDigital Supervisor", message: "Outstanding execution on LLM chatbot architectures." },
   { id: "mock-3", name: "GitHub Visitor", message: "Awesome YOLOv8 helmet detection main pipeline." },
   { id: "mock-4", name: "Gen-AI Recruiter", message: "The local RAG chatbot is incredibly fast and fun!" },
   { id: "mock-5", name: "Creative Dev", message: "Fascinating Neobrutalist cream design styling." }
+];
+
+const PRODUCER_MOCK_ENTRIES = [
+  { id: "mock-6", name: "Audio Engineer", message: "Incredible vocal chain on the stem mixes! 🎛️" },
+  { id: "mock-7", name: "Local Artist", message: "The mastering on these tracks is super clean and punchy." },
+  { id: "mock-8", name: "YouTube Fan", message: "Loved the No Bitches original track! 🔥" },
+  { id: "mock-9", name: "Producer Collab", message: "Great layout, would love to work on some beats together." },
+  { id: "mock-10", name: "Studio Manager", message: "Nice 1970s rack unit aesthetic for the portfolio." }
 ];
 
 const PROJECT_DETAILS_DATA = {
@@ -1668,7 +1676,7 @@ export const App: React.FC = () => {
                       </div>
                     ))
                   ) : (
-                    MOCK_ENTRIES.map((ent) => (
+                    (mode === 'producer' ? PRODUCER_MOCK_ENTRIES : ENGINEER_MOCK_ENTRIES).map((ent) => (
                       <div key={ent.id} style={{ fontFamily: "var(--font-lcd)", fontSize: "0.7rem", color: "var(--text-dark)", lineHeight: 1.4, padding: "4px 0", borderBottom: "1px dotted rgba(0,0,0,0.08)" }}>
                         &raquo; <span style={{ fontWeight: "bold" }}>{ent.name}</span>: {ent.message}
                       </div>
