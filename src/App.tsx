@@ -1411,18 +1411,10 @@ export const App: React.FC = () => {
                       width: "120px",
                       height: "auto",
                       animation: "fl-logo-pulse 1.5s ease-in-out infinite",
+                      mixBlendMode: "multiply",
                       filter: "drop-shadow(0 0 30px rgba(255,140,0,0.5)) drop-shadow(0 0 60px rgba(255,140,0,0.2))"
                     }}
                   />
-                  <span style={{
-                    fontFamily: "var(--font-lcd)",
-                    fontSize: "0.65rem",
-                    color: "var(--text-muted)",
-                    letterSpacing: "3px",
-                    opacity: 0.7
-                  }}>
-                    FL STUDIO LOADED
-                  </span>
                 </div>
               )}
             </section>
