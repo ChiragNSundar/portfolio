@@ -615,8 +615,24 @@ export const App: React.FC = () => {
   const [isGuestbookSubmitting, setIsGuestbookSubmitting] = useState(false);
   const [moderationError, setModerationError] = useState<string | null>(null);
 
-  // FL Studio splash overlay state
+  // FL Studio splash state (shows on producer page entry)
   const [showFlSplash, setShowFlSplash] = useState(false);
+
+  // Trigger FL splash when entering producer mode
+  useEffect(() => {
+    if (mode === 'producer') {
+      setShowFlSplash(true);
+      try {
+        const audio = new Audio('/fl_studio_start.mp3');
+        audio.volume = 0.5;
+        audio.play();
+      } catch (e) {}
+      const timer = setTimeout(() => setShowFlSplash(false), 3000);
+      return () => clearTimeout(timer);
+    } else {
+      setShowFlSplash(false);
+    }
+  }, [mode]);
 
   // Community guidelines moderation — blocks spam, NSFW, gibberish
   const moderateContent = (name: string, message: string): string | null => {
@@ -1113,20 +1129,7 @@ export const App: React.FC = () => {
             {/* Split 2: Music Producer */}
             <div 
               className="creative-card splash-card full-width-mobile"
-              onClick={() => {
-                playBipSound();
-                setShowFlSplash(true);
-                // Play actual FL Studio startup sound
-                try {
-                  const audio = new Audio('/fl_studio_start.mp3');
-                  audio.volume = 0.5;
-                  audio.play();
-                } catch (e) {}
-                setTimeout(() => {
-                  setShowFlSplash(false);
-                  setMode('producer');
-                }, 2500);
-              }}
+              onClick={() => { playBipSound(); setMode('producer'); }}
               style={{
                 flex: "1 1 350px",
                 maxWidth: "440px",
@@ -1386,6 +1389,40 @@ export const App: React.FC = () => {
               >
                 👇
               </div>
+
+              {/* FL Studio logo splash — appears on producer page entry */}
+              {mode === 'producer' && showFlSplash && (
+                <div style={{
+                  marginTop: "40px",
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "center",
+                  gap: "12px",
+                  animation: "fl-splash-in 0.4s ease-out",
+                  opacity: showFlSplash ? 1 : 0,
+                  transition: "opacity 0.5s ease-out"
+                }}>
+                  <img
+                    src="/fl_logo.png"
+                    alt="FL Studio"
+                    style={{
+                      width: "120px",
+                      height: "auto",
+                      animation: "fl-logo-pulse 1.5s ease-in-out infinite",
+                      filter: "drop-shadow(0 0 30px rgba(255,140,0,0.5)) drop-shadow(0 0 60px rgba(255,140,0,0.2))"
+                    }}
+                  />
+                  <span style={{
+                    fontFamily: "var(--font-lcd)",
+                    fontSize: "0.65rem",
+                    color: "var(--text-muted)",
+                    letterSpacing: "3px",
+                    opacity: 0.7
+                  }}>
+                    FL STUDIO LOADED
+                  </span>
+                </div>
+              )}
             </section>
 
             {/* SECTION 2 & 3: Mode Conditional Display */}
@@ -2090,33 +2127,6 @@ export const App: React.FC = () => {
               }}
             />
           </div>
-        </div>
-      )}
-      {/* FL Studio Splash — floating logo, page stays visible */}
-      {showFlSplash && (
-        <div style={{
-          position: "fixed",
-          top: 0,
-          left: 0,
-          width: "100vw",
-          height: "100vh",
-          zIndex: 9999,
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          pointerEvents: "none",
-          animation: "fl-splash-in 0.3s ease-out"
-        }}>
-          <img
-            src="/fl_logo.png"
-            alt="FL Studio"
-            style={{
-              width: "160px",
-              height: "auto",
-              animation: "fl-logo-pulse 1.5s ease-in-out infinite",
-              filter: "drop-shadow(0 0 40px rgba(255,140,0,0.6)) drop-shadow(0 0 80px rgba(255,140,0,0.25))"
-            }}
-          />
         </div>
       )}
     </div>
