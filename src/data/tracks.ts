@@ -32,8 +32,8 @@ export const mixAndOriginalTracks: Track[] = [
     type: "mix",
     icon: "🔥",
     color: "#1DB954",
-    audioBefore: "/audio/entropy_before.m4a",
-    audioAfter: "/audio/entropy_after.mp3",
+    audioBefore: "/audio/mixes/entropy/before.m4a",
+    audioAfter: "/audio/mixes/entropy/after.mp3",
     description: "Real Vocal Stem Comparison. 'Before': Raw unmixed vocal recording (RxC Draft 2). 'After': Professionally tuned, EQ sculptured, compressed, saturated, and mastered final record.",
     spotifyUrl: "https://open.spotify.com/track/1RMaBcZWrsNII3XzHLzBPK?si=e6c2e32d07b149a7"
   },

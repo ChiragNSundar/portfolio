@@ -636,7 +636,7 @@ export const App: React.FC = () => {
     if (mode === 'producer') {
       setShowFlSplash(true);
       try {
-        const audio = new Audio('/fl_studio_start.mp3');
+        const audio = new Audio('/audio/sfx/fl_studio_start.mp3');
         audio.volume = 0.5;
         audio.play();
       } catch (e) {}
