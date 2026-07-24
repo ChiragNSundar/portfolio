@@ -847,14 +847,12 @@ export const App: React.FC = () => {
     0: { rx: 0, ry: 0 },
     1: { rx: 0, ry: 0 },
     2: { rx: 0, ry: 0 },
-    3: { rx: 0, ry: 0 },
-    4: { rx: 0, ry: 0 }
+    3: { rx: 0, ry: 0 }
   });
   const [unlocked, setUnlocked] = useState(false);
 
   // Section Refs for scroll-trigger navigation
   const sectionRefs = [
-    useRef<HTMLDivElement>(null),
     useRef<HTMLDivElement>(null),
     useRef<HTMLDivElement>(null),
     useRef<HTMLDivElement>(null),
@@ -913,7 +911,7 @@ export const App: React.FC = () => {
       const bottomThreshold = 60; // pixels from the bottom
       const isAtBottom = (window.innerHeight + window.scrollY) >= (document.documentElement.scrollHeight - bottomThreshold);
       if (isAtBottom) {
-        setActiveSection(mode === 'producer' ? 4 : 2); // index 4 or 2 is always the last section
+        setActiveSection(mode === 'producer' ? 3 : 2); // index 3 or 2 is always the last section
       }
     };
 
@@ -1032,9 +1030,8 @@ export const App: React.FC = () => {
       return [
         { label: "01 INTRO", index: 0, color: "var(--color-lavender-accent)" },
         { label: "02 VOCAL MIXING", index: 1, color: "var(--color-lavender-accent)" },
-        { label: "03 STEM MIXES", index: 2, color: "var(--color-lavender-accent)" },
-        { label: "04 SPOTIFY RELEASE", index: 3, color: "#1DB954" },
-        { label: "05 COVERS", index: 4, color: "var(--color-mint-accent)" }
+        { label: "03 SPOTIFY RELEASE", index: 2, color: "#1DB954" },
+        { label: "04 COVERS", index: 3, color: "var(--color-mint-accent)" }
       ];
     }
   };
@@ -1489,7 +1486,7 @@ export const App: React.FC = () => {
               </>
             ) : (
               <>
-                {/* Music Producer: Vocal Mixing Portfolio */}
+                {/* Music Producer: Vocal Mixing & Live Lockstep Audio Compare */}
                 <section 
                   ref={sectionRefs[1]}
                   data-section-idx="1"
@@ -1503,10 +1500,20 @@ export const App: React.FC = () => {
                     ...getSectionStyles(1)
                   }}
                 >
-                  <VocalMixingCard onInteract={unlockAudioContext} />
+                  <VocalMixingCard 
+                    currentTrack={currentTrack}
+                    isPlaying={isPlaying}
+                    mixRatio={mixRatio}
+                    volume={volume}
+                    onTrackSelect={handleTrackSelect}
+                    onPlayToggle={handlePlayToggle}
+                    onMixRatioChange={handleMixRatioChange}
+                    onVolumeChange={handleVolumeChange}
+                    onInteract={unlockAudioContext}
+                  />
                 </section>
 
-                {/* Music Producer: Audio Stems Mixer */}
+                {/* Music Producer: Spotify Latest Release */}
                 <section 
                   ref={sectionRefs[2]}
                   data-section-idx="2"
@@ -1520,21 +1527,10 @@ export const App: React.FC = () => {
                     ...getSectionStyles(2)
                   }}
                 >
-                  <AudioEngineCard 
-                    currentTrack={currentTrack}
-                    isPlaying={isPlaying}
-                    mixRatio={mixRatio}
-                    volume={volume}
-                    onTrackSelect={handleTrackSelect}
-                    onPlayToggle={handlePlayToggle}
-                    onMixRatioChange={handleMixRatioChange}
-                    onVolumeChange={handleVolumeChange}
-                    onInteract={unlockAudioContext}
-                    onStop={handleStop}
-                  />
+                  <SpotifyReleaseCard onInteract={unlockAudioContext} />
                 </section>
 
-                {/* Music Producer: Spotify Latest Release */}
+                {/* Music Producer: Youtube Cover Videos */}
                 <section 
                   ref={sectionRefs[3]}
                   data-section-idx="3"
@@ -1546,23 +1542,6 @@ export const App: React.FC = () => {
                     flexDirection: "column",
                     gap: "20px",
                     ...getSectionStyles(3)
-                  }}
-                >
-                  <SpotifyReleaseCard onInteract={unlockAudioContext} />
-                </section>
-
-                {/* Music Producer: Youtube Cover Videos */}
-                <section 
-                  ref={sectionRefs[4]}
-                  data-section-idx="4"
-                  className="scroll-fade-in"
-                  style={{
-                    width: "100%",
-                    maxWidth: "750px",
-                    display: "flex",
-                    flexDirection: "column",
-                    gap: "20px",
-                    ...getSectionStyles(4)
                   }}
                 >
                   <YoutubeCoversCard onInteract={unlockAudioContext} />
