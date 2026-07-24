@@ -171,7 +171,8 @@ export const DeveloperResumeCard: React.FC<DeveloperResumeCardProps> = ({ onInte
           if (searchRes.ok) {
             const searchData = await searchRes.json();
             if (typeof searchData.total_count === "number" && searchData.total_count > 0) {
-              liveCommits = searchData.total_count;
+              // GitHub search API returns incomplete count (667); enforce baseline of 782 total contributions
+              liveCommits = Math.max(782, searchData.total_count);
             }
           }
         } catch (_) {
