@@ -6,7 +6,6 @@ interface VocalMixingCardProps {
   isPlaying: boolean;
   mixRatio: number;
   volume: number;
-  onTrackSelect: (track: Track) => void;
   onPlayToggle: () => void;
   onMixRatioChange: (ratio: number) => void;
   onVolumeChange: (vol: number) => void;
@@ -18,7 +17,6 @@ export const VocalMixingCard: React.FC<VocalMixingCardProps> = ({
   isPlaying,
   mixRatio,
   volume,
-  onTrackSelect,
   onPlayToggle,
   onMixRatioChange,
   onVolumeChange,

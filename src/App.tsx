@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
 import { createPortal } from "react-dom";
-import { AudioEngineCard } from "./components/AudioEngineCard";
 import { YoutubeCoversCard } from "./components/YoutubeCoversCard";
 import { DeveloperResumeCard } from "./components/DeveloperResumeCard";
 import { PolaroidCertificates } from "./components/PolaroidCertificates";
@@ -955,10 +954,6 @@ export const App: React.FC = () => {
     } else {
       audioEngine.play(mixAndOriginalTracks[0]);
     }
-  };
-
-  const handleStop = () => {
-    audioEngine.stop();
   };
 
   const handleMixRatioChange = (ratio: number) => {
