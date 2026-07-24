@@ -18,16 +18,20 @@ Live Vercel Site: [portfolio-one-blue-asoaj8ivp3.vercel.app](https://portfolio-o
 * Splitted skeuomorphic splash screen allowing visitors to select their target role path immediately upon loading.
 * Dynamic switch button with animation transforming the layout instantly.
 * Animated hero greetings displaying **HazardChirag** with a custom scrambler text transition when loading the engineer dossier.
-* **FL Studio Entry Splash**: Entering the Music Producer console triggers the iconic FL Studio startup sound (`fl_studio_start.mp3`) with the official fruit logo animating inline below the hero section.
+* **FL Studio Entry Splash**: Entering the Music Producer console triggers the iconic FL Studio startup sound (`/audio/sfx/fl_studio_start.mp3`) with the official fruit logo animating inline below the hero section.
 
 ### 2. Software Engineer Dossier & Timeline
 * **Professional Bio**: "Result-driven Software Engineer specializing in Web App Development, Data Science/Analytics, and GenAI/AI Agents."
 * **Professional Timeline**: Fully detailed work experience including B.E. Computer Science & Engineering (RNSIT), Data Science & AI Intern (WhatDigital Technologies, `Nov 2025 - Apr 2026`), and AI Operations Specialist (Rural Bank of Calbayog City, Inc. - RBCCI).
 * **Micro-Interactions**: Custom hover-lift transitions (`transform: translateY(-4px)`) on CV sections and project card components.
 * **"Ask Chirag AI" Chatbot**: Zero-latency local representative chatbot loaded with developer QA details. Includes custom typing loaders, scroll triggers, and clear history tools.
-* **Live GitHub Stats**: Fetches real-time commit count, public repos, and followers from the GitHub API with 6-hour localStorage caching.
+* **Live & Animated GitHub Activity Card**: Dark GitHub-themed console (`#0d1117`) featuring an Octocat SVG badge, animated count-up numbers (`0 → 782+` total contributions), and a custom contribution activity grid matching actual commit intensity across the year.
 
-### 3. Fullscreen Detailed Project Explorer Console
+### 3. Contact & Social Integrations
+* **Dedicated Contact Consoles**: Separate contact cards tailored for Software Engineering ("DEVELOPER CONTACT CONSOLE") and Music Production ("VOCAL MIXING & PRODUCER CONSOLE").
+* **Updated Social Links**: Directly connected to GitHub (`github.com/ChiragNSundar`), LinkedIn (`linkedin.com/in/chiragnsundar/`), Spotify (`open.spotify.com/user/wapj86uclwiwd4n2g94v7er6u`), Instagram (`@chirag.localhost`), and direct email (`chiragns12@gmail.com`).
+
+### 4. Fullscreen Detailed Project Explorer Console
 Clicking a project card launches a fullscreen console overlay modal (via React Portal) with tabs to swap between all projects:
 * 🏍️ **RoadWatch**: Real-time motorcycle helmet detection (YOLOv8 + FastAPI + CLAHE normalization) showing text-based directory structure trees and `bike.gif` stream crops.
 * 🧠 **Harmony Hub**: Streamlit-based mental wellness assistant (Gemini Pro + RAG) showing mood calculators and Plotly statistics graphs.
@@ -35,7 +39,9 @@ Clicking a project card launches a fullscreen console overlay modal (via React P
 * 🤖 **AI JD Bot**: Job description assistant (Flask + Gemini/Gemma + 12 MongoDB collection tables). Set to text-only mode where visuals column auto-compresses to full width.
 * 🎤 **VibeLyrics**: Professional hip-hop writing suite (React 19 + Zustand 5 + FastAPI + Librosa + LoRA DPO continual training), showing detailed directory structure trees and system layout charts.
 
-### 4. Originals & Covers YouTube Player
+### 5. Structured Stems Studio & Multitrack Player
+* **Organized Asset Pipeline**: Audio stems structured cleanly in `/public/audio/mixes/` and sound effects in `/public/audio/sfx/`.
+* **Before / After Comparison**: Interactive audio comparison deck playing raw unmixed stems vs. professionally tuned, sculpted, and mastered records without artificial effects.
 * **Tabbed Interface**: Switch between Originals (e.g., "No Bitches") and Covers with a segmented tab bar.
 * **YouTube Logo Border Decoration**: Subtle YouTube play-button logos watermarked at the card borders.
 * **"Visit YouTube" Button**: Red branded button with inline YouTube logo SVG linking to the Hazard Chirag channel.
