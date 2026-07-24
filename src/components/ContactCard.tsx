@@ -38,7 +38,32 @@ export const ContactCard: React.FC<ContactCardProps> = ({
   onSubmit,
   onInteract
 }) => {
-  const contactLinks = [
+  const contactLinks = mode === "engineer" ? [
+    {
+      title: "Direct Email",
+      value: "chirag.n.sundar@gmail.com",
+      url: "mailto:chirag.n.sundar@gmail.com?subject=Software%20Engineering%20Inquiry",
+      icon: "✉️",
+      color: "var(--color-amber-accent)",
+      badge: "EMAIL DIRECT"
+    },
+    {
+      title: "GitHub Profile",
+      value: "ChiragNSundar",
+      url: "https://github.com/ChiragNSundar",
+      icon: "🐙",
+      color: "#24292e",
+      badge: "CODE REPOS"
+    },
+    {
+      title: "LinkedIn Profile",
+      value: "Chirag N Sundar",
+      url: "https://www.linkedin.com/in/chiragnsundar/",
+      icon: "💼",
+      color: "#0a66c2",
+      badge: "PROFESSIONAL"
+    }
+  ] : [
     {
       title: "Direct Email",
       value: "chirag.n.sundar@gmail.com",
