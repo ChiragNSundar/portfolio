@@ -23,7 +23,6 @@ export const VocalMixingCard: React.FC<VocalMixingCardProps> = ({
   onVolumeChange,
   onInteract
 }) => {
-  const [showImageModal, setShowImageModal] = useState(false);
   const [trackProgress, setTrackProgress] = useState(0);
 
   // Realtime Playhead & Duration tracking
@@ -400,27 +399,13 @@ export const VocalMixingCard: React.FC<VocalMixingCardProps> = ({
           <span style={{ fontFamily: "var(--font-lcd)", fontSize: "0.75rem", color: "#a1a1aa", fontWeight: "bold", letterSpacing: "1px" }}>
             FL STUDIO STUDIO RACK & PROCESSING PIPELINE
           </span>
-          <span
-            onClick={() => setShowImageModal(true)}
-            style={{
-              fontSize: "0.7rem",
-              color: "#38bdf8",
-              cursor: "pointer",
-              fontWeight: "bold",
-              textDecoration: "underline"
-            }}
-          >
-            🔍 ENLARGE GRAPHIC
-          </span>
         </div>
 
         <div
-          onClick={() => setShowImageModal(true)}
           style={{
             position: "relative",
             borderRadius: "12px",
             overflow: "hidden",
-            cursor: "zoom-in",
             border: "1px solid #27272a"
           }}
         >
@@ -430,11 +415,8 @@ export const VocalMixingCard: React.FC<VocalMixingCardProps> = ({
             style={{
               width: "100%",
               height: "auto",
-              display: "block",
-              transition: "transform 0.3s ease"
+              display: "block"
             }}
-            onMouseOver={(e) => (e.currentTarget.style.transform = "scale(1.02)")}
-            onMouseOut={(e) => (e.currentTarget.style.transform = "scale(1)")}
           />
         </div>
       </div>
@@ -602,76 +584,6 @@ export const VocalMixingCard: React.FC<VocalMixingCardProps> = ({
         </div>
       </div>
 
-      {/* Image Modal Lightbox */}
-      {showImageModal && (
-        <div
-          onClick={() => setShowImageModal(false)}
-          style={{
-            position: "fixed",
-            top: 0,
-            left: 0,
-            width: "100vw",
-            height: "100vh",
-            background: "rgba(0, 0, 0, 0.85)",
-            backdropFilter: "blur(8px)",
-            zIndex: 99999,
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            padding: "24px"
-          }}
-        >
-          <div
-            onClick={(e) => e.stopPropagation()}
-            style={{
-              position: "relative",
-              maxWidth: "1000px",
-              width: "100%",
-              maxHeight: "90vh",
-              background: "#09090b",
-              border: "2px solid var(--color-lavender-accent)",
-              borderRadius: "16px",
-              overflow: "hidden",
-              padding: "12px",
-              boxShadow: "0 0 40px rgba(147, 51, 234, 0.4)"
-            }}
-          >
-            <button
-              onClick={() => setShowImageModal(false)}
-              style={{
-                position: "absolute",
-                top: "16px",
-                right: "16px",
-                background: "var(--color-rose-accent)",
-                color: "#ffffff",
-                border: "none",
-                borderRadius: "50%",
-                width: "36px",
-                height: "36px",
-                fontWeight: "900",
-                fontSize: "1.1rem",
-                cursor: "pointer",
-                zIndex: 10
-              }}
-            >
-              ✕
-            </button>
-
-            <img
-              src="/fl_vocal_mixing.jpg"
-              alt="FL Studio Vocal Processing Diagram"
-              style={{
-                width: "100%",
-                height: "auto",
-                maxHeight: "82vh",
-                objectFit: "contain",
-                borderRadius: "8px",
-                display: "block"
-              }}
-            />
-          </div>
-        </div>
-      )}
     </div>
   );
 };

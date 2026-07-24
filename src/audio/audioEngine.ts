@@ -59,50 +59,13 @@ export class AudioEngine {
     this.masterGain.connect(this.analyser);
     this.analyser.connect(this.ctx.destination);
 
-    // Create Mixer Gain Channels
+    // Create Mixer Gain Channels (pure uncolored 1:1 audio channels)
     this.dryGain = this.ctx.createGain();
     this.wetGain = this.ctx.createGain();
-    
-    // Route Dry Channel directly to Master
+
+    // Route both Dry and Wet channels directly to Master with zero effects or EQ coloration
     this.dryGain.connect(this.masterGain);
-
-    // Route Wet Channel through Effects Rack (Saturation -> Delay -> EQ -> Master)
-    // 1. Saturation (Tape Warmth)
-    this.saturationNode = this.ctx.createWaveShaper();
-    this.saturationNode.curve = this.makeDistortionCurve(15);
-    this.saturationNode.oversample = "4x";
-
-    // 2. Delay (Stereo Echo)
-    this.stereoDelay = this.ctx.createDelay(1.0);
-    this.stereoDelay.delayTime.value = 0.25; // 8th note delay
-    this.delayFeedback = this.ctx.createGain();
-    this.delayFeedback.gain.value = 0.25; // subtle echo decay
-    this.stereoDelay.connect(this.delayFeedback);
-    this.delayFeedback.connect(this.stereoDelay); // feedback loop
-
-    // 3. EQs (Pultec Style EQ bands)
-    this.eqLow = this.ctx.createBiquadFilter();
-    this.eqLow.type = "lowshelf";
-    this.eqLow.frequency.value = 100;
-    this.eqLow.gain.value = 4.0; // Warm low shelf boost
-
-    this.eqMid = this.ctx.createBiquadFilter();
-    this.eqMid.type = "peaking";
-    this.eqMid.frequency.value = 1000;
-    this.eqMid.Q.value = 1.0;
-    this.eqMid.gain.value = -1.0; // Slight mid scoop for clarity
-
-    this.eqHigh = this.ctx.createBiquadFilter();
-    this.eqHigh.type = "highshelf";
-    this.eqHigh.frequency.value = 8000;
-    this.eqHigh.gain.value = 5.0; // Crispy air boost
-
-    // Route Wet chain (Saturation -> EQ -> Master)
-    this.wetGain.connect(this.saturationNode);
-    this.saturationNode.connect(this.eqLow);
-    this.eqLow.connect(this.eqMid);
-    this.eqMid.connect(this.eqHigh);
-    this.eqHigh.connect(this.masterGain);
+    this.wetGain.connect(this.masterGain);
 
     // Setup crossfader volumes
     this.updateCrossfader();
@@ -125,9 +88,9 @@ export class AudioEngine {
     if (!this.ctx || !this.dryGain || !this.wetGain) return;
     const t = this.ctx.currentTime;
     
-    // Equal power crossfading (using sine/cosine laws for constant volume)
-    const dryVal = Math.cos(this.mixRatio * 0.5 * Math.PI);
-    const wetVal = Math.sin(this.mixRatio * 0.5 * Math.PI);
+    // Clean 1:1 uncolored gain routing
+    const dryVal = 1 - this.mixRatio;
+    const wetVal = this.mixRatio;
 
     this.dryGain.gain.setValueAtTime(dryVal, t);
     this.wetGain.gain.setValueAtTime(wetVal, t);
