@@ -105,7 +105,7 @@ export const DeveloperResumeCard: React.FC<DeveloperResumeCardProps> = ({ onInte
     followers: number;
     loading: boolean;
   }>({
-    commits: 657,
+    commits: 782,
     repos: 20,
     followers: 5,
     loading: true
@@ -156,7 +156,7 @@ export const DeveloperResumeCard: React.FC<DeveloperResumeCardProps> = ({ onInte
         const userRes = await fetch("https://api.github.com/users/ChiragNSundar");
         let liveRepos = 20;
         let liveFollowers = 5;
-        let liveCommits = 657;
+        let liveCommits = 782;
 
         if (userRes.ok) {
           const userData = await userRes.json();
@@ -1124,11 +1124,24 @@ export const DeveloperResumeCard: React.FC<DeveloperResumeCardProps> = ({ onInte
                   borderRadius: "10px",
                   padding: "10px"
                 }}>
-                  {Array.from({ length: 63 }).map((_, i) => {
-                    const shades = ["#161b22", "#161b22", "#0e4429", "#006d32", "#26a641", "#39d353"];
-                    // Deterministic but varied pattern
-                    const seed = (i * 7 + (i % 3) * 13 + (i % 7) * 5) % 100;
-                    const shade = seed < 30 ? 0 : seed < 45 ? 1 : seed < 60 ? 2 : seed < 78 ? 3 : seed < 90 ? 4 : 5;
+                  {/* Hand-crafted pattern matching real contribution graph:
+                      Columns map to weeks (Jul→Jul), Rows = Mon/Wed/Fri
+                      Sparse Jul-Nov, heavy Dec-Mar, moderate Apr-Jul */}
+                  {[
+                    // Jul-Aug (sparse)
+                    0,0,0, 0,1,0, 0,0,0, 0,0,1, 0,0,0,
+                    // Sep-Nov (very sparse with occasional)
+                    0,0,0, 0,0,0, 0,1,0, 1,0,0, 0,0,0, 0,1,0,
+                    // Dec-Jan (heavy activity)
+                    2,3,2, 4,3,5, 3,4,3, 5,2,4, 3,5,3, 4,3,2,
+                    // Feb-Mar (heavy continued)
+                    3,2,4, 5,3,2, 2,4,3, 3,2,1, 2,3,2, 1,2,0,
+                    // Apr-May (moderate tapering)
+                    0,1,0, 0,2,1, 0,0,1, 1,0,0, 2,1,0,
+                    // Jun-Jul (some recent activity)
+                    1,2,0, 0,1,2, 1,3,1, 2,1,0, 0,1,2, 1,0,0
+                  ].map((level, i) => {
+                    const shades = ["#161b22", "#0e4429", "#006d32", "#26a641", "#39d353"];
                     return (
                       <div
                         key={i}
@@ -1136,7 +1149,7 @@ export const DeveloperResumeCard: React.FC<DeveloperResumeCardProps> = ({ onInte
                           width: "100%",
                           aspectRatio: "1",
                           borderRadius: "2px",
-                          backgroundColor: shades[shade],
+                          backgroundColor: shades[Math.min(level, 4)],
                           border: "0.5px solid rgba(255,255,255,0.03)",
                           transition: "transform 0.15s",
                         }}
