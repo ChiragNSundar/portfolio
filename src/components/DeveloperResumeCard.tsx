@@ -111,6 +111,45 @@ export const DeveloperResumeCard: React.FC<DeveloperResumeCardProps> = ({ onInte
     loading: true
   });
 
+  // Count-up animation for GitHub stats
+  const githubCardRef = useRef<HTMLDivElement>(null);
+  const hasAnimatedRef = useRef(false);
+  const [animatedStats, setAnimatedStats] = useState({ commits: 0, repos: 0, followers: 0 });
+
+  useEffect(() => {
+    if (githubStats.loading || hasAnimatedRef.current) return;
+    const el = githubCardRef.current;
+    if (!el) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting && !hasAnimatedRef.current) {
+          hasAnimatedRef.current = true;
+          observer.disconnect();
+          const duration = 1400;
+          const frameRate = 16;
+          const steps = Math.ceil(duration / frameRate);
+          let step = 0;
+          const timer = setInterval(() => {
+            step++;
+            const progress = Math.min(step / steps, 1);
+            // easeOutCubic for smooth deceleration
+            const eased = 1 - Math.pow(1 - progress, 3);
+            setAnimatedStats({
+              commits: Math.round(eased * githubStats.commits),
+              repos: Math.round(eased * githubStats.repos),
+              followers: Math.round(eased * githubStats.followers)
+            });
+            if (progress >= 1) clearInterval(timer);
+          }, frameRate);
+        }
+      },
+      { threshold: 0.3 }
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, [githubStats.loading, githubStats.commits, githubStats.repos, githubStats.followers]);
+
   useEffect(() => {
     const fetchStats = async () => {
       try {
@@ -927,56 +966,182 @@ export const DeveloperResumeCard: React.FC<DeveloperResumeCardProps> = ({ onInte
               </div>
             </div>
 
-            {/* GitHub Stats & Heatmap */}
-            <div style={{ background: "var(--card-bg)", border: "1.5px solid var(--border-color)", borderRadius: "16px", padding: "16px", display: "flex", flexDirection: "column", gap: "12px" }}>
+            {/* GitHub Stats & Heatmap - Dark Theme */}
+            <div
+              ref={githubCardRef}
+              style={{
+                background: "#0d1117",
+                border: "1px solid #30363d",
+                borderRadius: "16px",
+                padding: "20px",
+                display: "flex",
+                flexDirection: "column",
+                gap: "16px",
+                position: "relative",
+                overflow: "hidden",
+                boxShadow: "0 8px 32px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.05)"
+              }}
+            >
+              {/* Header with Octocat logo */}
               <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                <span style={{ fontSize: "0.68rem", fontWeight: "bold", color: "var(--color-amber-accent)", letterSpacing: "1px", textTransform: "uppercase" }}>
-                  📊 GitHub Stats & Heatmap
-                </span>
-                <span style={{ fontSize: "0.55rem", fontWeight: "bold", color: "var(--text-muted)", letterSpacing: "0.5px" }}>
-                  {githubStats.loading ? "⏳ SYNCING..." : "🟢 LIVE"}
+                <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+                  {/* GitHub Octocat SVG */}
+                  <svg height="28" viewBox="0 0 16 16" width="28" fill="#e6edf3" style={{ flexShrink: 0 }}>
+                    <path d="M8 0c4.42 0 8 3.58 8 8a8.013 8.013 0 0 1-5.45 7.59c-.4.08-.55-.17-.55-.38 0-.27.01-1.13.01-2.2 0-.75-.25-1.23-.54-1.48 1.78-.2 3.65-.88 3.65-3.95 0-.88-.31-1.59-.82-2.15.08-.2.36-1.02-.08-2.12 0 0-.67-.22-2.2.82-.64-.18-1.32-.27-2-.27-.68 0-1.36.09-2 .27-1.53-1.03-2.2-.82-2.2-.82-.44 1.1-.16 1.92-.08 2.12-.51.56-.82 1.28-.82 2.15 0 3.06 1.86 3.75 3.64 3.95-.23.2-.44.55-.51 1.07-.46.21-1.61.55-2.33-.66-.15-.24-.6-.83-1.23-.82-.67.01-.27.38.01.53.34.19.73.9.82 1.13.16.45.68 1.31 2.69.94 0 .67.01 1.3.01 1.49 0 .21-.15.45-.55.38A7.995 7.995 0 0 1 0 8c0-4.42 3.58-8 8-8Z" />
+                  </svg>
+                  <span style={{
+                    fontSize: "0.78rem",
+                    fontWeight: "800",
+                    color: "#e6edf3",
+                    letterSpacing: "1.2px",
+                    textTransform: "uppercase",
+                    fontFamily: "var(--font-lcd)"
+                  }}>
+                    GitHub Activity
+                  </span>
+                </div>
+                <span style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "5px",
+                  fontSize: "0.6rem",
+                  fontWeight: "bold",
+                  color: githubStats.loading ? "#848d97" : "#3fb950",
+                  letterSpacing: "0.5px"
+                }}>
+                  <span style={{
+                    width: "6px",
+                    height: "6px",
+                    borderRadius: "50%",
+                    background: githubStats.loading ? "#848d97" : "#3fb950",
+                    display: "inline-block",
+                    boxShadow: githubStats.loading ? "none" : "0 0 6px #3fb950",
+                    animation: githubStats.loading ? "none" : "pulse 2s infinite"
+                  }} />
+                  {githubStats.loading ? "SYNCING" : "LIVE"}
                 </span>
               </div>
-              
 
+              {/* Stat counters row */}
+              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: "10px" }}>
+                {/* Commits */}
+                <div style={{
+                  background: "linear-gradient(135deg, rgba(219,39,119,0.12) 0%, rgba(219,39,119,0.04) 100%)",
+                  border: "1px solid rgba(219,39,119,0.25)",
+                  borderRadius: "12px",
+                  padding: "12px 8px",
+                  textAlign: "center",
+                  transition: "transform 0.2s, box-shadow 0.2s",
+                  cursor: "default"
+                }}
+                onMouseEnter={e => { e.currentTarget.style.transform = "translateY(-2px)"; e.currentTarget.style.boxShadow = "0 4px 16px rgba(219,39,119,0.2)"; }}
+                onMouseLeave={e => { e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.boxShadow = "none"; }}
+                >
+                  <div style={{
+                    fontSize: "1.5rem",
+                    fontWeight: "900",
+                    color: "#f472b6",
+                    fontFamily: "var(--font-lcd)",
+                    textShadow: "0 0 12px rgba(244,114,182,0.4)"
+                  }}>
+                    {animatedStats.commits}+
+                  </div>
+                  <div style={{ fontSize: "0.55rem", color: "#848d97", textTransform: "uppercase", fontWeight: "700", letterSpacing: "0.8px", marginTop: "2px" }}>Commits</div>
+                </div>
 
-              {/* Commit counters row */}
-              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: "8px" }}>
-                <div style={{ background: "var(--card-bg-muted)", border: "1.5px solid var(--border-color)", borderRadius: "10px", padding: "6px 4px", textAlign: "center" }}>
-                  <div style={{ fontSize: "1.15rem", fontWeight: "900", color: "#db2777" }}>{githubStats.commits}</div>
-                  <div style={{ fontSize: "0.5rem", color: "var(--text-muted)", textTransform: "uppercase", fontWeight: "bold", letterSpacing: "0.2px" }}>Commits</div>
+                {/* Repos */}
+                <div style={{
+                  background: "linear-gradient(135deg, rgba(59,130,246,0.12) 0%, rgba(59,130,246,0.04) 100%)",
+                  border: "1px solid rgba(59,130,246,0.25)",
+                  borderRadius: "12px",
+                  padding: "12px 8px",
+                  textAlign: "center",
+                  transition: "transform 0.2s, box-shadow 0.2s",
+                  cursor: "default"
+                }}
+                onMouseEnter={e => { e.currentTarget.style.transform = "translateY(-2px)"; e.currentTarget.style.boxShadow = "0 4px 16px rgba(59,130,246,0.2)"; }}
+                onMouseLeave={e => { e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.boxShadow = "none"; }}
+                >
+                  <div style={{
+                    fontSize: "1.5rem",
+                    fontWeight: "900",
+                    color: "#60a5fa",
+                    fontFamily: "var(--font-lcd)",
+                    textShadow: "0 0 12px rgba(96,165,250,0.4)"
+                  }}>
+                    {animatedStats.repos}
+                  </div>
+                  <div style={{ fontSize: "0.55rem", color: "#848d97", textTransform: "uppercase", fontWeight: "700", letterSpacing: "0.8px", marginTop: "2px" }}>Public Repos</div>
                 </div>
-                <div style={{ background: "var(--card-bg-muted)", border: "1.5px solid var(--border-color)", borderRadius: "10px", padding: "6px 4px", textAlign: "center" }}>
-                  <div style={{ fontSize: "1.15rem", fontWeight: "900", color: "#0ca678" }}>{githubStats.repos}</div>
-                  <div style={{ fontSize: "0.5rem", color: "var(--text-muted)", textTransform: "uppercase", fontWeight: "bold", letterSpacing: "0.2px" }}>Repos</div>
-                </div>
-                <div style={{ background: "var(--card-bg-muted)", border: "1.5px solid var(--border-color)", borderRadius: "10px", padding: "6px 4px", textAlign: "center" }}>
-                  <div style={{ fontSize: "1.15rem", fontWeight: "900", color: "#eab308" }}>{githubStats.followers}</div>
-                  <div style={{ fontSize: "0.5rem", color: "var(--text-muted)", textTransform: "uppercase", fontWeight: "bold", letterSpacing: "0.2px" }}>Followers</div>
+
+                {/* Followers */}
+                <div style={{
+                  background: "linear-gradient(135deg, rgba(234,179,8,0.12) 0%, rgba(234,179,8,0.04) 100%)",
+                  border: "1px solid rgba(234,179,8,0.25)",
+                  borderRadius: "12px",
+                  padding: "12px 8px",
+                  textAlign: "center",
+                  transition: "transform 0.2s, box-shadow 0.2s",
+                  cursor: "default"
+                }}
+                onMouseEnter={e => { e.currentTarget.style.transform = "translateY(-2px)"; e.currentTarget.style.boxShadow = "0 4px 16px rgba(234,179,8,0.2)"; }}
+                onMouseLeave={e => { e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.boxShadow = "none"; }}
+                >
+                  <div style={{
+                    fontSize: "1.5rem",
+                    fontWeight: "900",
+                    color: "#facc15",
+                    fontFamily: "var(--font-lcd)",
+                    textShadow: "0 0 12px rgba(250,204,21,0.4)"
+                  }}>
+                    {animatedStats.followers}
+                  </div>
+                  <div style={{ fontSize: "0.55rem", color: "#848d97", textTransform: "uppercase", fontWeight: "700", letterSpacing: "0.8px", marginTop: "2px" }}>Followers</div>
                 </div>
               </div>
 
-              {/* Mini commit heatmap */}
+              {/* Contribution heatmap */}
               <div>
-                <span style={{ fontSize: "0.55rem", fontWeight: "900", color: "var(--text-muted)", display: "block", marginBottom: "6px", letterSpacing: "0.5px" }}>
-                  CONTRIBUTIONS GRID (576+ BLOCKS SEEDED):
-                </span>
-                <div style={{ display: "flex", gap: "2.2px", flexWrap: "wrap", width: "100%", background: "var(--card-bg-muted)", border: "1.5px solid var(--border-color)", borderRadius: "8px", padding: "8px" }}>
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "8px" }}>
+                  <span style={{ fontSize: "0.6rem", fontWeight: "800", color: "#848d97", letterSpacing: "0.8px", textTransform: "uppercase" }}>
+                    Contribution Activity
+                  </span>
+                  <div style={{ display: "flex", alignItems: "center", gap: "3px" }}>
+                    <span style={{ fontSize: "0.5rem", color: "#484f58" }}>Less</span>
+                    {["#161b22", "#0e4429", "#006d32", "#26a641", "#39d353"].map((c, i) => (
+                      <div key={i} style={{ width: "8px", height: "8px", borderRadius: "2px", backgroundColor: c }} />
+                    ))}
+                    <span style={{ fontSize: "0.5rem", color: "#484f58" }}>More</span>
+                  </div>
+                </div>
+                <div style={{
+                  display: "grid",
+                  gridTemplateColumns: "repeat(21, 1fr)",
+                  gap: "3px",
+                  width: "100%",
+                  background: "#010409",
+                  border: "1px solid #21262d",
+                  borderRadius: "10px",
+                  padding: "10px"
+                }}>
                   {Array.from({ length: 63 }).map((_, i) => {
-                    // Seed dynamic greens to match your exact commit heatmap grid
-                    const shades = ["var(--grid-dot)", "var(--grid-dot)", "#2e6f40", "#39d353", "#26a641", "#0e4429"];
-                    const randSeed = (i * 3 + (i % 5) * 7) % shades.length;
-                    const bg = shades[randSeed];
+                    const shades = ["#161b22", "#161b22", "#0e4429", "#006d32", "#26a641", "#39d353"];
+                    // Deterministic but varied pattern
+                    const seed = (i * 7 + (i % 3) * 13 + (i % 7) * 5) % 100;
+                    const shade = seed < 30 ? 0 : seed < 45 ? 1 : seed < 60 ? 2 : seed < 78 ? 3 : seed < 90 ? 4 : 5;
                     return (
-                      <div 
-                        key={i} 
-                        style={{ 
-                          width: "7.5px", 
-                          height: "7.5px", 
-                          borderRadius: "1px", 
-                          backgroundColor: bg,
-                          border: "0.5px solid rgba(0,0,0,0.05)"
-                        }} 
+                      <div
+                        key={i}
+                        style={{
+                          width: "100%",
+                          aspectRatio: "1",
+                          borderRadius: "2px",
+                          backgroundColor: shades[shade],
+                          border: "0.5px solid rgba(255,255,255,0.03)",
+                          transition: "transform 0.15s",
+                        }}
+                        onMouseEnter={e => { e.currentTarget.style.transform = "scale(1.3)"; }}
+                        onMouseLeave={e => { e.currentTarget.style.transform = "scale(1)"; }}
                       />
                     );
                   })}
