@@ -1047,7 +1047,7 @@ export const DeveloperResumeCard: React.FC<DeveloperResumeCardProps> = ({ onInte
                   }}>
                     {animatedStats.commits}+
                   </div>
-                  <div style={{ fontSize: "0.55rem", color: "#848d97", textTransform: "uppercase", fontWeight: "700", letterSpacing: "0.8px", marginTop: "2px" }}>Commits</div>
+                  <div style={{ fontSize: "0.55rem", color: "#848d97", textTransform: "uppercase", fontWeight: "700", letterSpacing: "0.8px", marginTop: "2px" }}>Contributions</div>
                 </div>
 
                 {/* Repos */}
