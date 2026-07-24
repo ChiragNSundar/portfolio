@@ -4,6 +4,8 @@ import { AudioEngineCard } from "./components/AudioEngineCard";
 import { YoutubeCoversCard } from "./components/YoutubeCoversCard";
 import { DeveloperResumeCard } from "./components/DeveloperResumeCard";
 import { PolaroidCertificates } from "./components/PolaroidCertificates";
+import { VocalMixingCard } from "./components/VocalMixingCard";
+import { SpotifyReleaseCard } from "./components/SpotifyReleaseCard";
 import { supabase, isSupabaseConfigured } from "./lib/supabaseClient";
 import type { Track } from "./data/tracks";
 import { mixAndOriginalTracks } from "./data/tracks";
@@ -844,12 +846,16 @@ export const App: React.FC = () => {
   const [tilts, setTilts] = useState<Record<number, { rx: number; ry: number }>>({
     0: { rx: 0, ry: 0 },
     1: { rx: 0, ry: 0 },
-    2: { rx: 0, ry: 0 }
+    2: { rx: 0, ry: 0 },
+    3: { rx: 0, ry: 0 },
+    4: { rx: 0, ry: 0 }
   });
   const [unlocked, setUnlocked] = useState(false);
 
   // Section Refs for scroll-trigger navigation
   const sectionRefs = [
+    useRef<HTMLDivElement>(null),
+    useRef<HTMLDivElement>(null),
     useRef<HTMLDivElement>(null),
     useRef<HTMLDivElement>(null),
     useRef<HTMLDivElement>(null)
@@ -907,7 +913,7 @@ export const App: React.FC = () => {
       const bottomThreshold = 60; // pixels from the bottom
       const isAtBottom = (window.innerHeight + window.scrollY) >= (document.documentElement.scrollHeight - bottomThreshold);
       if (isAtBottom) {
-        setActiveSection(2); // index 2 is always the last section (Certificates or YouTube Covers)
+        setActiveSection(mode === 'producer' ? 4 : 2); // index 4 or 2 is always the last section
       }
     };
 
@@ -1025,8 +1031,10 @@ export const App: React.FC = () => {
     } else {
       return [
         { label: "01 INTRO", index: 0, color: "var(--color-lavender-accent)" },
-        { label: "02 STEM MIXES", index: 1, color: "var(--color-lavender-accent)" },
-        { label: "03 COVERS", index: 2, color: "var(--color-mint-accent)" }
+        { label: "02 VOCAL MIXING", index: 1, color: "var(--color-lavender-accent)" },
+        { label: "03 STEM MIXES", index: 2, color: "var(--color-lavender-accent)" },
+        { label: "04 SPOTIFY RELEASE", index: 3, color: "#1DB954" },
+        { label: "05 COVERS", index: 4, color: "var(--color-mint-accent)" }
       ];
     }
   };
@@ -1481,7 +1489,7 @@ export const App: React.FC = () => {
               </>
             ) : (
               <>
-                {/* Music Producer: Audio Stems Mixer */}
+                {/* Music Producer: Vocal Mixing Portfolio */}
                 <section 
                   ref={sectionRefs[1]}
                   data-section-idx="1"
@@ -1493,6 +1501,23 @@ export const App: React.FC = () => {
                     flexDirection: "column",
                     gap: "20px",
                     ...getSectionStyles(1)
+                  }}
+                >
+                  <VocalMixingCard onInteract={unlockAudioContext} />
+                </section>
+
+                {/* Music Producer: Audio Stems Mixer */}
+                <section 
+                  ref={sectionRefs[2]}
+                  data-section-idx="2"
+                  className="scroll-fade-in"
+                  style={{
+                    width: "100%",
+                    maxWidth: "750px",
+                    display: "flex",
+                    flexDirection: "column",
+                    gap: "20px",
+                    ...getSectionStyles(2)
                   }}
                 >
                   <AudioEngineCard 
@@ -1509,10 +1534,10 @@ export const App: React.FC = () => {
                   />
                 </section>
 
-                {/* Music Producer: Youtube Cover Videos */}
+                {/* Music Producer: Spotify Latest Release */}
                 <section 
-                  ref={sectionRefs[2]}
-                  data-section-idx="2"
+                  ref={sectionRefs[3]}
+                  data-section-idx="3"
                   className="scroll-fade-in"
                   style={{
                     width: "100%",
@@ -1520,7 +1545,24 @@ export const App: React.FC = () => {
                     display: "flex",
                     flexDirection: "column",
                     gap: "20px",
-                    ...getSectionStyles(2)
+                    ...getSectionStyles(3)
+                  }}
+                >
+                  <SpotifyReleaseCard onInteract={unlockAudioContext} />
+                </section>
+
+                {/* Music Producer: Youtube Cover Videos */}
+                <section 
+                  ref={sectionRefs[4]}
+                  data-section-idx="4"
+                  className="scroll-fade-in"
+                  style={{
+                    width: "100%",
+                    maxWidth: "750px",
+                    display: "flex",
+                    flexDirection: "column",
+                    gap: "20px",
+                    ...getSectionStyles(4)
                   }}
                 >
                   <YoutubeCoversCard onInteract={unlockAudioContext} />
