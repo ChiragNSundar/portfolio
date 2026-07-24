@@ -97,16 +97,12 @@ export class AudioEngine {
     this.eqHigh.frequency.value = 8000;
     this.eqHigh.gain.value = 5.0; // Crispy air boost
 
-    // Route Wet chain
+    // Route Wet chain (Saturation -> EQ -> Master)
     this.wetGain.connect(this.saturationNode);
     this.saturationNode.connect(this.eqLow);
     this.eqLow.connect(this.eqMid);
     this.eqMid.connect(this.eqHigh);
     this.eqHigh.connect(this.masterGain);
-
-    // Route a side-tap of the wet gain through delay for stereo widening
-    this.wetGain.connect(this.stereoDelay);
-    this.stereoDelay.connect(this.masterGain);
 
     // Setup crossfader volumes
     this.updateCrossfader();
@@ -212,9 +208,13 @@ export class AudioEngine {
     this.audioSourceAfter = this.ctx.createMediaElementSource(this.audioAfter);
     this.audioSourceAfter.connect(this.wetGain);
 
-    // Play in lockstep
+    let syncStarted = false;
     const startSync = () => {
+      if (syncStarted) return;
+      syncStarted = true;
       if (this.audioBefore && this.audioAfter) {
+        this.audioBefore.currentTime = 0;
+        this.audioAfter.currentTime = 0;
         this.audioBefore.play().catch(e => console.log("Audio play error", e));
         this.audioAfter.play().catch(e => console.log("Audio play error", e));
       }
@@ -223,7 +223,8 @@ export class AudioEngine {
     if (this.audioBefore.readyState >= 2 && this.audioAfter.readyState >= 2) {
       startSync();
     } else {
-      this.audioBefore.oncanplay = startSync;
+      this.audioBefore.oncanplaythrough = startSync;
+      this.audioAfter.oncanplaythrough = startSync;
     }
 
     // Keep them in lockstep if they drift
@@ -234,7 +235,32 @@ export class AudioEngine {
           this.audioAfter.currentTime = this.audioBefore.currentTime;
         }
       }
+      if (this.onStateChange) this.onStateChange();
     };
+  }
+
+  public getCurrentTime(): number {
+    if (this.audioBefore) return this.audioBefore.currentTime;
+    return 0;
+  }
+
+  public getDuration(): number {
+    if (this.audioBefore && !isNaN(this.audioBefore.duration) && this.audioBefore.duration > 0) {
+      return this.audioBefore.duration;
+    }
+    return 180;
+  }
+
+  public seek(timeSeconds: number) {
+    const dur = this.getDuration();
+    const target = Math.max(0, Math.min(dur, timeSeconds));
+    if (this.audioBefore) {
+      this.audioBefore.currentTime = target;
+    }
+    if (this.audioAfter) {
+      this.audioAfter.currentTime = target;
+    }
+    if (this.onStateChange) this.onStateChange();
   }
 
   private playSynthLoop() {

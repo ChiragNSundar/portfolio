@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import type { Track } from "../data/tracks";
+import { audioEngine } from "../audio/audioEngine";
 
 interface VocalMixingCardProps {
   currentTrack: Track | null;
@@ -26,25 +27,16 @@ export const VocalMixingCard: React.FC<VocalMixingCardProps> = ({
   const [trackProgress, setTrackProgress] = useState(0);
   const progressTimerRef = useRef<number | null>(null);
 
-  // Playhead progress tracking
+  // Realtime Playhead & Duration tracking
   useEffect(() => {
+    let interval: number;
     if (isPlaying) {
-      progressTimerRef.current = window.setInterval(() => {
-        setTrackProgress((prev) => {
-          if (prev >= 180) return 0;
-          return prev + 1;
-        });
-      }, 1000);
-    } else {
-      if (progressTimerRef.current) {
-        clearInterval(progressTimerRef.current);
-        progressTimerRef.current = null;
-      }
+      interval = window.setInterval(() => {
+        const curTime = audioEngine.getCurrentTime();
+        setTrackProgress(curTime);
+      }, 250);
     }
-
-    return () => {
-      if (progressTimerRef.current) clearInterval(progressTimerRef.current);
-    };
+    return () => clearInterval(interval);
   }, [isPlaying]);
 
   useEffect(() => {
@@ -52,9 +44,22 @@ export const VocalMixingCard: React.FC<VocalMixingCardProps> = ({
   }, [currentTrack]);
 
   const formatProgressTime = (secs: number) => {
-    const m = Math.floor(secs / 60);
-    const s = secs % 60;
+    const totalSecs = Math.floor(secs || 0);
+    const m = Math.floor(totalSecs / 60);
+    const s = totalSecs % 60;
     return `${m}:${s < 10 ? "0" : ""}${s}`;
+  };
+
+  const handleSeek = (e: React.MouseEvent<HTMLDivElement>) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    const clickX = e.clientX - rect.left;
+    const percent = Math.max(0, Math.min(1, clickX / rect.width));
+    const totalDur = audioEngine.getDuration();
+    if (totalDur > 0) {
+      const targetTime = percent * totalDur;
+      audioEngine.seek(targetTime);
+      setTrackProgress(targetTime);
+    }
   };
 
   const waveformHeights = [
@@ -176,7 +181,7 @@ export const VocalMixingCard: React.FC<VocalMixingCardProps> = ({
         }}
       >
         <h2 style={{ fontSize: "1.7rem", fontWeight: "900", color: "var(--text-dark)", lineHeight: 1.1 }}>
-          Chirag N Sundar – Vocal Mixing & Mastering Engineer
+          HazardChirag – Vocal Mixing & Mastering Engineer
         </h2>
 
         <div style={{ display: "flex", flexWrap: "wrap", gap: "8px" }}>
@@ -311,35 +316,47 @@ export const VocalMixingCard: React.FC<VocalMixingCardProps> = ({
           </button>
 
           <div style={{ flexGrow: 1, display: "flex", flexDirection: "column", gap: "6px" }}>
-            <svg width="100%" height="36" viewBox="0 0 380 40">
-              {visualizerHeights.map((h, i) => {
-                const barPercent = (i / visualizerHeights.length) * 100;
-                const elapsedPercent = (trackProgress / 180) * 100;
-                const isPassed = barPercent <= elapsedPercent;
+            <div
+              onClick={handleSeek}
+              style={{
+                cursor: "pointer",
+                width: "100%",
+                position: "relative",
+                padding: "4px 0"
+              }}
+              title="Click anywhere along the waveform to seek playback position"
+            >
+              <svg width="100%" height="36" viewBox="0 0 380 40">
+                {visualizerHeights.map((h, i) => {
+                  const totalDur = audioEngine.getDuration() || 180;
+                  const barPercent = (i / visualizerHeights.length) * 100;
+                  const elapsedPercent = totalDur > 0 ? (trackProgress / totalDur) * 100 : 0;
+                  const isPassed = barPercent <= elapsedPercent;
 
-                return (
-                  <rect
-                    key={i}
-                    x={i * 6}
-                    y={20 - h / 2}
-                    width="3.8"
-                    height={h}
-                    rx="1.5"
-                    fill={
-                      isPassed
-                        ? mixRatio === 1
-                          ? "var(--color-lavender-accent)"
-                          : "var(--color-amber-accent)"
-                        : "var(--grid-dot)"
-                    }
-                    style={{ transition: "fill 0.3s ease" }}
-                  />
-                );
-              })}
-            </svg>
+                  return (
+                    <rect
+                      key={i}
+                      x={i * 6}
+                      y={20 - h / 2}
+                      width="3.8"
+                      height={h}
+                      rx="1.5"
+                      fill={
+                        isPassed
+                          ? mixRatio === 1
+                            ? "var(--color-lavender-accent)"
+                            : "var(--color-amber-accent)"
+                          : "var(--grid-dot)"
+                      }
+                      style={{ transition: "fill 0.2s ease" }}
+                    />
+                  );
+                })}
+              </svg>
+            </div>
             <div style={{ display: "flex", justifyContent: "space-between", fontSize: "0.7rem", color: "var(--text-muted)", fontFamily: "var(--font-lcd)", fontWeight: "bold" }}>
-              <span>{formatProgressTime(trackProgress)}</span>
-              <span>ACTIVE STEM PLAYBACK</span>
+              <span>{formatProgressTime(trackProgress)} / {formatProgressTime(audioEngine.getDuration())}</span>
+              <span>CLICK WAVEFORM TO SEEK ● LOCKSTEP SYNC</span>
             </div>
           </div>
         </div>
