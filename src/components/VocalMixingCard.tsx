@@ -25,7 +25,6 @@ export const VocalMixingCard: React.FC<VocalMixingCardProps> = ({
 }) => {
   const [showImageModal, setShowImageModal] = useState(false);
   const [trackProgress, setTrackProgress] = useState(0);
-  const progressTimerRef = useRef<number | null>(null);
 
   // Realtime Playhead & Duration tracking
   useEffect(() => {
