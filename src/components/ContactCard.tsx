@@ -144,7 +144,7 @@ export const ContactCard: React.FC<ContactCardProps> = ({
               letterSpacing: "1.5px"
             }}
           >
-            CONTACT & BOOKING CONSOLE
+            {mode === "engineer" ? "DEVELOPER CONTACT CONSOLE" : "CONTACT & BOOKING CONSOLE"}
           </span>
         </div>
         <span
@@ -158,7 +158,7 @@ export const ContactCard: React.FC<ContactCardProps> = ({
             color: "var(--text-dark)"
           }}
         >
-          ● OPEN FOR WORK & COLLABS
+          {mode === "engineer" ? "● OPEN FOR WORK" : "● OPEN FOR WORK & COLLABS"}
         </span>
       </div>
 
@@ -176,7 +176,7 @@ export const ContactCard: React.FC<ContactCardProps> = ({
         }}
       >
         <h2 style={{ fontSize: "1.8rem", fontWeight: "900", color: "var(--text-dark)", lineHeight: 1.1 }}>
-          Let's Turn Your Raw Tracks Into Studio Records
+          {mode === "engineer" ? "Let's Build Something Great Together" : "Let's Turn Your Raw Tracks Into Studio Records"}
         </h2>
         <p style={{ fontSize: "0.92rem", color: "var(--text-muted)", lineHeight: 1.5 }}>
           {mode === "producer"
