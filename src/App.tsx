@@ -1500,7 +1500,6 @@ export const App: React.FC = () => {
                     isPlaying={isPlaying}
                     mixRatio={mixRatio}
                     volume={volume}
-                    onTrackSelect={handleTrackSelect}
                     onPlayToggle={handlePlayToggle}
                     onMixRatioChange={handleMixRatioChange}
                     onVolumeChange={handleVolumeChange}
