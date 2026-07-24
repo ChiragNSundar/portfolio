@@ -1,11 +1,98 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
+import type { Track } from "../data/tracks";
 
 interface VocalMixingCardProps {
+  currentTrack: Track | null;
+  isPlaying: boolean;
+  mixRatio: number;
+  volume: number;
+  onTrackSelect: (track: Track) => void;
+  onPlayToggle: () => void;
+  onMixRatioChange: (ratio: number) => void;
+  onVolumeChange: (vol: number) => void;
   onInteract?: () => void;
 }
 
-export const VocalMixingCard: React.FC<VocalMixingCardProps> = ({ onInteract }) => {
+export const VocalMixingCard: React.FC<VocalMixingCardProps> = ({
+  currentTrack,
+  isPlaying,
+  mixRatio,
+  volume,
+  onTrackSelect,
+  onPlayToggle,
+  onMixRatioChange,
+  onVolumeChange,
+  onInteract
+}) => {
   const [showImageModal, setShowImageModal] = useState(false);
+  const [trackProgress, setTrackProgress] = useState(0);
+  const progressTimerRef = useRef<number | null>(null);
+
+  // Playhead progress tracking
+  useEffect(() => {
+    if (isPlaying) {
+      progressTimerRef.current = window.setInterval(() => {
+        setTrackProgress((prev) => {
+          if (prev >= 180) return 0;
+          return prev + 1;
+        });
+      }, 1000);
+    } else {
+      if (progressTimerRef.current) {
+        clearInterval(progressTimerRef.current);
+        progressTimerRef.current = null;
+      }
+    }
+
+    return () => {
+      if (progressTimerRef.current) clearInterval(progressTimerRef.current);
+    };
+  }, [isPlaying]);
+
+  useEffect(() => {
+    setTrackProgress(0);
+  }, [currentTrack]);
+
+  const formatProgressTime = (secs: number) => {
+    const m = Math.floor(secs / 60);
+    const s = secs % 60;
+    return `${m}:${s < 10 ? "0" : ""}${s}`;
+  };
+
+  const waveformHeights = [
+    25, 45, 30, 20, 15, 10, 12, 28, 48, 50, 42, 35, 20, 18, 12, 10, 
+    15, 24, 38, 48, 44, 36, 28, 22, 16, 12, 10, 14, 25, 35, 48, 52, 
+    55, 48, 42, 30, 24, 18, 14, 10, 12, 22, 36, 45, 52, 54, 48, 38, 
+    32, 26, 20, 16, 12, 10, 15, 28, 42, 48, 45, 38, 30, 22, 15
+  ];
+
+  const [visualizerHeights, setVisualizerHeights] = useState<number[]>(waveformHeights);
+
+  useEffect(() => {
+    if (!isPlaying) {
+      setVisualizerHeights(waveformHeights);
+      return;
+    }
+
+    let animationFrameId: number;
+    let time = 0;
+
+    const animate = () => {
+      time += 0.25;
+      setVisualizerHeights(() => {
+        return waveformHeights.map((h, i) => {
+          const bounce = Math.sin(time + i * 0.45) * (h * 0.45);
+          return Math.max(4, h + bounce);
+        });
+      });
+      animationFrameId = requestAnimationFrame(animate);
+    };
+
+    animationFrameId = requestAnimationFrame(animate);
+    return () => {
+      cancelAnimationFrame(animationFrameId);
+    };
+  }, [isPlaying]);
 
   const services = [
     { title: "Professional Vocal Mixing", subtitle: "Lead, Doubles, Ad-libs", icon: "🎙️" },
@@ -90,11 +177,9 @@ export const VocalMixingCard: React.FC<VocalMixingCardProps> = ({ onInteract }) 
           boxShadow: "4px 4px 0px var(--card-shadow)"
         }}
       >
-        <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-          <h2 style={{ fontSize: "1.7rem", fontWeight: "900", color: "var(--text-dark)", lineHeight: 1.1 }}>
-            Chirag N Sundar – Vocal Mixing & Mastering Engineer
-          </h2>
-        </div>
+        <h2 style={{ fontSize: "1.7rem", fontWeight: "900", color: "var(--text-dark)", lineHeight: 1.1 }}>
+          Chirag N Sundar – Vocal Mixing & Mastering Engineer
+        </h2>
 
         <div style={{ display: "flex", flexWrap: "wrap", gap: "8px" }}>
           {["R&B", "Hip-Hop", "Rap", "Trap"].map((genre) => (
@@ -120,7 +205,171 @@ export const VocalMixingCard: React.FC<VocalMixingCardProps> = ({ onInteract }) 
         </p>
       </div>
 
-      {/* FL Studio Vocal Processing Graphic Banner (Image 1 attached by user) */}
+      {/* FEATURED REAL AUDIO COMPARE PLAYER: ENTROPY */}
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          background: "var(--card-bg-muted)",
+          border: "2.5px solid var(--border-color)",
+          borderRadius: "20px",
+          padding: "24px",
+          gap: "20px",
+          boxShadow: "6px 6px 0px rgba(147, 51, 234, 0.2)"
+        }}
+      >
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: "12px" }}>
+          <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+            <span className="bouncy-emoji" style={{ fontSize: "1.4rem" }}>🎧</span>
+            <div>
+              <span style={{ fontFamily: "var(--font-lcd)", fontSize: "0.7rem", color: "var(--color-lavender-accent)", fontWeight: "bold", textTransform: "uppercase", letterSpacing: "1px" }}>
+                LIVE VOCAL STEM COMPARISON
+              </span>
+              <h3 style={{ fontSize: "1.3rem", fontWeight: "900", color: "var(--text-dark)" }}>
+                Entropy &mdash; <span style={{ fontSize: "1rem", color: "var(--text-muted)", fontWeight: "600" }}>RMAN ft. CIPHER</span>
+              </h3>
+            </div>
+          </div>
+
+          {/* Equal Power Crossfader Pill Switch */}
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              background: "var(--card-bg)",
+              border: "2px solid var(--border-color)",
+              borderRadius: "24px",
+              padding: "3px",
+              boxShadow: "3px 3px 0px var(--card-shadow)"
+            }}
+          >
+            <button
+              onClick={() => {
+                onMixRatioChange(0);
+                if (onInteract) onInteract();
+              }}
+              style={{
+                background: mixRatio === 0 ? "var(--color-amber-accent)" : "transparent",
+                border: "none",
+                color: mixRatio === 0 ? "#ffffff" : "var(--text-dark)",
+                fontFamily: "var(--font-body)",
+                fontSize: "0.78rem",
+                fontWeight: "800",
+                padding: "8px 16px",
+                borderRadius: "20px",
+                cursor: "pointer",
+                transition: "all 0.2s"
+              }}
+            >
+              🎙️ Before Mix (RxC Draft 2)
+            </button>
+
+            <button
+              onClick={() => {
+                onMixRatioChange(1);
+                if (onInteract) onInteract();
+              }}
+              style={{
+                background: mixRatio === 1 ? "var(--color-lavender-accent)" : "transparent",
+                border: "none",
+                color: mixRatio === 1 ? "#ffffff" : "var(--text-dark)",
+                fontFamily: "var(--font-body)",
+                fontSize: "0.78rem",
+                fontWeight: "800",
+                padding: "8px 16px",
+                borderRadius: "20px",
+                cursor: "pointer",
+                transition: "all 0.2s"
+              }}
+            >
+              ✨ After Mix Master (Final)
+            </button>
+          </div>
+        </div>
+
+        {/* Playback Controls & Waveform Bar */}
+        <div style={{ display: "flex", alignItems: "center", gap: "16px" }}>
+          <button
+            onClick={onPlayToggle}
+            style={{
+              width: "54px",
+              height: "54px",
+              borderRadius: "50%",
+              background: mixRatio === 1 ? "var(--color-lavender-accent)" : "var(--color-amber-accent)",
+              border: "2px solid var(--border-color)",
+              cursor: "pointer",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              boxShadow: "4px 4px 0px var(--card-shadow)",
+              color: "#ffffff",
+              fontSize: "1.2rem",
+              transition: "transform 0.1s ease"
+            }}
+            onMouseDown={(e) => (e.currentTarget.style.transform = "translate(2px, 2px)")}
+            onMouseUp={(e) => (e.currentTarget.style.transform = "translate(0)")}
+          >
+            {isPlaying ? "⏸" : "▶"}
+          </button>
+
+          <div style={{ flexGrow: 1, display: "flex", flexDirection: "column", gap: "6px" }}>
+            <svg width="100%" height="36" viewBox="0 0 380 40">
+              {visualizerHeights.map((h, i) => {
+                const barPercent = (i / visualizerHeights.length) * 100;
+                const elapsedPercent = (trackProgress / 180) * 100;
+                const isPassed = barPercent <= elapsedPercent;
+
+                return (
+                  <rect
+                    key={i}
+                    x={i * 6}
+                    y={20 - h / 2}
+                    width="3.8"
+                    height={h}
+                    rx="1.5"
+                    fill={
+                      isPassed
+                        ? mixRatio === 1
+                          ? "var(--color-lavender-accent)"
+                          : "var(--color-amber-accent)"
+                        : "var(--grid-dot)"
+                    }
+                    style={{ transition: "fill 0.3s ease" }}
+                  />
+                );
+              })}
+            </svg>
+            <div style={{ display: "flex", justifyContent: "space-between", fontSize: "0.7rem", color: "var(--text-muted)", fontFamily: "var(--font-lcd)", fontWeight: "bold" }}>
+              <span>{formatProgressTime(trackProgress)}</span>
+              <span>ACTIVE STEM PLAYBACK</span>
+            </div>
+          </div>
+        </div>
+
+        {/* Volume Controls */}
+        <div style={{ display: "flex", alignItems: "center", gap: "12px", borderTop: "1.5px dashed var(--border-color)", paddingTop: "14px" }}>
+          <span style={{ fontSize: "0.8rem", fontWeight: "800", color: "var(--text-dark)" }}>🔊 Output Volume:</span>
+          <input
+            type="range"
+            min="0"
+            max="1"
+            step="0.05"
+            value={volume}
+            onChange={(e) => onVolumeChange(parseFloat(e.target.value))}
+            style={{
+              flexGrow: 1,
+              accentColor: mixRatio === 1 ? "var(--color-lavender-accent)" : "var(--color-amber-accent)",
+              cursor: "pointer",
+              height: "6px"
+            }}
+          />
+          <span style={{ fontFamily: "var(--font-lcd)", fontSize: "0.75rem", fontWeight: "bold", minWidth: "40px", textAlign: "right" }}>
+            {Math.round(volume * 100)}%
+          </span>
+        </div>
+      </div>
+
+      {/* FL Studio Vocal Processing Graphic Banner */}
       <div
         style={{
           display: "flex",
@@ -173,24 +422,6 @@ export const VocalMixingCard: React.FC<VocalMixingCardProps> = ({ onInteract }) 
             onMouseOver={(e) => (e.currentTarget.style.transform = "scale(1.02)")}
             onMouseOut={(e) => (e.currentTarget.style.transform = "scale(1)")}
           />
-          <div
-            style={{
-              position: "absolute",
-              bottom: "12px",
-              right: "12px",
-              background: "rgba(0, 0, 0, 0.75)",
-              color: "#22c55e",
-              backdropFilter: "blur(4px)",
-              padding: "4px 10px",
-              borderRadius: "6px",
-              fontSize: "0.7rem",
-              fontFamily: "var(--font-lcd)",
-              fontWeight: "bold",
-              border: "1px solid rgba(34, 197, 94, 0.4)"
-            }}
-          >
-            ● FL STUDIO PRO CHAIN
-          </div>
         </div>
       </div>
 
@@ -218,8 +449,7 @@ export const VocalMixingCard: React.FC<VocalMixingCardProps> = ({ onInteract }) 
                 display: "flex",
                 gap: "12px",
                 alignItems: "flex-start",
-                boxShadow: "3px 3px 0px var(--card-shadow)",
-                transition: "transform 0.2s ease"
+                boxShadow: "3px 3px 0px var(--card-shadow)"
               }}
               className="tech-badge"
             >
@@ -279,23 +509,6 @@ export const VocalMixingCard: React.FC<VocalMixingCardProps> = ({ onInteract }) 
             </div>
           ))}
         </div>
-
-        <div
-          style={{
-            background: "var(--color-lavender)",
-            border: "1.5px dashed var(--color-lavender-accent)",
-            borderRadius: "12px",
-            padding: "14px 18px",
-            fontSize: "0.85rem",
-            color: "var(--color-lavender-accent)",
-            fontWeight: "600",
-            fontStyle: "italic",
-            lineHeight: 1.5,
-            textAlign: "center"
-          }}
-        >
-          "Every mix is crafted to sit perfectly in the beat while keeping the vocals powerful, clear, and emotionally impactful."
-        </div>
       </div>
 
       {/* Why Choose My Mixes & CTA */}
@@ -307,7 +520,6 @@ export const VocalMixingCard: React.FC<VocalMixingCardProps> = ({ onInteract }) 
           alignItems: "stretch"
         }}
       >
-        {/* Why Choose */}
         <div
           style={{
             background: "var(--card-bg-muted)",
@@ -333,7 +545,6 @@ export const VocalMixingCard: React.FC<VocalMixingCardProps> = ({ onInteract }) 
           </div>
         </div>
 
-        {/* CTA Contact Box */}
         <div
           style={{
             background: "var(--text-dark)",
