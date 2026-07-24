@@ -41,8 +41,8 @@ export const ContactCard: React.FC<ContactCardProps> = ({
   const contactLinks = mode === "engineer" ? [
     {
       title: "Direct Email",
-      value: "chirag.n.sundar@gmail.com",
-      url: "mailto:chirag.n.sundar@gmail.com?subject=Software%20Engineering%20Inquiry",
+      value: "chiragns12@gmail.com",
+      url: "mailto:chiragns12@gmail.com?subject=Software%20Engineering%20Inquiry",
       icon: "✉️",
       color: "var(--color-amber-accent)",
       badge: "EMAIL DIRECT"
@@ -66,16 +66,16 @@ export const ContactCard: React.FC<ContactCardProps> = ({
   ] : [
     {
       title: "Direct Email",
-      value: "chirag.n.sundar@gmail.com",
-      url: "mailto:chirag.n.sundar@gmail.com?subject=Vocal%20Mixing%20%2F%20Collaboration%20Inquiry",
+      value: "chiragns12@gmail.com",
+      url: "mailto:chiragns12@gmail.com?subject=Vocal%20Mixing%20%2F%20Collaboration%20Inquiry",
       icon: "✉️",
       color: "var(--color-amber-accent)",
       badge: "EMAIL DIRECT"
     },
     {
       title: "Instagram",
-      value: "@hazardchirag",
-      url: "https://instagram.com/hazardchirag",
+      value: "@chirag.localhost",
+      url: "https://instagram.com/chirag.localhost",
       icon: "📸",
       color: "var(--color-rose-accent)",
       badge: "SOCIAL"

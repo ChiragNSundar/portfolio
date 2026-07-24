@@ -103,61 +103,49 @@ export const DeveloperResumeCard: React.FC<DeveloperResumeCardProps> = ({ onInte
     commits: number;
     repos: number;
     followers: number;
-    bio: string;
     loading: boolean;
   }>({
-    commits: 610,
-    repos: 19,
+    commits: 657,
+    repos: 20,
     followers: 5,
-    bio: "BE-CSE 🚀 Data Science & Tech Enthusiast | 💻 Building with Python | 🤖 AI | SQL | MongoDB 🔧 Love creating impactful projects",
     loading: true
   });
 
   useEffect(() => {
     const fetchStats = async () => {
-      const cached = localStorage.getItem("github_stats_cache");
-      const cachedTime = localStorage.getItem("github_stats_time");
-      const cacheExpiry = 6 * 60 * 60 * 1000; // 6 hours
-
-      if (cached && cachedTime && Date.now() - Number(cachedTime) < cacheExpiry) {
-        try {
-          const parsed = JSON.parse(cached);
-          setGithubStats({ ...parsed, loading: false });
-          return;
-        } catch (e) {
-          // ignore parsing error, fetch fresh
-        }
-      }
-
       try {
-        const [userRes, searchRes] = await Promise.all([
-          fetch("https://api.github.com/users/ChiragNSundar"),
-          fetch("https://api.github.com/search/commits?q=author:ChiragNSundar", {
+        const userRes = await fetch("https://api.github.com/users/ChiragNSundar");
+        let liveRepos = 20;
+        let liveFollowers = 5;
+        let liveCommits = 657;
+
+        if (userRes.ok) {
+          const userData = await userRes.json();
+          liveRepos = userData.public_repos ?? 20;
+          liveFollowers = userData.followers ?? 5;
+        }
+
+        try {
+          const searchRes = await fetch("https://api.github.com/search/commits?q=author:ChiragNSundar", {
             headers: { Accept: "application/vnd.github.cloak-preview+json" }
-          })
-        ]);
+          });
+          if (searchRes.ok) {
+            const searchData = await searchRes.json();
+            if (typeof searchData.total_count === "number" && searchData.total_count > 0) {
+              liveCommits = searchData.total_count;
+            }
+          }
+        } catch (_) {
+          // ignore search API rate limit errors
+        }
 
-        if (!userRes.ok || !searchRes.ok) throw new Error("GitHub API issue");
-
-        const userData = await userRes.json();
-        const searchData = await searchRes.json();
-
-        const cleanBio = userData.bio 
-          ? userData.bio.replace(/\?/g, "🚀").replace(/\r?\n|\r/g, " ") 
-          : githubStats.bio;
-
-        const newStats = {
-          commits: searchData.total_count || 573,
-          repos: userData.public_repos || 19,
-          followers: userData.followers || 5,
-          bio: cleanBio
-        };
-
-        setGithubStats({ ...newStats, loading: false });
-        localStorage.setItem("github_stats_cache", JSON.stringify(newStats));
-        localStorage.setItem("github_stats_time", String(Date.now()));
+        setGithubStats({
+          commits: liveCommits,
+          repos: liveRepos,
+          followers: liveFollowers,
+          loading: false
+        });
       } catch (err) {
-        console.warn("Using fallback GitHub stats: ", err);
         setGithubStats(prev => ({ ...prev, loading: false }));
       }
     };
@@ -950,10 +938,7 @@ export const DeveloperResumeCard: React.FC<DeveloperResumeCardProps> = ({ onInte
                 </span>
               </div>
               
-              {/* GitHub bio summary */}
-              <p style={{ fontSize: "0.65rem", color: "var(--text-muted)", fontStyle: "italic", borderLeft: "2.5px solid var(--color-amber-accent)", paddingLeft: "8px", margin: 0, lineHeight: 1.4 }}>
-                "{githubStats.bio}"
-              </p>
+
 
               {/* Commit counters row */}
               <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: "8px" }}>

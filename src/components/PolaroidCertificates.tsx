@@ -3,18 +3,7 @@ import { createPortal } from "react-dom";
 import { resumeData } from "../data/resume";
 
 export const PolaroidCertificates: React.FC = () => {
-  const [emailCopied, setEmailCopied] = useState(false);
   const [selectedCert, setSelectedCert] = useState<{ name: string; provider: string; bg: string } | null>(null);
-
-  const handleEmailClick = (e: React.MouseEvent) => {
-    e.preventDefault();
-    navigator.clipboard.writeText("chiragns12@gmail.com");
-    setEmailCopied(true);
-    window.location.href = "mailto:chiragns12@gmail.com";
-    setTimeout(() => {
-      setEmailCopied(false);
-    }, 2000);
-  };
 
   // Close lightbox modal on Escape press
   React.useEffect(() => {
@@ -176,7 +165,9 @@ export const PolaroidCertificates: React.FC = () => {
         }}
       >
         HOVER OVER A CREDENTIAL FILE TO FAN AND ROTATE THE POLAROIDS FOR ANALYSIS
-           {/* Lightbox Modal Overlay */}rlay */}
+      </div>
+
+      {/* Lightbox Modal Overlay */}
       {selectedCert && createPortal(
         <div 
           onClick={() => setSelectedCert(null)}
