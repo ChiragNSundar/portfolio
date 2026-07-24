@@ -38,14 +38,27 @@ export const ContactCard: React.FC<ContactCardProps> = ({
   onSubmit,
   onInteract
 }) => {
+  const [emailCopied, setEmailCopied] = useState(false);
+
+  const handleEmailClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    try {
+      navigator.clipboard.writeText("chiragns12@gmail.com");
+    } catch (_) {}
+    setEmailCopied(true);
+    setTimeout(() => setEmailCopied(false), 2500);
+    window.open("https://mail.google.com/mail/?view=cm&fs=1&to=chiragns12@gmail.com", "_blank");
+  };
+
   const contactLinks = mode === "engineer" ? [
     {
       title: "Direct Email",
       value: "chiragns12@gmail.com",
-      url: "mailto:chiragns12@gmail.com?subject=Software%20Engineering%20Inquiry",
+      url: "https://mail.google.com/mail/?view=cm&fs=1&to=chiragns12@gmail.com&su=Software%20Engineering%20Inquiry",
       icon: "✉️",
       color: "var(--color-amber-accent)",
-      badge: "EMAIL DIRECT"
+      badge: "EMAIL DIRECT",
+      isMail: true
     },
     {
       title: "GitHub Profile",
@@ -53,7 +66,8 @@ export const ContactCard: React.FC<ContactCardProps> = ({
       url: "https://github.com/ChiragNSundar",
       icon: "🐙",
       color: "#24292e",
-      badge: "CODE REPOS"
+      badge: "CODE REPOS",
+      isMail: false
     },
     {
       title: "LinkedIn Profile",
@@ -61,16 +75,18 @@ export const ContactCard: React.FC<ContactCardProps> = ({
       url: "https://www.linkedin.com/in/chiragnsundar/",
       icon: "💼",
       color: "#0a66c2",
-      badge: "PROFESSIONAL"
+      badge: "PROFESSIONAL",
+      isMail: false
     }
   ] : [
     {
       title: "Direct Email",
       value: "chiragns12@gmail.com",
-      url: "mailto:chiragns12@gmail.com?subject=Vocal%20Mixing%20%2F%20Collaboration%20Inquiry",
+      url: "https://mail.google.com/mail/?view=cm&fs=1&to=chiragns12@gmail.com&su=Vocal%20Mixing%20Inquiry",
       icon: "✉️",
       color: "var(--color-amber-accent)",
-      badge: "EMAIL DIRECT"
+      badge: "EMAIL DIRECT",
+      isMail: true
     },
     {
       title: "Instagram",
@@ -78,7 +94,8 @@ export const ContactCard: React.FC<ContactCardProps> = ({
       url: "https://instagram.com/chirag.localhost",
       icon: "📸",
       color: "var(--color-rose-accent)",
-      badge: "SOCIAL"
+      badge: "SOCIAL",
+      isMail: false
     },
     {
       title: "YouTube Channel",
@@ -86,7 +103,8 @@ export const ContactCard: React.FC<ContactCardProps> = ({
       url: "https://youtube.com/@HazardChirag",
       icon: "📺",
       color: "#ff0000",
-      badge: "VIDEOS & MIXES"
+      badge: "VIDEOS & MIXES",
+      isMail: false
     },
     {
       title: "Spotify Artist",
@@ -94,7 +112,8 @@ export const ContactCard: React.FC<ContactCardProps> = ({
       url: "https://open.spotify.com/track/1RMaBcZWrsNII3XzHLzBPK?si=e6c2e32d07b149a7",
       icon: "🎵",
       color: "#1DB954",
-      badge: "STREAMING"
+      badge: "STREAMING",
+      isMail: false
     }
   ];
 
@@ -182,7 +201,8 @@ export const ContactCard: React.FC<ContactCardProps> = ({
             <a
               key={idx}
               href={item.url}
-              target="_blank"
+              onClick={item.isMail ? handleEmailClick : undefined}
+              target={item.isMail ? "_blank" : "_blank"}
               rel="noopener noreferrer"
               style={{
                 textDecoration: "none",
@@ -200,8 +220,18 @@ export const ContactCard: React.FC<ContactCardProps> = ({
             >
               <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
                 <span style={{ fontSize: "1.5rem" }}>{item.icon}</span>
-                <span style={{ fontSize: "0.62rem", fontFamily: "var(--font-lcd)", fontWeight: "bold", background: item.color, color: "#ffffff", padding: "2px 8px", borderRadius: "6px" }}>
-                  {item.badge}
+                <span
+                  style={{
+                    fontSize: "0.62rem",
+                    fontFamily: "var(--font-lcd)",
+                    fontWeight: "bold",
+                    background: item.isMail && emailCopied ? "#10b981" : item.color,
+                    color: "#ffffff",
+                    padding: "2px 8px",
+                    borderRadius: "6px"
+                  }}
+                >
+                  {item.isMail && emailCopied ? "COPIED & OPENING!" : item.badge}
                 </span>
               </div>
               <div style={{ display: "flex", flexDirection: "column" }}>
@@ -210,6 +240,8 @@ export const ContactCard: React.FC<ContactCardProps> = ({
               </div>
             </a>
           ))}
+        </div>
+      </div>
         </div>
       </div>
 
