@@ -95,7 +95,7 @@ export const SpotifyReleaseCard: React.FC<SpotifyReleaseCardProps> = ({ onIntera
           gap: "18px"
         }}
       >
-        <div style={{ display: "flex", alignItems: "center", gap: "8px", borderBottom: "1px solid #282828", pb: "10px", paddingBottom: "10px" }}>
+        <div style={{ display: "flex", alignItems: "center", gap: "8px", borderBottom: "1px solid #282828", paddingBottom: "10px" }}>
           <span style={{ fontSize: "1.1rem" }}>📋</span>
           <span style={{ fontWeight: "800", fontSize: "1rem", color: "#ffffff" }}>Official Track Credits</span>
         </div>
