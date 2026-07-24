@@ -940,11 +940,6 @@ export const App: React.FC = () => {
     return () => window.removeEventListener("mousemove", handleMouseMove);
   }, [activeSection, mode]);
 
-  const handleTrackSelect = (track: Track) => {
-    setUnlocked(true);
-    audioEngine.play(track);
-  };
-
   const handlePlayToggle = () => {
     setUnlocked(true);
     if (isPlaying) {
