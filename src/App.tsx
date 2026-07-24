@@ -5,6 +5,7 @@ import { DeveloperResumeCard } from "./components/DeveloperResumeCard";
 import { PolaroidCertificates } from "./components/PolaroidCertificates";
 import { VocalMixingCard } from "./components/VocalMixingCard";
 import { SpotifyReleaseCard } from "./components/SpotifyReleaseCard";
+import { ContactCard } from "./components/ContactCard";
 import { supabase, isSupabaseConfigured } from "./lib/supabaseClient";
 import type { Track } from "./data/tracks";
 import { mixAndOriginalTracks } from "./data/tracks";
@@ -846,12 +847,14 @@ export const App: React.FC = () => {
     0: { rx: 0, ry: 0 },
     1: { rx: 0, ry: 0 },
     2: { rx: 0, ry: 0 },
-    3: { rx: 0, ry: 0 }
+    3: { rx: 0, ry: 0 },
+    4: { rx: 0, ry: 0 }
   });
   const [unlocked, setUnlocked] = useState(false);
 
   // Section Refs for scroll-trigger navigation
   const sectionRefs = [
+    useRef<HTMLDivElement>(null),
     useRef<HTMLDivElement>(null),
     useRef<HTMLDivElement>(null),
     useRef<HTMLDivElement>(null),
@@ -910,7 +913,7 @@ export const App: React.FC = () => {
       const bottomThreshold = 60; // pixels from the bottom
       const isAtBottom = (window.innerHeight + window.scrollY) >= (document.documentElement.scrollHeight - bottomThreshold);
       if (isAtBottom) {
-        setActiveSection(mode === 'producer' ? 3 : 2); // index 3 or 2 is always the last section
+        setActiveSection(mode === 'producer' ? 4 : 3); // index 4 or 3 is always the last section (Contact)
       }
     };
 
@@ -973,13 +976,8 @@ export const App: React.FC = () => {
   };
 
   const scrollToContactSection = () => {
-    playBipSound();
-    const el = document.getElementById("contact-section");
-    if (el) {
-      el.scrollIntoView({ behavior: "smooth", block: "center" });
-      const input = el.querySelector("input");
-      if (input) (input as HTMLInputElement).focus();
-    }
+    const targetIdx = mode === 'producer' ? 4 : 3;
+    scrollToSection(targetIdx);
   };
 
   const playBipSound = () => {
@@ -1024,14 +1022,16 @@ export const App: React.FC = () => {
       return [
         { label: "01 INTRO", index: 0, color: "var(--color-amber-accent)" },
         { label: "02 PROFILES", index: 1, color: "var(--color-amber-accent)" },
-        { label: "03 CERTIFICATES", index: 2, color: "var(--color-rose-accent)" }
+        { label: "03 CERTIFICATES", index: 2, color: "var(--color-rose-accent)" },
+        { label: "04 CONTACT", index: 3, color: "var(--color-amber-accent)" }
       ];
     } else {
       return [
         { label: "01 INTRO", index: 0, color: "var(--color-lavender-accent)" },
         { label: "02 VOCAL MIXING", index: 1, color: "var(--color-lavender-accent)" },
         { label: "03 SPOTIFY RELEASE", index: 2, color: "#1DB954" },
-        { label: "04 COVERS", index: 3, color: "var(--color-mint-accent)" }
+        { label: "04 COVERS", index: 3, color: "var(--color-mint-accent)" },
+        { label: "05 CONTACT", index: 4, color: "var(--color-amber-accent)" }
       ];
     }
   };
@@ -1555,158 +1555,40 @@ export const App: React.FC = () => {
                 width: "100%",
                 maxWidth: mode === 'engineer' ? "850px" : "750px",
                 borderTop: "3px dashed var(--border-color)",
-                marginTop: "60px",
-                marginBottom: "40px"
+                marginTop: "40px",
+                marginBottom: "20px"
               }}
             />
 
-            {/* Supabase Guestbook & Contact Card Footer */}
-            <div 
-              id="contact-section"
+            {/* SEPARATE FINAL CONTACT & BOOKING CONSOLE SECTION */}
+            <section
+              ref={sectionRefs[mode === 'producer' ? 4 : 3]}
+              data-section-idx={mode === 'producer' ? 4 : 3}
+              className="scroll-fade-in"
               style={{
                 width: "100%",
                 maxWidth: mode === 'engineer' ? "850px" : "750px",
-                background: "var(--color-amber)",
-                border: "2.5px solid var(--border-color)",
-                borderRadius: "16px",
-                padding: "24px",
-                boxShadow: "6px 6px 0px var(--card-shadow)",
-                marginBottom: "40px"
+                display: "flex",
+                flexDirection: "column",
+                gap: "20px",
+                ...getSectionStyles(mode === 'producer' ? 4 : 3)
               }}
             >
-              <h3 style={{ fontSize: "1.2rem", fontWeight: "900", color: "var(--text-dark)", marginBottom: "6px", display: "flex", alignItems: "center", gap: "8px" }}>
-                ✍️ Guestbook Signature Log
-              </h3>
-
-              {/* Community Guidelines */}
-              <div style={{
-                fontSize: "0.65rem",
-                color: "var(--text-muted)",
-                marginBottom: "14px",
-                padding: "8px 12px",
-                background: "rgba(255,255,255,0.5)",
-                borderRadius: "8px",
-                border: "1px solid var(--border-color)",
-                lineHeight: 1.5
-              }}>
-                <strong style={{ color: "var(--text-dark)" }}>📋 Community Guidelines:</strong> Be respectful & constructive. No spam, NSFW content, promotions, or gibberish. Your email is required for accountability but will not be displayed publicly. Repeat submissions are rate-limited.
-              </div>
-
-              {/* Moderation error banner */}
-              {moderationError && (
-                <div style={{
-                  fontSize: "0.75rem",
-                  color: "#b91c1c",
-                  fontWeight: "bold",
-                  background: "#fef2f2",
-                  border: "1.5px solid #fca5a5",
-                  borderRadius: "8px",
-                  padding: "8px 12px",
-                  marginBottom: "12px",
-                  display: "flex",
-                  alignItems: "center",
-                  gap: "6px"
-                }}>
-                  ⚠️ {moderationError}
-                </div>
-              )}
-              
-              <form onSubmit={handleGuestbookSubmit} style={{ display: "flex", flexWrap: "wrap", gap: "10px" }}>
-                <input
-                  type="text"
-                  placeholder="Your Name *"
-                  value={guestName}
-                  onChange={(e) => { setGuestName(e.target.value); setModerationError(null); }}
-                  required
-                  maxLength={50}
-                  aria-label="Your Name"
-                  style={{
-                    flex: "1 1 160px",
-                    background: "var(--card-bg)",
-                    border: "1.5px solid var(--border-color)",
-                    borderRadius: "8px",
-                    padding: "8px 14px",
-                    fontSize: "0.85rem",
-                    outline: "none",
-                    color: "var(--text-dark)"
-                  }}
-                />
-                <input
-                  type="email"
-                  placeholder="Your Email *"
-                  value={guestEmail}
-                  onChange={(e) => { setGuestEmail(e.target.value); setModerationError(null); }}
-                  required
-                  aria-label="Your Email"
-                  style={{
-                    flex: "1 1 200px",
-                    background: "var(--card-bg)",
-                    border: "1.5px solid var(--border-color)",
-                    borderRadius: "8px",
-                    padding: "8px 14px",
-                    fontSize: "0.85rem",
-                    outline: "none",
-                    color: "var(--text-dark)"
-                  }}
-                />
-                <input
-                  type="text"
-                  placeholder="Leave a short comment... *"
-                  value={guestMessage}
-                  onChange={(e) => { setGuestMessage(e.target.value); setModerationError(null); }}
-                  required
-                  maxLength={200}
-                  aria-label="Your Comment"
-                  style={{
-                    flex: "2 1 300px",
-                    background: "var(--card-bg)",
-                    border: "1.5px solid var(--border-color)",
-                    borderRadius: "8px",
-                    padding: "8px 14px",
-                    fontSize: "0.85rem",
-                    outline: "none",
-                    color: "var(--text-dark)"
-                  }}
-                />
-                <button
-                  type="submit"
-                  disabled={isGuestbookSubmitting}
-                  style={{
-                    flex: "0 0 auto",
-                    background: "var(--color-amber-accent)",
-                    border: "1.5px solid var(--border-color)",
-                    borderRadius: "8px",
-                    padding: "8px 24px",
-                    fontSize: "0.85rem",
-                    fontWeight: "bold",
-                    color: "var(--card-bg)",
-                    cursor: "pointer",
-                    boxShadow: "3px 3px 0px var(--card-shadow)"
-                  }}
-                >
-                  {isGuestbookSubmitting ? "SIGNING..." : "SIGN THE LOG"}
-                </button>
-              </form>
-
-              {/* Guestbook signatures list */}
-              <div style={{ marginTop: "16px", borderTop: "1.5px dashed var(--border-color)", paddingTop: "12px" }}>
-                <div style={{ display: "flex", flexDirection: "column", gap: "6px", maxHeight: "150px", overflowY: "auto" }}>
-                  {entries.length > 0 ? (
-                    entries.map((ent) => (
-                      <div key={ent.id} style={{ fontFamily: "var(--font-lcd)", fontSize: "0.7rem", color: "var(--text-dark)", lineHeight: 1.4, padding: "4px 0", borderBottom: "1px dotted rgba(0,0,0,0.08)" }}>
-                        &raquo; <span style={{ fontWeight: "bold" }}>{ent.name}</span>: {ent.message}
-                      </div>
-                    ))
-                  ) : (
-                    (mode === 'producer' ? PRODUCER_MOCK_ENTRIES : ENGINEER_MOCK_ENTRIES).map((ent) => (
-                      <div key={ent.id} style={{ fontFamily: "var(--font-lcd)", fontSize: "0.7rem", color: "var(--text-dark)", lineHeight: 1.4, padding: "4px 0", borderBottom: "1px dotted rgba(0,0,0,0.08)" }}>
-                        &raquo; <span style={{ fontWeight: "bold" }}>{ent.name}</span>: {ent.message}
-                      </div>
-                    ))
-                  )}
-                </div>
-              </div>
-            </div>
+              <ContactCard
+                mode={mode}
+                entries={entries.length > 0 ? entries : (mode === 'producer' ? PRODUCER_MOCK_ENTRIES : ENGINEER_MOCK_ENTRIES)}
+                guestName={guestName}
+                guestEmail={guestEmail}
+                guestMessage={guestMessage}
+                isGuestbookSubmitting={isGuestbookSubmitting}
+                moderationError={moderationError}
+                onNameChange={(val) => { setGuestName(val); setModerationError(null); }}
+                onEmailChange={(val) => { setGuestEmail(val); setModerationError(null); }}
+                onMessageChange={(val) => { setGuestMessage(val); setModerationError(null); }}
+                onSubmit={handleGuestbookSubmit}
+                onInteract={unlockAudioContext}
+              />
+            </section>
 
             {/* Scroll bottom spacer to provide scrolling headroom */}
             <div style={{ height: "160px" }} />

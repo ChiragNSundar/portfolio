@@ -19,8 +19,6 @@ export const YoutubeCoversCard: React.FC<YoutubeCoversCardProps> = ({ onInteract
   const [currentIdx, setCurrentIdx] = useState(0);
   const activeVideo = videoList[currentIdx];
 
-  const [emailCopied, setEmailCopied] = useState(false);
-
   const handleTabSwitch = (tab: "originals" | "covers") => {
     setActiveTab(tab);
     setCurrentIdx(0);
@@ -30,16 +28,6 @@ export const YoutubeCoversCard: React.FC<YoutubeCoversCardProps> = ({ onInteract
   const handleSelectVideo = (idx: number) => {
     setCurrentIdx(idx);
     if (onInteract) onInteract();
-  };
-
-  const handleEmailClick = (e: React.MouseEvent) => {
-    e.preventDefault();
-    navigator.clipboard.writeText("chiragns12@gmail.com");
-    setEmailCopied(true);
-    window.location.href = "mailto:chiragns12@gmail.com";
-    setTimeout(() => {
-      setEmailCopied(false);
-    }, 2000);
   };
 
   return (
