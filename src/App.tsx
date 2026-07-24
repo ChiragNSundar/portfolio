@@ -972,6 +972,16 @@ export const App: React.FC = () => {
     el?.scrollIntoView({ behavior: "smooth", block: "center" });
   };
 
+  const scrollToContactSection = () => {
+    playBipSound();
+    const el = document.getElementById("contact-section");
+    if (el) {
+      el.scrollIntoView({ behavior: "smooth", block: "center" });
+      const input = el.querySelector("input");
+      if (input) (input as HTMLInputElement).focus();
+    }
+  };
+
   const playBipSound = () => {
     try {
       const AudioContextClass = window.AudioContext || (window as any).webkitAudioContext;
@@ -1499,6 +1509,7 @@ export const App: React.FC = () => {
                     onMixRatioChange={handleMixRatioChange}
                     onVolumeChange={handleVolumeChange}
                     onInteract={unlockAudioContext}
+                    onContactClick={scrollToContactSection}
                   />
                 </section>
 
@@ -1549,8 +1560,9 @@ export const App: React.FC = () => {
               }}
             />
 
-            {/* Supabase Guestbook Card Footer */}
+            {/* Supabase Guestbook & Contact Card Footer */}
             <div 
+              id="contact-section"
               style={{
                 width: "100%",
                 maxWidth: mode === 'engineer' ? "850px" : "750px",

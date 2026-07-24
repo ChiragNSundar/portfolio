@@ -11,6 +11,7 @@ interface VocalMixingCardProps {
   onMixRatioChange: (ratio: number) => void;
   onVolumeChange: (vol: number) => void;
   onInteract?: () => void;
+  onContactClick?: () => void;
 }
 
 export const VocalMixingCard: React.FC<VocalMixingCardProps> = ({
@@ -21,7 +22,8 @@ export const VocalMixingCard: React.FC<VocalMixingCardProps> = ({
   onPlayToggle,
   onMixRatioChange,
   onVolumeChange,
-  onInteract
+  onInteract,
+  onContactClick
 }) => {
   const [trackProgress, setTrackProgress] = useState(0);
 
@@ -567,8 +569,20 @@ export const VocalMixingCard: React.FC<VocalMixingCardProps> = ({
             </p>
           </div>
 
-          <a
-            href="mailto:chirag.n.sundar@gmail.com?subject=Vocal%20Mixing%20Inquiry"
+          <button
+            onClick={(e) => {
+              e.preventDefault();
+              if (onContactClick) {
+                onContactClick();
+              } else {
+                const el = document.getElementById("contact-section");
+                if (el) {
+                  el.scrollIntoView({ behavior: "smooth", block: "center" });
+                  const input = el.querySelector("input");
+                  if (input) (input as HTMLInputElement).focus();
+                }
+              }
+            }}
             className="analog-btn active"
             style={{
               padding: "12px 20px",
@@ -576,11 +590,11 @@ export const VocalMixingCard: React.FC<VocalMixingCardProps> = ({
               background: "var(--color-lavender-accent)",
               color: "#ffffff",
               borderColor: "#ffffff",
-              textDecoration: "none"
+              cursor: "pointer"
             }}
           >
             ✉️ CONTACT ME FOR MIXING &rarr;
-          </a>
+          </button>
         </div>
       </div>
 
