@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 
 interface GuestbookEntry {
   id: string;
@@ -107,12 +107,12 @@ export const ContactCard: React.FC<ContactCardProps> = ({
       isMail: false
     },
     {
-      title: "Spotify Artist",
+      title: "Spotify Profile",
       value: "HazardChirag",
-      url: "https://open.spotify.com/track/1RMaBcZWrsNII3XzHLzBPK?si=e6c2e32d07b149a7",
+      url: "https://open.spotify.com/user/wapj86uclwiwd4n2g94v7er6u",
       icon: "🎵",
       color: "#1DB954",
-      badge: "STREAMING",
+      badge: "SPOTIFY",
       isMail: false
     }
   ];
@@ -240,8 +240,6 @@ export const ContactCard: React.FC<ContactCardProps> = ({
               </div>
             </a>
           ))}
-        </div>
-      </div>
         </div>
       </div>
 
