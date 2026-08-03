@@ -483,8 +483,7 @@ const PROJECT_DETAILS_DATA = {
       "/vm/image4.png",
       "/vm/image5.png",
       "/vm/image6.png",
-      "/vm/image7.png",
-      "/vm/image8.png"
+      "/vm/image7.png"
     ],
     imageCaptions: [
       { title: "1. Landing Page (/)", desc: "Gradient-backed hero section highlighting 100% local-first features and quickstart options." },
@@ -493,8 +492,7 @@ const PROJECT_DETAILS_DATA = {
       { title: "4. New Track Studio (/new)", desc: "Create new songs from mumble transcripts, live mic recordings, or uploaded audio files with vocal guidance tips." },
       { title: "5. Live Punch-In Studio (/live)", desc: "Real-time vocal capture featuring live oscilloscope waveform visualizer, metronome ring, and bar pocket analysis." },
       { title: "6. Reference & Style Intelligence (/references)", desc: "1-click web lyric scraper to extract cadence blueprints (Cadence Fingerprints) and train your AI ghostwriter." },
-      { title: "7. Ghostwriter Scorecard & Critic Council", desc: "Multi-pass cadence scorecard, radar chart breakdown (Pocket, Wordplay, Authenticity), Critic Council rewrite suggestions, and real-time syllable target tooltips." },
-      { title: "8. Cadence Pocket Grid & Rhyme Scheme Highlighting", desc: "Interactive lyric editor with real-time cadence density highlighting, syllable count matching, and rhyme scheme visualization." }
+      { title: "7. Ghostwriter Scorecard & Cadence Pocket Grid", desc: "Multi-pass cadence scorecard, radar chart breakdown (Pocket, Wordplay, Authenticity), Critic Council rewrite suggestions, and interactive rhyme scheme visualization." }
     ],
     pitch: "An open-source, local-first studio workspace for vocalists, songwriters, and producers. Vocal Muse turns mumble freestyles into Drake/Kendrick/Seedhe Maut/Brodha V-tier polished lyrics, maps audio cadences in real-time, and builds a personalized style memory—all running 100% offline on your local machine with zero cloud lock-in.",
     techStack: [
