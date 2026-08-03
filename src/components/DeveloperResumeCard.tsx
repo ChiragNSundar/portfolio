@@ -228,9 +228,9 @@ export const DeveloperResumeCard: React.FC<DeveloperResumeCardProps> = ({ onInte
               alignItems: "center",
               gap: "6px"
             }}
-            title="Download formatted Software Engineer Resume PDF (No phone number)"
+            title="Download formatted Software Engineer Resume PDF"
           >
-            📄 1-CLICK RESUME (PDF)
+            📄 DOWNLOAD RESUME
           </button>
         </div>
       </div>

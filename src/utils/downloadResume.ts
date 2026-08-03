@@ -1,14 +1,14 @@
-import { resumeData } from "../data/resume";
-
 export const downloadSoftwareEngineerResume = () => {
-  const htmlContent = `
-<!DOCTYPE html>
+  const htmlContent = `<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>${resumeData.name} - Software Engineer Resume</title>
+  <title>Chirag_N_Sundar_Software_Engineer_Resume</title>
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;800&family=Share+Tech+Mono&display=swap');
+    @page {
+      margin: 10mm 14mm;
+      size: letter;
+    }
     
     * {
       box-sizing: border-box;
@@ -17,252 +17,312 @@ export const downloadSoftwareEngineerResume = () => {
     }
     
     body {
-      font-family: 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif;
-      color: #18181b;
+      font-family: 'Times New Roman', Times, Georgia, serif;
+      color: #000000;
       background: #ffffff;
-      padding: 40px;
-      line-height: 1.5;
-      font-size: 13.5px;
+      padding: 10px 20px;
+      line-height: 1.35;
+      font-size: 10.5pt;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
     }
 
     .resume-container {
-      max-width: 820px;
+      width: 100%;
+      max-width: 800px;
       margin: 0 auto;
     }
 
-    header {
-      border-bottom: 2.5px solid #18181b;
-      padding-bottom: 16px;
-      margin-bottom: 20px;
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-end;
+    /* Header Styling matching LaTeX template */
+    .header {
+      text-align: center;
+      margin-bottom: 12px;
     }
 
-    .header-left h1 {
-      font-size: 26px;
-      font-weight: 800;
-      letter-spacing: -0.5px;
-      text-transform: uppercase;
-      color: #18181b;
+    .header h1 {
+      font-size: 24pt;
+      font-weight: normal;
+      font-family: 'Times New Roman', Times, serif;
+      letter-spacing: 0.5px;
+      margin-bottom: 4px;
+      color: #000000;
     }
 
-    .header-left .subtitle {
-      font-size: 14px;
-      font-weight: 600;
-      color: #d97706;
-      font-family: 'Share Tech Mono', monospace;
+    .contact-line {
+      font-size: 9.5pt;
+      color: #000000;
       margin-top: 2px;
     }
 
-    .header-right {
-      text-align: right;
-      font-size: 12px;
-      color: #52525b;
-      font-family: 'Share Tech Mono', monospace;
+    .contact-line a {
+      color: #000000;
+      text-decoration: underline;
     }
 
-    .header-right a {
-      color: #18181b;
-      text-decoration: none;
-      font-weight: bold;
-    }
-
+    /* Section Headers */
     .section {
-      margin-bottom: 20px;
+      margin-bottom: 12px;
     }
 
     .section-title {
-      font-family: 'Share Tech Mono', monospace;
-      font-size: 13px;
-      font-weight: 700;
-      color: #d97706;
+      font-size: 10pt;
+      font-weight: bold;
       text-transform: uppercase;
-      letter-spacing: 1px;
-      border-bottom: 1.5px solid #e4e4e7;
-      padding-bottom: 4px;
-      margin-bottom: 10px;
-      display: flex;
-      justify-content: space-between;
+      letter-spacing: 0.8px;
+      border-bottom: 1px solid #000000;
+      padding-bottom: 2px;
+      margin-bottom: 6px;
+      color: #000000;
     }
 
     .summary-text {
-      font-size: 13px;
-      color: #3f3f46;
-      line-height: 1.6;
+      font-size: 10pt;
+      text-align: justify;
+      color: #000000;
     }
 
-    .exp-item, .project-item {
-      margin-bottom: 14px;
-    }
-
-    .item-header {
+    /* Entry Row (Experience, Education, Projects) */
+    .entry-header {
       display: flex;
       justify-content: space-between;
       align-items: baseline;
-      font-weight: 700;
-      font-size: 14px;
+      font-size: 10.5pt;
+      font-weight: bold;
     }
 
-    .item-subheader {
+    .entry-subheader {
       display: flex;
       justify-content: space-between;
-      font-size: 12.5px;
-      color: #71717a;
-      font-family: 'Share Tech Mono', monospace;
-      margin-bottom: 4px;
+      align-items: baseline;
+      font-size: 10pt;
+      font-style: italic;
+      margin-bottom: 3px;
     }
 
     ul.bullets {
       padding-left: 18px;
-      color: #27272a;
+      margin-top: 2px;
+      margin-bottom: 6px;
     }
 
     ul.bullets li {
-      margin-bottom: 3px;
-      font-size: 12.5px;
+      font-size: 9.8pt;
+      margin-bottom: 2px;
+      text-align: justify;
+      color: #000000;
     }
 
-    .skills-grid {
-      display: grid;
-      grid-template-columns: 140px 1fr;
-      gap: 6px 12px;
-      font-size: 12.5px;
+    ul.bullets li strong {
+      font-weight: bold;
     }
 
-    .skill-category {
-      font-weight: 700;
-      font-family: 'Share Tech Mono', monospace;
-      color: #18181b;
+    .skills-block {
+      font-size: 9.8pt;
+      line-height: 1.4;
     }
 
-    .skill-list {
-      color: #3f3f46;
+    .skills-row {
+      margin-bottom: 2px;
+    }
+
+    .skills-row strong {
+      font-weight: bold;
+    }
+
+    .cert-list {
+      padding-left: 18px;
+      margin-top: 2px;
+    }
+
+    .cert-list li {
+      font-size: 9.8pt;
+      margin-bottom: 2px;
     }
 
     @media print {
       body {
         padding: 0;
-        background: #ffffff;
-      }
-      .no-print {
-        display: none !important;
-      }
-      .resume-container {
-        max-width: 100%;
       }
     }
   </style>
 </head>
 <body>
-  <div class="no-print" style="position: fixed; top: 16px; right: 20px; z-index: 1000; background: #faf9f5; padding: 10px 16px; border: 2px solid #18181b; border-radius: 12px; box-shadow: 4px 4px 0 #18181b; font-family: 'Share Tech Mono', monospace;">
-    <button onclick="window.print()" style="background: #f59f00; color: #fff; border: none; padding: 8px 16px; font-weight: bold; cursor: pointer; border-radius: 6px; font-family: inherit;">🖨️ PRINT / SAVE AS PDF</button>
-    <button onclick="window.close()" style="background: #18181b; color: #fff; border: none; padding: 8px 16px; font-weight: bold; cursor: pointer; border-radius: 6px; font-family: inherit; margin-left: 8px;">✖ CLOSE</button>
-  </div>
-
   <div class="resume-container">
-    <header>
-      <div class="header-left">
-        <h1>${resumeData.name}</h1>
-        <div class="subtitle">${resumeData.title.toUpperCase()}</div>
-      </div>
-      <div class="header-right">
-        <div>📧 ${resumeData.email}</div>
-        <div>🌐 <a href="https://${resumeData.linkedin}" target="_blank">${resumeData.linkedin}</a></div>
-        <div>💻 <a href="https://${resumeData.github}" target="_blank">${resumeData.github}</a></div>
-        <div>📍 Bengaluru, India</div>
-      </div>
-    </header>
-
-    <div class="section">
-      <div class="section-title">01 // PROFESSIONAL SUMMARY</div>
-      <p class="summary-text">${resumeData.about}</p>
-    </div>
-
-    <div class="section">
-      <div class="section-title">02 // EDUCATION</div>
-      <div class="item-header">
-        <span>${resumeData.education.institution}</span>
-        <span>${resumeData.education.period}</span>
-      </div>
-      <div class="item-subheader">
-        <span>${resumeData.education.degree}</span>
-        <span>GPA: ${resumeData.education.gpa}</span>
-      </div>
-      <div style="font-size: 12px; color: #52525b; margin-top: 2px;">
-        <strong>Relevant Coursework:</strong> ${resumeData.education.coursework}
+    
+    <!-- HEADER -->
+    <div class="header">
+      <h1>Chirag N Sundar</h1>
+      <div class="contact-line">
+        ✉ <a href="mailto:chiragns12@gmail.com">chiragns12@gmail.com</a> &nbsp;|&nbsp; 
+        🌐 <a href="https://linkedin.com/in/chiragnsundar" target="_blank">linkedin.com/in/chiragnsundar</a> &nbsp;|&nbsp; 
+        💻 <a href="https://github.com/ChiragNSundar" target="_blank">github.com/ChiragNSundar</a>
       </div>
     </div>
 
+    <!-- PROFESSIONAL SUMMARY -->
     <div class="section">
-      <div class="section-title">03 // WORK EXPERIENCE</div>
-      ${resumeData.experience.map(exp => `
-        <div class="exp-item">
-          <div class="item-header">
-            <span>${exp.role}</span>
-            <span style="font-size: 12px; font-family: 'Share Tech Mono', monospace; font-weight: normal;">${exp.period}</span>
-          </div>
-          <div class="item-subheader">
-            <span>${exp.company} — ${exp.location}</span>
-          </div>
-          <ul class="bullets">
-            ${exp.bullets.map(bullet => `<li>${bullet}</li>`).join('')}
-          </ul>
-        </div>
-      `).join('')}
+      <div class="section-title">PROFESSIONAL SUMMARY</div>
+      <p class="summary-text">
+        Result-driven Software Engineer specializing in Web App Development, Data Science/Analytics, and GenAI/AI Agents. Passionate about architecting and deploying high-quality, robust user-centric solutions.
+      </p>
     </div>
 
+    <!-- EXPERIENCE -->
     <div class="section">
-      <div class="section-title">04 // KEY AI & SOFTWARE PROJECTS</div>
-      ${resumeData.projects.map(proj => `
-        <div class="project-item">
-          <div class="item-header">
-            <span>${proj.title}</span>
-            <span style="font-size: 11.5px; font-family: 'Share Tech Mono', monospace; font-weight: normal; color: #71717a;">[${proj.technologies.join(', ')}]</span>
-          </div>
-          <ul class="bullets" style="margin-top: 4px;">
-            ${proj.bullets.map(b => `<li>${b}</li>`).join('')}
-          </ul>
-        </div>
-      `).join('')}
-    </div>
-
-    <div class="section">
-      <div class="section-title">05 // TECHNICAL SKILLS</div>
-      <div class="skills-grid">
-        <div class="skill-category">LANGUAGES:</div>
-        <div class="skill-list">${resumeData.skills.languages.join(', ')}</div>
-        <div class="skill-category">FRAMEWORKS:</div>
-        <div class="skill-list">${resumeData.skills.frameworks.join(', ')}</div>
-        <div class="skill-category">DATABASES:</div>
-        <div class="skill-list">${resumeData.skills.databases.join(', ')}</div>
-        <div class="skill-category">TOOLS & AI:</div>
-        <div class="skill-list">${resumeData.skills.tools.join(', ')}</div>
+      <div class="section-title">EXPERIENCE</div>
+      
+      <div class="entry-header">
+        <span>Data Science & AI Intern &rarr; Trainee Programmer(Fulltime)</span>
+        <span>Nov 2025 &ndash; Apr 2026</span>
       </div>
-    </div>
-
-    <div class="section">
-      <div class="section-title">06 // CERTIFICATIONS</div>
+      <div class="entry-subheader">
+        <span>What Digital Technologies Private Limited</span>
+        <span>Bengaluru, India</span>
+      </div>
       <ul class="bullets">
-        ${resumeData.certifications.map(cert => `<li>${cert}</li>`).join('')}
+        <li>Engineered and delivered production-ready, scalable software systems, including centralized <strong>Analytics Dashboards</strong> for real-time traffic/engagement insights and an <strong>AI Job Description Bot</strong> for enterprise automation.</li>
+        <li>Developed an end-to-end predictive intelligence platform incorporating machine learning for revenue forecasting, subscription lifecycle analysis, and implemented enterprise-grade AI solutions focusing on reliability and fault tolerance.</li>
+      </ul>
+
+      <div class="entry-header" style="margin-top: 6px;">
+        <span>AI Operations Specialist(Fulltime)</span>
+        <span>May 2026 &ndash; Current</span>
+      </div>
+      <div class="entry-subheader">
+        <span>Rural Bank Of Calbayog City, Inc. (RBCCI)</span>
+        <span>Freelance, Remote</span>
+      </div>
+      <ul class="bullets">
+        <li>Architected and deployed a production-ready, client-server core banking ecosystem comprising a modular ledger prototype, automated <strong>AMLA transaction compliance monitoring</strong>, and a dynamic 7-step digital loan pipeline that drastically accelerated credit review cycles.</li>
+        <li>Engineered a high-performance <strong>Node.js/Express backend integrated with SQLite</strong> to replace fragmented browser storage, centralizing critical financial records across multiple branches while optimizing security and database lookup speeds.</li>
+        <li>Implemented <strong>edge AI biometric identity verification</strong> using client-side TensorFlow.js and MediaPipe Face Mesh, mapping 79 facial coordinates to 237-dimensional vectors to securely authenticate bank clients offline via Cosine Similarity.</li>
       </ul>
     </div>
+
+    <!-- EDUCATION -->
+    <div class="section">
+      <div class="section-title">EDUCATION</div>
+      <div class="entry-header">
+        <span>RNS Institute of Technology</span>
+        <span>Bengaluru, India</span>
+      </div>
+      <div class="entry-subheader">
+        <span>Bachelor of Engineering in Computer Science &mdash; <strong>GPA: 8.89/10.0</strong></span>
+        <span>Dec 2021 &ndash; June 2025</span>
+      </div>
+      <div style="font-size: 9.8pt; margin-top: 2px;">
+        <strong>Relevant Coursework:</strong> Machine Learning, Software Engineering, Data Science and Visualization.
+      </div>
+    </div>
+
+    <!-- TECHNICAL SKILLS -->
+    <div class="section">
+      <div class="section-title">TECHNICAL SKILLS</div>
+      <div class="skills-block">
+        <div class="skills-row"><strong>Languages:</strong> Python, SQL, C, HTML, CSS, JavaScript</div>
+        <div class="skills-row"><strong>Frameworks & Libraries:</strong> Streamlit, Dash, Flask, LangChain, FastAPI</div>
+        <div class="skills-row"><strong>Databases:</strong> MongoDB, PostgreSQL, XAMPP</div>
+        <div class="skills-row"><strong>Developer Tools:</strong> Git, GitHub Actions, Docker, PowerBi, OpenAI API, Google Gemini, Ollama, GenAI, Linux</div>
+      </div>
+    </div>
+
+    <!-- PROJECTS -->
+    <div class="section">
+      <div class="section-title">PROJECTS</div>
+
+      <div class="entry-header">
+        <span>Roadwatch: Smart Helmet (Realtime)</span>
+        <span style="font-weight: normal; font-style: italic; font-size: 9.5pt;">Python &mdash; OpenCV &mdash; FastAPI &mdash; YOLO &mdash; EasyOCR</span>
+      </div>
+      <ul class="bullets">
+        <li>Developed an <strong>AI-powered computer vision</strong> solution to automatically <strong>detect motorcyclists without helmets</strong>.</li>
+        <li>Implemented real-time traffic/helmet violation detection with <strong>vehicle number plate recognition</strong> and <strong>instant SMS notifications</strong> to traffic authorities.</li>
+        <li>Utilized machine learning models for <strong>object detection</strong>, integrated an SMS gateway for <strong>automated traffic rule enforcement</strong>, and created a scalable system for road safety monitoring.</li>
+      </ul>
+
+      <div class="entry-header" style="margin-top: 4px;">
+        <span>HarmonyHub: Mental Health Assistant</span>
+        <span style="font-weight: normal; font-style: italic; font-size: 9.5pt;">Python &mdash; GenAI &mdash; RAG &mdash; NLP &mdash; Streamlit &mdash; Plotly</span>
+      </div>
+      <ul class="bullets">
+        <li>Developed and designed a comprehensive mental health application with mood tracking, goal setting, habit tracking, community forums, and a user-friendly interface built using Streamlit for enhanced engagement and accessibility.</li>
+        <li>Implemented advanced AI solutions including a generative <strong>Gemini chatbot</strong> for personalized support, and integrated <strong>natural language processing</strong>, <strong>machine learning</strong>, and <strong>PDF processing</strong> for context-aware, insightful user interactions.</li>
+        <li>Created interactive data visualization tools with <strong>Plotly</strong>, allowing users to track their progress, analyze daily habits, and gain personalized insights to support long-term mental well-being.</li>
+      </ul>
+
+      <div class="entry-header" style="margin-top: 4px;">
+        <span>Job Portal Analytics Dashboard</span>
+        <span style="font-weight: normal; font-style: italic; font-size: 9.5pt;">Data Visualization &mdash; Business Intelligence &mdash; Interactive Dashboards</span>
+      </div>
+      <ul class="bullets">
+        <li>Developed interactive <strong>Dash/Plotly</strong> dashboard for job portal traffic, trends, and demographics.</li>
+        <li><strong>Engineered</strong> architecture fetching data from <strong>MongoDB</strong> and <strong>MySQL</strong> via <strong>SQLAlchemy</strong>.</li>
+        <li><strong>Created</strong> key analytics (Device Intelligence, Geospatial) using Sunburst Charts.</li>
+      </ul>
+
+      <div class="entry-header" style="margin-top: 4px;">
+        <span>AI JD Bot: Job Description Assistant</span>
+        <span style="font-weight: normal; font-style: italic; font-size: 9.5pt;">Python &mdash; Flask &mdash; Gemini 2.0 &mdash; MongoDB &mdash; SQLite</span>
+      </div>
+      <ul class="bullets">
+        <li>Built an enterprise Flask chatbot using Gemini 2.0 & Gemma models with zero-tolerance exception handling, Pydantic validation, and Pybreaker circuit breakers.</li>
+        <li>Engineered parallel SQLite write-queues (WAL mode) and 100-connection MongoDB pool for fault-tolerant automated job description generation.</li>
+      </ul>
+
+      <div class="entry-header" style="margin-top: 4px;">
+        <span>Vocal Muse (VoxScript): Studio Workspace</span>
+        <span style="font-weight: normal; font-style: italic; font-size: 9.5pt;">React 19 &mdash; TanStack &mdash; Web Audio API &mdash; Hybrid RAG</span>
+      </div>
+      <ul class="bullets">
+        <li>Engineered a 100% local-first studio workspace turning mumble freestyles into polished lyrics via Multi-Level Hybrid RAG (RRF) and 31k-entry Indic dictionary datasets.</li>
+      </ul>
+    </div>
+
+    <!-- CERTIFICATIONS -->
+    <div class="section">
+      <div class="section-title">CERTIFICATIONS</div>
+      <ul class="cert-list">
+        <li><strong>Data Science Foundation Certification</strong> - Infosys Springboard</li>
+        <li><strong>Python Foundation Certification</strong> - Infosys Springboard</li>
+        <li><strong>Responsive Web Design</strong> - freeCodeCamp.org</li>
+        <li><strong>Artificial Intelligence Foundation Certification</strong> - Infosys Springboard</li>
+      </ul>
+    </div>
+
   </div>
-
-  <script>
-    window.onload = function() {
-      setTimeout(function() {
-        window.print();
-      }, 300);
-    };
-  </script>
 </body>
-</html>
-  `;
+</html>`;
 
-  const printWindow = window.open('', '_blank');
-  if (printWindow) {
-    printWindow.document.write(htmlContent);
-    printWindow.document.close();
+  // Hidden print iframe to suppress 'about:blank' URL and browser headers/footers
+  const iframe = document.createElement("iframe");
+  iframe.style.position = "fixed";
+  iframe.style.right = "0";
+  iframe.style.bottom = "0";
+  iframe.style.width = "0";
+  iframe.style.height = "0";
+  iframe.style.border = "0";
+  iframe.style.visibility = "hidden";
+  document.body.appendChild(iframe);
+
+  const doc = iframe.contentWindow?.document;
+  if (doc) {
+    doc.open();
+    doc.write(htmlContent);
+    doc.close();
+
+    setTimeout(() => {
+      try {
+        iframe.contentWindow?.focus();
+        iframe.contentWindow?.print();
+      } catch (e) {
+        console.error("Print failed:", e);
+      } finally {
+        setTimeout(() => {
+          if (iframe.parentNode) {
+            document.body.removeChild(iframe);
+          }
+        }, 2000);
+      }
+    }, 250);
   }
 };
