@@ -1853,11 +1853,12 @@ export const App: React.FC = () => {
             <div 
               style={{
                 display: "flex",
-                background: "var(--card-bg)",
-                borderBottom: "1.5px solid var(--border-color)",
-                padding: "8px 12px",
-                gap: "8px",
-                overflowX: "auto"
+                background: "var(--card-bg-muted)",
+                borderBottom: "2.5px solid var(--border-color)",
+                padding: "12px 16px",
+                gap: "10px",
+                overflowX: "auto",
+                alignItems: "center"
               }}
             >
               {(["roadwatch", "harmony", "jobportal", "aijdbot", "vibelyrics", "vocalmuse"] as const).map((key) => {
@@ -1869,7 +1870,14 @@ export const App: React.FC = () => {
                     key={key}
                     onClick={() => { playBipSound(); setActiveDetailProject(key); }}
                     className={`analog-btn ${isActive ? "active" : ""}`}
-                    style={{ padding: "6px 12px", fontSize: "0.75rem" }}
+                    style={{
+                      padding: "8px 16px",
+                      fontSize: "0.85rem",
+                      fontWeight: "bold",
+                      whiteSpace: "nowrap",
+                      flexShrink: 0,
+                      cursor: "pointer"
+                    }}
                   >
                     {icon} {label}
                   </button>
