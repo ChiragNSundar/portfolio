@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { askChiragAI } from "../lib/ragEngine";
+import { downloadSoftwareEngineerResume } from "../utils/downloadResume";
 
 interface DeveloperResumeCardProps {
   onInteract?: () => void;
@@ -190,8 +191,8 @@ export const DeveloperResumeCard: React.FC<DeveloperResumeCardProps> = ({ onInte
       }}
     >
       {/* Dossier Header */}
-      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-        <div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: "10px" }}>
+        <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
           <span className="bouncy-emoji" style={{ fontSize: "1.2rem" }}>💼</span>
           <span 
             style={{ 
@@ -205,9 +206,33 @@ export const DeveloperResumeCard: React.FC<DeveloperResumeCardProps> = ({ onInte
             SOFTWARE ENGINEER DOSSIER
           </span>
         </div>
-        <span style={{ fontSize: "0.7rem", color: "var(--text-muted)", letterSpacing: "1px" }}>
-          [RNSIT GRADUATE // 8.89 GPA // DATA & GEN-AI FOCUS]
-        </span>
+
+        <div style={{ display: "flex", alignItems: "center", gap: "12px", flexWrap: "wrap" }}>
+          <span style={{ fontSize: "0.7rem", color: "var(--text-muted)", letterSpacing: "1px" }}>
+            [RNSIT GRADUATE // 8.89 GPA // DATA & GEN-AI FOCUS]
+          </span>
+
+          <button
+            onClick={() => {
+              if (onInteract) onInteract();
+              downloadSoftwareEngineerResume();
+            }}
+            className="analog-btn active"
+            style={{
+              padding: "6px 14px",
+              fontSize: "0.72rem",
+              fontFamily: "var(--font-lcd)",
+              background: "var(--color-amber-accent)",
+              color: "#ffffff",
+              display: "flex",
+              alignItems: "center",
+              gap: "6px"
+            }}
+            title="Download formatted Software Engineer Resume PDF (No phone number)"
+          >
+            📄 1-CLICK RESUME (PDF)
+          </button>
+        </div>
       </div>
 
       {/* Short Bio Statement */}
