@@ -1,97 +1,9 @@
 import React, { useState, useEffect, useRef } from "react";
+import { askChiragAI } from "../lib/ragEngine";
 
 interface DeveloperResumeCardProps {
   onInteract?: () => void;
   onLaunchDetails?: (projectKey: "roadwatch" | "harmony" | "jobportal" | "aijdbot" | "vibelyrics") => void;
-}
-
-// Chatbot Knowledge Base
-const CHATBOT_KB: Record<string, string> = {
-  intro: "Hi, I'm Chirag — a Software Engineer specializing in Web App Development, Data Analytics, and Generative AI. I graduated with a B.E. in CS from RNSIT (GPA 8.89). I previously interned at WhatDigital Technologies (Data Science & AI, 5 months) and currently work as an AI Operations Specialist at Rural Bank of Calbayog City, Inc. (RBCCI), where I architect core banking systems with AMLA compliance and edge AI biometric verification.",
-  rag: "RAG stands for Retrieval-Augmented Generation. Instead of giving generic AI responses, in Harmony Hub, the chatbot first retrieves relevant information from uploaded documents (using a PDF parser text pipeline) and then generates context-aware answers. This makes responses accurate and personalized.",
-  nlp: "NLP (Natural Language Processing) was used in Harmony Hub to understand user input, analyze text queries, and improve chatbot interactions, facilitating natural, empathetic conversations instead of simple keyword-based replies.",
-  streamlit: "I chose Streamlit for Harmony Hub because it allowed me to build an interactive, responsive web interface rapidly in Python, focusing my efforts on AI RAG functionality and analytics visualization.",
-  yolo: "RoadWatch uses YOLOv8 for real-time computer vision object detection. The model has been custom-trained to detect four specific classes: 'with helmet', 'without helmet', 'rider', and 'number plate' (defined in our coco128.yaml config). The camera feed is processed frame by frame using OpenCV.",
-  regex: "For Indian vehicle number plates, RoadWatch validates the format using regex patterns. The expected format is 'XX00XX0000' (two state letters, two RTO numbers, two letters, and four sequence numbers). Once validated, it stores the text in a CSV file to prevent duplicate logs.",
-  challenges: "In RoadWatch, a key challenge was maintaining accurate detection in varying traffic lights and weather conditions, as well as handling blurry plates in OCR. I improved this by applying OpenCV frame preprocessing and tuning confidence thresholds.",
-  pride: "I am most proud of the RoadWatch project because it combines real-time computer vision, backend API processing, and practical safety impacts. It was satisfying to build something that could contribute to road safety.",
-  learning: "I approach new tech by first understanding the fundamentals, then building small prototypes, and finally integrating it into actual projects. Hands-on development is my core learning vector.",
-  strengths: "My strengths are: \n1. Problem-Solving & Logical thinking.\n2. Teamwork (taking initiative to coordinate tasks in college projects to keep everyone aligned).\n3. Attention to detail.",
-  weaknesses: "My weaknesses are: \n1. Perfectionism (sometimes spending too much time on small details. I balance this by setting time limits).\n2. Asking for help (earlier I hesitated to reach out, but now I actively collaborate to get faster results).",
-  internship: "Previously, Chirag worked as a Data Science & AI Intern at WhatDigital Technologies Private Limited (Nov 2025 – Apr 2026, Bengaluru). He engineered production-ready analytics dashboards, an AI Job Description Bot, and a predictive intelligence platform with ML-based revenue forecasting and subscription lifecycle analysis.",
-  education: "I graduated with a B.E. in Computer Science & Engineering from RNSIT with an aggregate GPA of 8.89. My coursework focused on Algorithms, Database Systems, Artificial Intelligence, and Computer Vision.",
-  jobportal: "The Job Portal Analytics Dashboard was built using Plotly and Dash. It connected to MongoDB and MySQL databases to visualize traffic trends, geospatial job demands, device analytics, and user engagement metrics.",
-  contact: "You can reach Chirag at chiragns12@gmail.com. Find him on GitHub at github.com/ChiragNSundar and on LinkedIn at linkedin.com/in/chiragnsundar/.",
-  techstack: "Chirag's tech stack includes: Python, TypeScript, JavaScript, React, Node.js/Express, Vite, Streamlit, Plotly/Dash, MongoDB, MySQL, PostgreSQL (Supabase), SQLite, YOLOv8, OpenCV, TensorFlow.js, MediaPipe Face Mesh, LangChain, Three.js, HTML/CSS, Git, and Vercel.",
-  certifications: "Chirag holds certifications from Infosys Springboard (Python, AI/ML Foundations) and freeCodeCamp (Responsive Web Design, JavaScript Algorithms).",
-  summary: "Chirag N Sundar is a Software Engineer (B.E. CS, RNSIT, GPA 8.89) currently working as an AI Operations Specialist at RBCCI (Rural Bank of Calbayog City, Inc.), building core banking ecosystems with AMLA compliance monitoring and edge AI biometric verification. Previously interned at WhatDigital Technologies (5 months) building AI chatbots and BI dashboards. Key projects: Harmony Hub (RAG chatbot), RoadWatch (YOLOv8 helmet detection), Job Portal Analytics Dashboard. Core skills: Python, React/TS, Node.js, computer vision, generative AI.",
-  currentrole: "Chirag currently works as an AI Operations Specialist (Fulltime) at Rural Bank of Calbayog City, Inc. (RBCCI), a freelance remote position since May 2026. Key responsibilities:\n\n1. Architected a production-ready, client-server core banking ecosystem — modular ledger prototype, automated AMLA transaction compliance monitoring, and a dynamic 7-step digital loan pipeline that drastically accelerated credit review cycles.\n2. Engineered a high-performance Node.js/Express backend integrated with SQLite to replace fragmented browser storage, centralizing critical financial records across multiple branches while optimizing security and database lookup speeds.\n3. Implemented edge AI biometric identity verification using client-side TensorFlow.js and MediaPipe Face Mesh, mapping 79 facial coordinates to 237-dimensional vectors to securely authenticate bank clients offline via Cosine Similarity.",
-  projects: "Chirag's key projects are:\n\n1. Harmony Hub — A mental health RAG chatbot that retrieves info from uploaded PDFs to give context-aware AI responses, built with Streamlit + LangChain.\n2. RoadWatch — Real-time YOLOv8 helmet detection + Indian license plate OCR system using OpenCV.\n3. Job Portal Analytics Dashboard — Plotly/Dash dashboard connected to MongoDB and MySQL for visualizing job market trends."
-};
-
-// Synonym groups: each group maps to a CHATBOT_KB key
-const TOPIC_SYNONYMS: { topic: string; keywords: string[] }[] = [
-  { topic: "projects",  keywords: ["project", "built", "portfolio", "tell me about your", "what did you build", "what have you made"] },
-  { topic: "intro",     keywords: ["who are you", "about you", "yourself", "introduce", "about chirag", "who is chirag"] },
-  { topic: "summary",   keywords: ["summary", "everything", "overview", "tell me everything", "all about", "quick summary", "brief"] },
-  { topic: "rag",       keywords: ["rag", "retrieval", "harmony", "hub", "augmented generation"] },
-  { topic: "nlp",       keywords: ["nlp", "natural language"] },
-  { topic: "streamlit", keywords: ["streamlit"] },
-  { topic: "yolo",      keywords: ["yolo", "helmet", "roadwatch", "road watch", "detect", "computer vision", "object detection"] },
-  { topic: "regex",     keywords: ["license", "plate", "ocr", "regex", "indian", "number plate"] },
-  { topic: "jobportal", keywords: ["job portal", "mongo", "mysql", "dashboard", "analytics", "plotly", "dash"] },
-  { topic: "currentrole", keywords: ["current", "rbcci", "rural bank", "calbayog", "banking", "amla", "biometric", "loan", "where do you work", "working at", "current job", "current role", "fulltime"] },
-  { topic: "internship",keywords: ["intern", "whatdigital", "previous job", "past role", "previous role"] },
-  { topic: "education", keywords: ["education", "college", "rnsit", "gpa", "degree", "university", "graduated", "coursework"] },
-  { topic: "challenges",keywords: ["challenge", "difficult", "trouble", "hard", "problem", "obstacle"] },
-  { topic: "pride",     keywords: ["proud", "achievement", "accomplishment", "best work"] },
-  { topic: "strengths", keywords: ["strength", "good at", "strong suit", "best quality", "advantage"] },
-  { topic: "weaknesses",keywords: ["weakness", "bad at", "perfection", "improve", "flaw", "shortcoming"] },
-  { topic: "learning",  keywords: ["learning", "new tech", "how do you learn", "approach"] },
-  { topic: "contact",   keywords: ["contact", "email", "reach", "mail", "github", "linkedin", "hire", "connect"] },
-  { topic: "techstack", keywords: ["tech stack", "technologies", "tools", "languages", "framework", "skills", "what do you know", "programming"] },
-  { topic: "certifications", keywords: ["certification", "certificate", "infosys", "freecodecamp", "credential"] },
-];
-
-// Contextual follow-up suggestions per topic
-const FOLLOW_UPS: Record<string, { label: string; query: string }[]> = {
-  projects:  [{ label: "Internship 💼", query: "Where did you intern?" }, { label: "Tech Stack 🛠️", query: "What technologies do you use?" }, { label: "Challenges 💪", query: "What challenges did you face?" }],
-  intro:     [{ label: "Projects 🚀", query: "What projects have you built?" }, { label: "Tech Stack 🛠️", query: "What technologies do you use?" }],
-  summary:   [{ label: "Internship 💼", query: "Where did you intern?" }, { label: "Certifications 📜", query: "What certifications do you have?" }],
-  rag:       [{ label: "RoadWatch 🏍️", query: "Tell me about RoadWatch" }, { label: "NLP Details 🧠", query: "How was NLP used in Harmony Hub?" }],
-  nlp:       [{ label: "RAG Explained 🧠", query: "What is RAG?" }, { label: "Streamlit 📊", query: "Why Streamlit?" }],
-  streamlit: [{ label: "RAG Explained 🧠", query: "What is RAG?" }, { label: "Job Portal 📈", query: "Tell me about the Job Portal Dashboard" }],
-  yolo:      [{ label: "License Plate OCR 🔍", query: "How does the license plate regex work?" }, { label: "Challenges 💪", query: "What challenges did you face?" }],
-  regex:     [{ label: "RoadWatch 🏍️", query: "How does RoadWatch detect helmets?" }, { label: "Proud Of 🏆", query: "What are you most proud of?" }],
-  jobportal: [{ label: "Tech Stack 🛠️", query: "What technologies do you use?" }, { label: "Internship 💼", query: "Where did you intern?" }],
-  internship:[{ label: "Current Role 🏦", query: "Where do you currently work?" }, { label: "Education 🎓", query: "Where did you study?" }],
-  currentrole:[{ label: "Previous Intern 💼", query: "Tell me about your WhatDigital internship" }, { label: "Tech Stack 🛠️", query: "What technologies do you use?" }, { label: "Projects 🚀", query: "What projects have you built?" }],
-  education: [{ label: "Certifications 📜", query: "What certifications do you have?" }, { label: "Strengths ⚡", query: "What are your strengths?" }],
-  challenges:[{ label: "Proud Of 🏆", query: "What are you most proud of?" }, { label: "Learning 📚", query: "How do you learn new tech?" }],
-  pride:     [{ label: "Challenges 💪", query: "What challenges did you face?" }, { label: "Strengths ⚡", query: "What are your strengths?" }],
-  strengths: [{ label: "Weaknesses ⚖️", query: "What are your weaknesses?" }, { label: "Internship 💼", query: "Where did you intern?" }],
-  weaknesses:[{ label: "Strengths ⚡", query: "What are your strengths?" }, { label: "Learning 📚", query: "How do you learn new tech?" }],
-  learning:  [{ label: "Tech Stack 🛠️", query: "What technologies do you use?" }, { label: "Education 🎓", query: "Where did you study?" }],
-  contact:   [{ label: "Summary 📋", query: "Give me a quick summary" }, { label: "Tech Stack 🛠️", query: "What technologies do you use?" }],
-  techstack: [{ label: "Projects 🚀", query: "Tell me about your projects" }, { label: "Certifications 📜", query: "What certifications do you have?" }],
-  certifications: [{ label: "Education 🎓", query: "Where did you study?" }, { label: "Contact 📧", query: "How can I contact you?" }],
-};
-
-const DEFAULT_SUGGESTIONS = [
-  { label: "Explain RAG 🧠", query: "What is RAG and how did you use it?" },
-  { label: "RoadWatch Info 🏍️", query: "Tell me about your RoadWatch helmet detection project" },
-  { label: "Strengths & Weaknesses ⚖️", query: "What are your strengths?" },
-  { label: "Quick Summary 📋", query: "Give me a quick summary" }
-];
-
-function matchTopic(query: string): string | null {
-  const q = query.toLowerCase();
-  for (const group of TOPIC_SYNONYMS) {
-    for (const kw of group.keywords) {
-      if (q.includes(kw)) return group.topic;
-    }
-  }
-  return null;
 }
 
 export const DeveloperResumeCard: React.FC<DeveloperResumeCardProps> = ({ onInteract, onLaunchDetails }) => {
@@ -197,23 +109,33 @@ export const DeveloperResumeCard: React.FC<DeveloperResumeCardProps> = ({ onInte
   const [chatLog, setChatLog] = useState<{ sender: "user" | "bot"; text: string }[]>([
     {
       sender: "bot",
-      text: "Hi! I'm Chirag's AI representative. Ask me anything about my projects, internship, education, or core strengths/weaknesses!"
+      text: "Hey! 👋 I'm Chirag's AI assistant — powered by an offline semantic RAG engine. Ask me anything about my projects, work experience, tech stack, or even interview-style questions like \"What's your biggest technical challenge?\" I'm ready to chat!"
     }
   ]);
   const [chatInput, setChatInput] = useState("");
   const [isTyping, setIsTyping] = useState(false);
-  const [lastTopic, setLastTopic] = useState<string | null>(null);
+  const [suggestions, setSuggestions] = useState<{ label: string; query: string }[]>([
+    { label: "About Chirag 👤", query: "Who is Chirag?" },
+    { label: "Projects 🚀", query: "What projects have you built?" },
+    { label: "Technical Challenge 💪", query: "What's the most technically complex challenge you've faced?" },
+    { label: "Quick Summary 📋", query: "Give me a quick summary" },
+  ]);
   const chatContainerRef = useRef<HTMLDivElement>(null);
 
   const handleClearChat = () => {
     setChatLog([
       {
         sender: "bot",
-        text: "Hi! I'm Chirag's AI representative. Ask me anything about my projects, internship, education, or core strengths/weaknesses!"
+        text: "Hey! 👋 I'm Chirag's AI assistant — powered by an offline semantic RAG engine. Ask me anything about my projects, work experience, tech stack, or even interview-style questions like \"What's your biggest technical challenge?\" I'm ready to chat!"
       }
     ]);
     setIsTyping(false);
-    setLastTopic(null);
+    setSuggestions([
+      { label: "About Chirag 👤", query: "Who is Chirag?" },
+      { label: "Projects 🚀", query: "What projects have you built?" },
+      { label: "Technical Challenge 💪", query: "What's the most technically complex challenge you've faced?" },
+      { label: "Quick Summary 📋", query: "Give me a quick summary" },
+    ]);
   };
 
   // Scroll chatbot to end on update (scrollTop, NOT scrollIntoView which jerks the whole page)
@@ -222,52 +144,29 @@ export const DeveloperResumeCard: React.FC<DeveloperResumeCardProps> = ({ onInte
     if (el) el.scrollTop = el.scrollHeight;
   }, [chatLog, isTyping]);
 
-  // Local Chatbot Query Resolver (using functional state updates to prevent stale closures)
+  // RAG-powered Chatbot Query Resolver
   const handleChatSubmit = (e?: React.FormEvent, customQuery?: string) => {
     if (e) e.preventDefault();
     
-    // Safety check: extract search text safely
     const rawQuery = (typeof customQuery === "string" ? customQuery : chatInput).trim();
     if (!rawQuery) return;
 
     if (onInteract) onInteract();
 
-    const userMessage = rawQuery;
-    const query = userMessage.toLowerCase();
-    
     // Add user message to log immediately
-    setChatLog(prev => [...prev, { sender: "user" as const, text: userMessage }]);
+    setChatLog(prev => [...prev, { sender: "user" as const, text: rawQuery }]);
     setChatInput("");
     setIsTyping(true);
 
-    // Fuzzy synonym-group matching
-    const matched = matchTopic(query);
-    let botResponse: string;
-    let resolvedTopic: string | null = matched;
-
-    if (matched && CHATBOT_KB[matched]) {
-      botResponse = CHATBOT_KB[matched];
-      // Special case: YOLO also includes regex/plate info
-      if (matched === "yolo") {
-        botResponse += "\n\n" + CHATBOT_KB.regex;
-      }
-    } else {
-      botResponse = "Hmm, I'm not sure about that one! Try asking about my projects, skills, education, internship, or certifications 😄";
-      resolvedTopic = null;
-    }
-
-    // Delay bot response slightly to simulate thinking
+    // Run the RAG engine (client-side, instant)
+    // Small delay to show typing indicator for better UX
     setTimeout(() => {
+      const result = askChiragAI(rawQuery);
       setIsTyping(false);
-      setLastTopic(resolvedTopic);
-      setChatLog(prev => [...prev, { sender: "bot" as const, text: botResponse }]);
-    }, 650);
+      setChatLog(prev => [...prev, { sender: "bot" as const, text: result.response }]);
+      setSuggestions(result.suggestedFollowUps);
+    }, 450 + Math.random() * 400);
   };
-
-  // Contextual follow-up suggestions based on last answered topic
-  const suggestions = lastTopic && FOLLOW_UPS[lastTopic]
-    ? FOLLOW_UPS[lastTopic]
-    : DEFAULT_SUGGESTIONS;
 
   return (
     <div 
@@ -756,7 +655,7 @@ export const DeveloperResumeCard: React.FC<DeveloperResumeCardProps> = ({ onInte
                 🤖 Ask Chirag AI
               </span>
               <span style={{ fontSize: "0.6rem", background: "var(--color-amber)", border: "1px solid var(--border-color)", padding: "2px 6px", borderRadius: "4px", fontWeight: "bold" }}>
-                FREE // NO KEY NEEDED
+                OFFLINE RAG ⚡
               </span>
             </div>
 
@@ -853,7 +752,7 @@ export const DeveloperResumeCard: React.FC<DeveloperResumeCardProps> = ({ onInte
             <form onSubmit={(e) => handleChatSubmit(e)} style={{ display: "flex", gap: "8px" }}>
               <input
                 type="text"
-                placeholder="Ask me something (e.g., 'What is RAG?' or 'Where did you intern?')..."
+                placeholder="Ask anything — projects, skills, challenges, interview Q&A..."
                 value={chatInput}
                 onChange={(e) => setChatInput(e.target.value)}
                 aria-label="Chatbot input"
