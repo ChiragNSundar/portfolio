@@ -484,8 +484,17 @@ const PROJECT_DETAILS_DATA = {
       "/vm/image5.png",
       "/vm/image6.png",
       "/vm/image7.png",
-      "/vm/image8.png",
-      "/vm/image9.png"
+      "/vm/image8.png"
+    ],
+    imageCaptions: [
+      { title: "1. Landing Page (/)", desc: "Gradient-backed hero section highlighting 100% local-first features and quickstart options." },
+      { title: "2. Onboarding Wizard (/onboarding)", desc: "3-step setup flow for auto-scanning local LLM/Whisper servers, trying demo recordings, and feature discovery." },
+      { title: "3. Track Library (/library)", desc: "The central dashboard featuring real-time search, status filter dropdowns, and sort options." },
+      { title: "4. New Track Studio (/new)", desc: "Create new songs from mumble transcripts, live mic recordings, or uploaded audio files with vocal guidance tips." },
+      { title: "5. Live Punch-In Studio (/live)", desc: "Real-time vocal capture featuring live oscilloscope waveform visualizer, metronome ring, and bar pocket analysis." },
+      { title: "6. Reference & Style Intelligence (/references)", desc: "1-click web lyric scraper to extract cadence blueprints (Cadence Fingerprints) and train your AI ghostwriter." },
+      { title: "7. Ghostwriter Scorecard & Critic Council", desc: "Multi-pass cadence scorecard, radar chart breakdown (Pocket, Wordplay, Authenticity), Critic Council rewrite suggestions, and real-time syllable target tooltips." },
+      { title: "8. Cadence Pocket Grid & Rhyme Scheme Highlighting", desc: "Interactive lyric editor with real-time cadence density highlighting, syllable count matching, and rhyme scheme visualization." }
     ],
     pitch: "An open-source, local-first studio workspace for vocalists, songwriters, and producers. Vocal Muse turns mumble freestyles into Drake/Kendrick/Seedhe Maut/Brodha V-tier polished lyrics, maps audio cadences in real-time, and builds a personalized style memory—all running 100% offline on your local machine with zero cloud lock-in.",
     techStack: [
@@ -637,8 +646,10 @@ const ScreenshotWithSkeleton: React.FC<{
   imgSrc: string;
   title: string;
   idx: number;
+  captionTitle?: string;
+  captionDesc?: string;
   onEnlarge: (src: string) => void;
-}> = ({ imgSrc, title, idx, onEnlarge }) => {
+}> = ({ imgSrc, title, idx, captionTitle, captionDesc, onEnlarge }) => {
   const [loaded, setLoaded] = useState(false);
   const imgRef = useRef<HTMLImageElement>(null);
 
@@ -666,6 +677,7 @@ const ScreenshotWithSkeleton: React.FC<{
         boxShadow: "4px 4px 0px var(--card-shadow)",
         display: "flex",
         flexDirection: "column",
+        gap: "8px",
         cursor: "zoom-in",
         transition: "transform 0.2s ease, box-shadow 0.2s ease",
         position: "relative"
@@ -689,6 +701,18 @@ const ScreenshotWithSkeleton: React.FC<{
           transition: "transform 0.2s ease"
         }}
       />
+      {captionTitle && (
+        <div style={{ padding: "4px 2px 2px 2px", borderTop: "1px dashed var(--border-color)", marginTop: "4px" }}>
+          <div style={{ fontSize: "0.78rem", fontWeight: "bold", color: "var(--color-amber-accent)", marginBottom: "3px" }}>
+            {captionTitle}
+          </div>
+          {captionDesc && (
+            <div style={{ fontSize: "0.72rem", opacity: 0.85, lineHeight: 1.35, color: "var(--text-dark)" }}>
+              {captionDesc}
+            </div>
+          )}
+        </div>
+      )}
     </div>
   );
 };
@@ -2056,12 +2080,15 @@ export const App: React.FC = () => {
                       </h3>
                       <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
                         {data.images.map((imgSrc, idx) => {
+                          const cap = (data as any).imageCaptions?.[idx];
                           return (
                             <ScreenshotWithSkeleton 
                               key={idx} 
                               imgSrc={imgSrc} 
                               title={data.title} 
                               idx={idx} 
+                              captionTitle={cap?.title}
+                              captionDesc={cap?.desc}
                               onEnlarge={setActiveScreenshotLightbox} 
                             />
                           );
