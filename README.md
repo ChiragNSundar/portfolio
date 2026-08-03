@@ -5,7 +5,7 @@
 An immersive, skeuomorphic, and interactive developer portfolio website styled as a **1970s analog studio rack unit** in 3D. 
 
 This project features a **Dual-Role Entry Portal** that custom-tailors the portfolio layout for different audiences:
-* **💻 Software Engineering Dossier**: Focuses on computer science credentials, internship metrics, a neobrutalist tech stack deck, live GitHub statistics, and an interactive representative chatbot.
+* **💻 Software Engineering Dossier**: Focuses on computer science credentials, internship metrics, a neobrutalist tech stack deck, live GitHub statistics, an offline semantic RAG chatbot, and 6 detailed project console breakdowns.
 * **🎚️ Music Production & Stems Studio**: Focuses on multitrack audio mixing comparison players, an Originals & Covers tabbed YouTube player, and an FL Studio-themed entry splash.
 
 Live Vercel Site: [portfolio-one-blue-asoaj8ivp3.vercel.app](https://portfolio-one-blue-asoaj8ivp3.vercel.app/)
@@ -20,63 +20,44 @@ Live Vercel Site: [portfolio-one-blue-asoaj8ivp3.vercel.app](https://portfolio-o
 * Animated hero greetings displaying **HazardChirag** with a custom scrambler text transition when loading the engineer dossier.
 * **FL Studio Entry Splash**: Entering the Music Producer console triggers the iconic FL Studio startup sound (`/audio/sfx/fl_studio_start.mp3`) with the official fruit logo animating inline below the hero section.
 
-### 2. Software Engineer Dossier & Timeline
+### 2. Software Engineer Dossier & Offline Semantic RAG
 * **Professional Bio**: "Result-driven Software Engineer specializing in Web App Development, Data Science/Analytics, and GenAI/AI Agents."
-* **Professional Timeline**: Fully detailed work experience including B.E. Computer Science & Engineering (RNSIT), Data Science & AI Intern (WhatDigital Technologies, `Nov 2025 - Apr 2026`), and AI Operations Specialist (Rural Bank of Calbayog City, Inc. - RBCCI).
-* **Micro-Interactions**: Custom hover-lift transitions (`transform: translateY(-4px)`) on CV sections and project card components.
-* **"Ask Chirag AI" Chatbot**: Zero-latency local representative chatbot loaded with developer QA details. Includes custom typing loaders, scroll triggers, and clear history tools.
-* **Live & Animated GitHub Activity Card**: Dark GitHub-themed console (`#0d1117`) featuring an Octocat SVG badge, animated count-up numbers (`0 → 782+` total contributions), and a custom contribution activity grid matching actual commit intensity across the year.
+* **Professional Timeline**: Fully detailed work experience including B.E. Computer Science & Engineering (RNSIT, GPA 8.89), Data Science & AI Intern (WhatDigital Technologies, `Nov 2025 - Apr 2026`), and AI Operations Specialist (Rural Bank of Calbayog City, Inc. - RBCCI).
+* **"Ask Chirag AI" Offline Semantic RAG Engine**: Zero-latency, client-side RAG engine loaded with ~40 pre-chunked knowledge chunks. Employs TF-IDF scoring, bigram matching, category boosting, dynamic follow-up chips, and embellishment rules to handle interview Q&A and technical inquiries 100% offline without API keys.
+* **Live GitHub Activity Scraper & Heatmap**: Vercel Serverless Function (`/api/github-stats.ts`) with 1-hour CDN caching (`s-maxage=3600, stale-while-revalidate=86400`) that scrapes your exact live total contribution count (**788+**) and renders the real 52-week activity heatmap level boxes.
 
 ### 3. Contact & Social Integrations
 * **Dedicated Contact Consoles**: Separate contact cards tailored for Software Engineering ("DEVELOPER CONTACT CONSOLE") and Music Production ("VOCAL MIXING & PRODUCER CONSOLE").
-* **Updated Social Links**: Directly connected to GitHub (`github.com/ChiragNSundar`), LinkedIn (`linkedin.com/in/chiragnsundar/`), Spotify (`open.spotify.com/user/wapj86uclwiwd4n2g94v7er6u`), Instagram (`@chirag.localhost`), and direct email (`chiragns12@gmail.com`).
+* **Social Links**: Connected to GitHub (`github.com/ChiragNSundar`), LinkedIn (`linkedin.com/in/chiragnsundar/`), Spotify (`open.spotify.com/user/wapj86uclwiwd4n2g94v7er6u`), Instagram (`@chirag.localhost`), and email (`chiragns12@gmail.com`).
 
 ### 4. Fullscreen Detailed Project Explorer Console
-Clicking a project card launches a fullscreen console overlay modal (via React Portal) with tabs to swap between all projects:
-* 🏍️ **RoadWatch**: Real-time motorcycle helmet detection (YOLOv8 + FastAPI + CLAHE normalization) showing text-based directory structure trees and `bike.gif` stream crops.
-* 🧠 **Harmony Hub**: Streamlit-based mental wellness assistant (Gemini Pro + RAG) showing mood calculators and Plotly statistics graphs.
-* 📊 **Job Portal BI Dashboard**: Interactive Dash dashboard querying SQL/Mongo backends, showing a text-based ASCII system flow diagram.
-* 🤖 **AI JD Bot**: Job description assistant (Flask + Gemini/Gemma + 12 MongoDB collection tables). Set to text-only mode where visuals column auto-compresses to full width.
-* 🎤 **VibeLyrics**: Professional hip-hop writing suite (React 19 + Zustand 5 + FastAPI + Librosa + LoRA DPO continual training), showing detailed directory structure trees and system layout charts.
+Clicking any project card launches a fullscreen console overlay modal with roomier, high-contrast tab controls to navigate across all 6 core projects:
+* 🏍️ **RoadWatch**: Real-time motorcycle helmet detection & OCR (YOLOv8 + FastAPI + OpenCV + CLAHE) with live GIF feed and OCR voting consensus.
+* 🧠 **Harmony Hub**: Streamlit-based mental wellness RAG assistant (Gemini Pro + PDF Text Pipeline) with Plotly analytics and mood trackers.
+* 📊 **Job Portal BI Dashboard**: Interactive Dash business intelligence dashboard querying MongoDB & MySQL databases with geospatial sunburst graphs.
+* 🤖 **AI JD Bot**: Production Flask job description generator (Gemini 2.0 Flash + Gemma 2 + 12 MongoDB collections + Leaflet map selector).
+* 🎤 **VibeLyrics**: Professional hip-hop writing suite (React 19 + Zustand 5 + FastAPI + Librosa + Continual LoRA DPO training).
+* 🎛️ **Vocal Muse (VoxScript)**: Open-source, local-first studio workspace for vocalists & producers (React 19 + TanStack Start + Tailwind v4 + Web Audio API + faster-whisper-server + Reciprocal Rank Fusion RRF Hybrid RAG + 31,021-entry KEED 2018 Kannada-English & Hinglish dictionaries + OPFS audio storage + Graphify AST index).
 
-### 5. Structured Stems Studio & Multitrack Player
-* **Organized Asset Pipeline**: Audio stems structured cleanly in `/public/audio/mixes/` and sound effects in `/public/audio/sfx/`.
-* **Before / After Comparison**: Interactive audio comparison deck playing raw unmixed stems vs. professionally tuned, sculpted, and mastered records without artificial effects.
-* **Tabbed Interface**: Switch between Originals (e.g., "No Bitches") and Covers with a segmented tab bar.
-* **YouTube Logo Border Decoration**: Subtle YouTube play-button logos watermarked at the card borders.
-* **"Visit YouTube" Button**: Red branded button with inline YouTube logo SVG linking to the Hazard Chirag channel.
-* **Dynamic Folder Path**: Directory header updates to `C:\VOL\ORIGINALS\` or `C:\VOL\COVERS\` depending on the active tab.
+### 5. Rich Image Captions & Fullscreen Lightbox
+* **Portfolio-Wide Image Captions**: Every project in the modal visual gallery features custom amber-highlighted titles and feature descriptions beneath each screenshot.
+* **Fullscreen Lightbox**: Click any project screenshot to launch a high-resolution lightbox viewer with spring-in transitions and skeleton shimmer preloaders.
 
-### 5. Moderated Supabase Guestbook Footer
-* Full-width neobrutalist guestbook signature log card at the very bottom of the page.
-* **Required Email Field**: Email is compulsory for accountability but is never displayed publicly.
-* **Community Guidelines**: Inline guidelines banner explaining acceptable-use rules.
-* **Content Moderation**: Client-side filtering blocks NSFW language, spam phrases, gibberish, excessive caps, and rate-limits repeat submissions (2-minute cooldown per user).
-* **Moderation Error Banner**: Red warning banner displays the specific violation when content is flagged.
-* Submits signatures dynamically to Supabase databases with fallback offline demo caches inside localStorage.
-* **Offline Sync**: Queues guestbook entries locally when offline and automatically flushes them to the database when the connection restores.
-
-### 6. Image Lightbox & Skeleton Loaders
-* **Full-Resolution Zoom**: Click any project screenshot in the gallery to open a fullscreen lightbox overlay with a spring-in animation.
-* **Skeleton Shimmer Loaders**: Graceful shimmer placeholders while images load, with `requestAnimationFrame`-based cache detection to instantly display preloaded assets.
-
-### 7. PWA & Offline Support
-* **Progressive Web App**: Full `manifest.json` and service worker registration for installability.
-* **Static Asset Caching**: Service worker pre-caches HTML, CSS, JS, and image assets for offline access.
-* **Background Preloading**: Heavy assets (audio stems, GIFs) are preloaded in the background on first render.
+### 6. Moderated Supabase Guestbook Footer
+* Full-width neobrutalist guestbook signature log card at the bottom of the page.
+* Submits signatures dynamically to Supabase databases with client-side content moderation, email validation, and local-storage fallback queueing.
 
 ---
 
 ## 🛠️ Technology Stack
 
-- **Frontend & Core**: React 19 + TypeScript + Vite 7 + Zustand 5 + Framer Motion 12
-- **Styling**: Vanilla CSS (Cream & pastel neobrutalist design system, locked in Light Mode)
-- **Audio Processing**: Web Audio API (gain-fading, dynamic audio nodes, key sound synthesizers)
-- **AI/ML & NLP Orchestration**: Gemini 2.0/2.5 Pro & Flash, Gemma 2, Spacy, NLTK, Librosa
-- **Database & Persistence**: Supabase (PostgreSQL, RLS), MongoDB (JSON Schema validation), SQLite (WAL Mode parallel backup queues), IndexedDB
-- **APM & Observability**: OpenTelemetry distributed tracing, circuit breaker patterns (pybreaker), health check pipelines
-- **PWA**: Service Worker + Web App Manifest for offline caching & installability
-- **Testing Suites**: Pytest, Vitest, Playwright (E2E browser testing), Chaos engineering simulations
+- **Frontend & Core**: React 19 + TypeScript + Vite 7 + TanStack Start + Zustand 5 + Framer Motion 12 + Tailwind CSS v4
+- **Audio Processing**: Web Audio API (oscilloscope waveform, metronome sync, gain-fading, sound synthesizers)
+- **AI/ML & NLP Orchestration**: Gemini 2.0/2.5 Pro & Flash, Gemma 2, faster-whisper-server, Reciprocal Rank Fusion (RRF) Hybrid RAG, POS-Grammar engines, Spacy, NLTK, Librosa
+- **Dictionaries & Datasets**: KEED 2018 Kannada-English Dictionary (31,021 entries) + Hinglish Rap Vocabulary
+- **Database & Persistence**: Supabase (PostgreSQL), MongoDB, MySQL, SQLite (WAL Mode), IndexedDB, OPFS (Origin Private File System)
+- **APM & Reliability**: Vercel Serverless API, OpenTelemetry distributed tracing, pybreaker circuit breakers, rate limiters
+- **AST Knowledge Graph**: Graphify AST indexing & community detection graph
 
 ---
 
@@ -84,11 +65,7 @@ Clicking a project card launches a fullscreen console overlay modal (via React P
 
 ### 1. Database Configuration (Supabase)
 1. Initialize a new project on your [Supabase Dashboard](https://supabase.com/).
-2. Navigate to the **SQL Editor** tab.
-3. Open the file [supabase-migration.sql](./supabase-migration.sql), copy its SQL structure, paste it into the editor, and click **Run**. This:
-   - Configures the `guestbook` table (with `name`, `email`, and `message` columns).
-   - Restricts queries with indexes.
-   - Sets public Row Level Security (RLS) policies allowing visitors to read and write guestbook entries securely.
+2. Run [supabase-migration.sql](./supabase-migration.sql) in the SQL Editor to set up the `guestbook` table and Row Level Security (RLS) policies.
 
 ### 2. Local Environment Configuration
 Create a `.env.local` file in the root directory:
@@ -96,29 +73,10 @@ Create a `.env.local` file in the root directory:
 VITE_SUPABASE_URL=https://your-project-id.supabase.co
 VITE_SUPABASE_ANON_KEY=your-anon-key-here
 ```
-*Note: If these env variables are not found, the website will automatically load in Offline Demo Mode, logging warning prompts on the terminal screen and saving guestbook signups to `localStorage` instead.*
 
-### 3. Running Locally
-Install dependencies and run the Vite local development server:
+### 3. Running Locally & Building
 ```bash
 npm install
-# start the dev server
-npm run dev
+npm run dev     # Starts Vite development server
+npm run build   # Compiles TypeScript & bundles production assets
 ```
-
-### 4. Build for Production
-Verify compilation and output bundled minified production assets:
-```bash
-npm run build
-```
-
----
-
-## ⚡ Vercel Deployment
-
-1. Push this project to your GitHub account.
-2. Link your GitHub account and import the repository on your [Vercel Dashboard](https://vercel.com/).
-3. In the project's **Environment Variables** configuration section, add:
-   - `VITE_SUPABASE_URL`
-   - `VITE_SUPABASE_ANON_KEY`
-4. Click **Deploy**. Vercel will build and serve your portfolio on a public URL.
