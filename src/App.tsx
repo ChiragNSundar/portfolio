@@ -6,6 +6,7 @@ import { PolaroidCertificates } from "./components/PolaroidCertificates";
 import { VocalMixingCard } from "./components/VocalMixingCard";
 import { SpotifyReleaseCard } from "./components/SpotifyReleaseCard";
 import { ContactCard } from "./components/ContactCard";
+import { LegalModal } from "./components/LegalModal";
 import { supabase, isSupabaseConfigured } from "./lib/supabaseClient";
 import type { Track } from "./data/tracks";
 import { mixAndOriginalTracks } from "./data/tracks";
@@ -755,6 +756,7 @@ export const App: React.FC = () => {
   const [mode, setMode] = useState<'select' | 'engineer' | 'producer'>('select');
   const [activeDetailProject, setActiveDetailProject] = useState<"roadwatch" | "harmony" | "jobportal" | "aijdbot" | "vibelyrics" | "vocalmuse" | null>(null);
   const [activeScreenshotLightbox, setActiveScreenshotLightbox] = useState<string | null>(null);
+  const [activeLegalModal, setActiveLegalModal] = useState<"privacy" | "terms" | null>(null);
 
   // Background Preloading & Esc key listeners
   useEffect(() => {
@@ -773,6 +775,7 @@ export const App: React.FC = () => {
       if (e.key === "Escape") {
         setActiveScreenshotLightbox(null);
         setActiveDetailProject(null);
+        setActiveLegalModal(null);
       }
     };
     window.addEventListener("keydown", handleKeyDown);
@@ -1345,6 +1348,67 @@ export const App: React.FC = () => {
               </button>
             </div>
           </div>
+
+          {/* Bottom Right Legal Footer for Select View */}
+          <div 
+            style={{
+              position: "fixed",
+              bottom: "16px",
+              right: "24px",
+              fontFamily: "var(--font-lcd)",
+              fontSize: "0.65rem",
+              color: "var(--text-muted)",
+              display: "flex",
+              gap: "10px",
+              fontWeight: "bold",
+              alignItems: "center",
+              zIndex: 90,
+              background: "#ffffff",
+              padding: "6px 14px",
+              border: "2px solid #18181b",
+              borderRadius: "20px",
+              boxShadow: "3px 3px 0px #18181b"
+            }}
+          >
+            <span>BAUD: 9600</span>
+            <span>&copy; 2026</span>
+            <span style={{ opacity: 0.4 }}>|</span>
+            <button 
+              onClick={() => setActiveLegalModal("privacy")}
+              style={{
+                background: "none",
+                border: "none",
+                color: "var(--text-dark)",
+                fontFamily: "var(--font-lcd)",
+                fontSize: "0.65rem",
+                fontWeight: "bold",
+                cursor: "pointer",
+                textDecoration: "underline",
+                padding: 0
+              }}
+              className="hover-opacity"
+            >
+              PRIVACY POLICY
+            </button>
+            <span style={{ opacity: 0.4 }}>|</span>
+            <button 
+              onClick={() => setActiveLegalModal("terms")}
+              style={{
+                background: "none",
+                border: "none",
+                color: "var(--text-dark)",
+                fontFamily: "var(--font-lcd)",
+                fontSize: "0.65rem",
+                fontWeight: "bold",
+                cursor: "pointer",
+                textDecoration: "underline",
+                padding: 0
+              }}
+              className="hover-opacity"
+            >
+              T&C'S
+            </button>
+          </div>
         </div>
       )}
 
@@ -1814,9 +1878,45 @@ export const App: React.FC = () => {
               </span>
             </div>
 
-            <div style={{ fontFamily: "var(--font-lcd)", fontSize: "0.65rem", color: "var(--text-muted)", display: "flex", gap: "12px", fontWeight: "bold" }}>
+            <div style={{ fontFamily: "var(--font-lcd)", fontSize: "0.65rem", color: "var(--text-muted)", display: "flex", gap: "10px", fontWeight: "bold", alignItems: "center" }}>
               <span>BAUD: 9600</span>
               <span>&copy; 2026</span>
+              <span style={{ opacity: 0.4 }}>|</span>
+              <button 
+                onClick={() => setActiveLegalModal("privacy")}
+                style={{
+                  background: "none",
+                  border: "none",
+                  color: "var(--text-dark)",
+                  fontFamily: "var(--font-lcd)",
+                  fontSize: "0.65rem",
+                  fontWeight: "bold",
+                  cursor: "pointer",
+                  textDecoration: "underline",
+                  padding: 0
+                }}
+                className="hover-opacity"
+              >
+                PRIVACY POLICY
+              </button>
+              <span style={{ opacity: 0.4 }}>|</span>
+              <button 
+                onClick={() => setActiveLegalModal("terms")}
+                style={{
+                  background: "none",
+                  border: "none",
+                  color: "var(--text-dark)",
+                  fontFamily: "var(--font-lcd)",
+                  fontSize: "0.65rem",
+                  fontWeight: "bold",
+                  cursor: "pointer",
+                  textDecoration: "underline",
+                  padding: 0
+                }}
+                className="hover-opacity"
+              >
+                T&C'S
+              </button>
             </div>
           </div>
         </>
@@ -2217,6 +2317,13 @@ export const App: React.FC = () => {
           </div>
         </div>
       )}
+
+      {/* Privacy Policy & Terms Modal Popup */}
+      <LegalModal 
+        activeTab={activeLegalModal}
+        onClose={() => setActiveLegalModal(null)}
+        onSelectTab={(tab) => setActiveLegalModal(tab)}
+      />
     </div>
   );
 };
