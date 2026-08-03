@@ -3,7 +3,7 @@ import { askChiragAI } from "../lib/ragEngine";
 
 interface DeveloperResumeCardProps {
   onInteract?: () => void;
-  onLaunchDetails?: (projectKey: "roadwatch" | "harmony" | "jobportal" | "aijdbot" | "vibelyrics") => void;
+  onLaunchDetails?: (projectKey: "roadwatch" | "harmony" | "jobportal" | "aijdbot" | "vibelyrics" | "vocalmuse") => void;
 }
 
 export const DeveloperResumeCard: React.FC<DeveloperResumeCardProps> = ({ onInteract, onLaunchDetails }) => {
@@ -607,6 +607,71 @@ export const DeveloperResumeCard: React.FC<DeveloperResumeCardProps> = ({ onInte
                       </button>
                       <a
                         href="https://github.com/ChiragNSundar/VibeLyrics"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        onClick={(e) => e.stopPropagation()}
+                        style={{
+                          flex: 1,
+                          display: "flex",
+                          justifyContent: "center",
+                          alignItems: "center",
+                          background: "var(--card-bg)",
+                          border: "1.5px solid var(--border-color)",
+                          borderRadius: "8px",
+                          padding: "6px 12px",
+                          fontSize: "0.75rem",
+                          fontWeight: "bold",
+                          textDecoration: "none",
+                          color: "var(--text-dark)",
+                          cursor: "pointer",
+                          boxShadow: "2px 2px 0px var(--card-shadow)"
+                        }}
+                      >
+                        GITHUB REPO 🔗
+                      </a>
+                    </div>
+                  </div>
+                )}
+              </div>
+              <div 
+                onClick={() => setActiveProject(activeProject === "vocalmuse" ? null : "vocalmuse")}
+                style={{
+                  border: "1.5px solid var(--border-color)",
+                  borderRadius: "12px",
+                  padding: "12px",
+                  cursor: "pointer",
+                  backgroundColor: activeProject === "vocalmuse" ? "var(--color-amber)" : "var(--card-bg-muted)",
+                  transition: "background-color 0.2s",
+                  marginTop: "8px"
+                }}
+              >
+                <div style={{ display: "flex", justifyContent: "space-between", fontWeight: "bold", fontSize: "0.85rem" }}>
+                  <span>🎛️ Vocal Muse: Studio Workspace (VoxScript)</span>
+                  <span>{activeProject === "vocalmuse" ? "▼" : "▶"}</span>
+                </div>
+                {activeProject === "vocalmuse" && (
+                  <div style={{ marginTop: "10px", fontSize: "0.78rem", color: "var(--text-dark)", display: "flex", flexDirection: "column", gap: "8px", borderTop: "1px dashed var(--border-color)", paddingTop: "8px" }}>
+                    <div><strong>Pitch:</strong> An open-source, 100% local-first studio workspace for vocalists and producers. Vocal Muse turns mumble freestyles into Drake/Kendrick/Seedhe Maut-tier polished lyrics, maps audio cadences in real-time, and builds a personalized style memory with zero cloud lock-in.</div>
+                    <div><strong>Key Infrastructure:</strong> Powered by React 19, TanStack Start, Tailwind v4, Web Audio API, faster-whisper-server (Port 9000 STT), Reciprocal Rank Fusion (RRF) Hybrid RAG, 31,021-entry KEED 2018 Kannada-English & Hinglish dictionaries, IndexedDB, OPFS audio takes, and Graphify AST Knowledge Graph.</div>
+                    <div style={{ display: "flex", gap: "10px", marginTop: "8px" }}>
+                      <button
+                        onClick={(e) => { e.stopPropagation(); if (onLaunchDetails) onLaunchDetails("vocalmuse"); }}
+                        style={{
+                          flex: 1,
+                          background: "var(--color-amber-accent)",
+                          border: "1.5px solid var(--border-color)",
+                          borderRadius: "8px",
+                          padding: "6px 12px",
+                          fontSize: "0.75rem",
+                          fontWeight: "bold",
+                          cursor: "pointer",
+                          boxShadow: "2px 2px 0px var(--card-shadow)"
+                        }}
+                      >
+                        LAUNCH DETAILED PANEL 🚀
+                      </button>
+                      <a
+                        href="https://github.com/ChiragNSundar/Vocal-Muse"
                         target="_blank"
                         rel="noopener noreferrer"
                         onClick={(e) => e.stopPropagation()}

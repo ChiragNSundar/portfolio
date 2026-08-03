@@ -109,6 +109,15 @@ export const resumeData: ResumeData = {
         "Engineered architecture fetching data from MongoDB and MySQL via SQLAlchemy.",
         "Created key analytics (Device Intelligence, Geospatial) using Sunburst Charts."
       ]
+    },
+    {
+      title: "Vocal Muse (VoxScript): Studio Workspace",
+      technologies: ["React 19", "TanStack Start", "Tailwind v4", "Web Audio API", "Hybrid RAG", "IndexedDB", "OPFS"],
+      bullets: [
+        "Engineered an open-source, 100% local-first studio workspace turning vocal mumble freestyles into polished lyrics.",
+        "Implemented real-time voice capture with latency-compensated bar slicing, metronome sync, and OPFS audio persistence.",
+        "Built a Multi-Level Hybrid RAG Core (Reciprocal Rank Fusion RRF) + Zero-LLM Offline POS-Grammar engine with 31,021-entry KEED 2018 Kannada-English and Hinglish rap dictionaries."
+      ]
     }
   ],
   certifications: [

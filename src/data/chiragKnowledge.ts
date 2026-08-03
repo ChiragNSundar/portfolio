@@ -277,6 +277,20 @@ export const KNOWLEDGE_BASE: KnowledgeChunk[] = [
     content: "Chirag N Sundar — Software Engineer & AI Specialist. B.E. in CS from RNSIT (GPA 8.89). Currently an AI Operations Specialist at RBCCI, building core banking ecosystems with AMLA compliance monitoring and edge AI biometric verification. Previously interned at WhatDigital Technologies (5 months) building AI chatbots and BI dashboards.\n\nKey projects: RoadWatch (YOLOv8 real-time helmet detection + license plate OCR), AI JD Bot (enterprise Flask app with Gemini/Gemma, 490+ tests, circuit breakers), Harmony Hub (RAG mental health chatbot), Job Portal Analytics Dashboard (Plotly/Dash with MongoDB/MySQL).\n\nCore skills: Python, React/TypeScript, Node.js, computer vision, generative AI, database optimization. Strong problem-solver who takes projects from idea to deployment."
   },
   {
+    id: "vocalmuse_overview",
+    category: "project",
+    title: "Vocal Muse (VoxScript) — Studio Workspace Overview",
+    keywords: ["vocal muse", "vocalmuse", "voxscript", "vocal", "lyrics", "mumble", "freestyle", "studio", "hip-hop", "rap", "songwriting", "drake", "kendrick", "seedhe maut", "brodha v"],
+    content: "Vocal Muse (VoxScript) is an open-source, local-first studio workspace for vocalists, songwriters, and producers. It turns mumble freestyles into Drake/Kendrick/Seedhe Maut/Brodha V-tier polished lyrics, maps audio cadences in real-time, and builds a personalized style memory — all running 100% offline on your local machine with zero cloud lock-in. Inspired by VoxSketch AI, it brings raw vocal processing to the open-source community as a privacy-focused local app. The tech stack is React 19, TanStack Start, Vite 7, Tailwind v4, Web Audio API, faster-whisper-server (Port 9000 STT), IndexedDB, and OPFS (Origin Private File System)."
+  },
+  {
+    id: "vocalmuse_technical",
+    category: "project",
+    title: "Vocal Muse (VoxScript) — Technical Deep-Dive",
+    keywords: ["rrf", "reciprocal rank fusion", "zero-llm", "indic", "kannada", "keed", "hinglish", "kanglish", "pos", "phonetic", "opfs", "indexeddb", "whisper", "cadence"],
+    content: "The intelligence core of Vocal Muse features a Multi-Level Hybrid RAG Engine using Reciprocal Rank Fusion (RRF) combining semantic, cadence, and POS recall. When no LLM is connected, it switches to a 100% Zero-LLM Offline RAG Mode that uses POS-grammar cadence assembly via style memory + Indic phonetic rimes. It ingests a 31,021-entry KEED 2018 Kannada-English dictionary dataset alongside Hinglish rap vocabulary. Audio takes are stored locally in OPFS (Origin Private File System) while tracks and style memories persist in IndexedDB. It also features a pre-generation sensory Metaphor Synthesizer and a 2-3 syllable multisyllabic Rhyme Ladder Planner."
+  },
+  {
     id: "projects_overview",
     category: "meta",
     title: "All Projects Overview",

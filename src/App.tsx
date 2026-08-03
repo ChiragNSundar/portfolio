@@ -472,6 +472,108 @@ const PROJECT_DETAILS_DATA = {
                |  Gemini / GPT)    |                 |  DPO Logs JSON)   |
                +-------------------+                 +-------------------+`,
     databaseSchema: undefined
+  },
+  vocalmuse: {
+    title: "Vocal Muse (VoxScript): Studio Workspace for Vocalists & Songwriters",
+    github: "https://github.com/ChiragNSundar/Vocal-Muse",
+    images: [
+      "/vm/image1.png",
+      "/vm/image2.png",
+      "/vm/image3.png",
+      "/vm/image4.png",
+      "/vm/image5.png",
+      "/vm/image6.png",
+      "/vm/image7.png",
+      "/vm/image8.png",
+      "/vm/image9.png"
+    ],
+    pitch: "An open-source, local-first studio workspace for vocalists, songwriters, and producers. Vocal Muse turns mumble freestyles into Drake/Kendrick/Seedhe Maut/Brodha V-tier polished lyrics, maps audio cadences in real-time, and builds a personalized style memory—all running 100% offline on your local machine with zero cloud lock-in.",
+    techStack: [
+      { component: "Frontend Framework", tech: "React 19 + TanStack Start + Vite 7" },
+      { component: "Styling & UI", tech: "Tailwind CSS v4" },
+      { component: "Audio & Web Engine", tech: "Web Audio API + Oscilloscope Waveform" },
+      { component: "Speech-To-Text STT", tech: "faster-whisper-server (Port 9000)" },
+      { component: "Intelligence & RAG Core", tech: "Multi-Level Hybrid RAG (Reciprocal Rank Fusion RRF)" },
+      { component: "Zero-LLM RAG Mode", tech: "POS-Grammar Cadence Assembly via style memory + Indic rimes" },
+      { component: "Dictionary Datasets", tech: "31,021-entry KEED 2018 Kannada-English & Hinglish Rap Vocabulary" },
+      { component: "Local Persistence", tech: "IndexedDB (Tracks/Memories) + OPFS (Audio Takes)" },
+      { component: "AST Knowledge Graph", tech: "Graphify AST Engine" }
+    ],
+    features: [
+      "🎙️ Live Punch-In Studio: Real-time voice capture with latency-compensated bar slicing, Web Audio oscilloscope waveform, and metronome pulse ring.",
+      "🧠 Ghostwriter & Zero-LLM RAG Engine: Multi-pass cadence matching, anti-cliché burned-phrase filter, and Reciprocal Rank Fusion (RRF) hybrid vector recall. Works seamlessly with local LLMs (LM Studio, Ollama) or 100% Zero-LLM Offline RAG Mode when no LLM is connected.",
+      "🎨 Metaphor & Imagery Synthesizer: Pre-generation sensory domain mapping (tactile textures, visual settings, luxury vs street contrasts, and double-entendre wordplay blueprints).",
+      "🎵 Pre-Generation Rhyme Ladder Planner: Pre-plans 2-syllable and 3-syllable multisyllabic rime clusters across 4-bar blocks (AABB, ABAB, AAAA) using custom Indic and English phonetic rime engines.",
+      "📚 Multilingual Dictionary Datasets: Native support for Romanized Hindi (Hinglish) and Romanized Kannada (Kanglish) with complete 31,021-entry KEED 2018 Kannada-English dictionary ingestion, Desi Hip-Hop vocabulary blueprints, POS annotations, and English meanings.",
+      "🔒 100% Offline & Private: Zero API keys or cloud subscriptions required. Runs on local LLMs (LM Studio, Ollama) and local STT (faster-whisper-server).",
+      "💾 Local-First Storage: Audio takes save to OPFS (Origin Private File System); tracks and style memories save to IndexedDB. Includes 1-click JSON bundle import/export.",
+      "⌨️ Keyboard Shortcuts & Sound FX: Integrated shortcut system (? overlay) and synthesized Web Audio sound FX cues.",
+      "🕸️ Knowledge Graph Enabled: Complete codebase AST indexed with Graphify for interactive architectural exploration."
+    ],
+    coreIntelligence: [
+      "Zero-LLM Offline RAG Engine: POS Grammar Cadence Assembly via style memory + Indic phonetic rimes when no LLM is connected.",
+      "Reciprocal Rank Fusion (RRF) Hybrid RAG: Multi-Level Hybrid Vector Recall combining Semantic + Cadence + POS RRF.",
+      "Critic Council: Multi-critic evaluation checking Pocket flow, Wordplay density, and Regional Authenticity."
+    ],
+    challenges: "Designing a 100% local-first audio pipeline with zero cloud dependencies required synchronizing Web Audio mic capture with faster-whisper-server latency slicing, storing large audio takes in OPFS, and executing multi-pass RAG & POS-grammar lyric generation locally without UI blocking.",
+    projectStructure: `Vocal-Muse/
+├── data/                               # Dictionary raw assets & PDFs (KEED 2018)
+├── public/data/                        # Ingested JSON datasets (Kannada 31k+ & Hinglish)
+├── scripts/                            # Python ingestion pipelines (build_dictionary_datasets.py)
+├── src/
+│   ├── components/                     # UI components (PocketGrid, StyleBriefForm, CriticCard)
+│   ├── hooks/                          # Custom React hooks (use-shortcuts, use-live-capture)
+│   ├── lib/                            # Core intelligence & persistence layer
+│   │   ├── critics.ts                  # Multi-critic council (Pocket, Wordplay, Authenticity)
+│   │   ├── indic-dictionary.ts         # Unified Indic POS & dictionary lookup service
+│   │   ├── live-capture.ts             # Web Audio real-time recording & metronome engine
+│   │   ├── local-pipeline.ts           # Ghostwriter generation & refinement pipeline
+│   │   ├── local-store.ts              # IndexedDB & OPFS local storage manager
+│   │   ├── metaphor-synthesizer.ts     # Pre-generation sensory domain & metaphor mapper
+│   │   ├── offline-rag-generator.ts    # Zero-LLM Offline POS-Grammar Cadence Engine
+│   │   ├── phonetics.ts                # Indic & English syllable counter and rime engine
+│   │   ├── rhyme-planner.ts            # Multisyllabic rhyme ladder planner (2-3 syl)
+│   │   ├── style-hybrid-rag.ts         # Reciprocal Rank Fusion (RRF) Multi-Level Hybrid RAG
+│   │   └── style-recall.ts             # TF-IDF / Embedding style memory recall
+│   └── routes/                         # TanStack Start file-based routes
+├── graphify-out/                       # Graphify AST Knowledge Graph index
+└── start-local.bat                     # Windows 1-click launcher script`,
+    architecture: `  +-----------------------------------------------------------------------------------+
+  |                       CLIENT UI (Browser / Local Workspace)                        |
+  |  +-----------------------------+  +-------------------+  +---------------------+  |
+  |  | 🎙️ Live Punch-In Studio     |  | 🎛️ Style Brief    |  | 📝 Pocket Grid      |  |
+  |  | (Web Audio & Oscilloscope) |  | Form (Genre/Slang)|  | Lyric Editor        |  |
+  |  +--------------+--------------+  +---------+---------+  +----------^----------+  |
+  +-----------------|---------------------------|-----------------------|-------------+
+                    |                           |                       |
+  +-----------------v---------------------------v-----------------------|-------------+
+  |                              AUDIO & INTELLIGENCE LAYER             |             |
+  |  +----------------------+  +---------------------+  +---------------+----------+  |
+  |  | Mic Capture & OPFS   |  | Local STT           |  | Latency Slicer           |  |
+  |  | Storage              |  | (faster-whisper)    |  | & Cadence Map            |  |
+  |  +----------------------+  +---------------------+  +---------------+----------+  |
+  |                                                                     |             |
+  |  +------------------------------------------------------------------v----------+  |
+  |  | LYRIC INTELLIGENCE & RAG CORE                                               |  |
+  |  | • Multi-Level Hybrid RAG (Semantic + Cadence + POS RRF)                     |  |
+  |  | • Indic Dictionary Service (31k+ KEED 2018 Entries)                         |  |
+  |  | • Metaphor Synthesizer & Multisyllabic Rhyme Ladder Planner                 |  |
+  |  +----------------------------------+------------------------------------------+  |
+  +-------------------------------------|---------------------------------------------+
+                                        |
+  +-------------------------------------v---------------------------------------------+
+  |                          GHOSTWRITER EXECUTION MODES                              |
+  |  +------------------------------------+  +-------------------------------------+  |
+  |  | 🤖 Local LLM Server                |  | ⚡ Zero-LLM Offline RAG Engine       |  |
+  |  | (Ollama / LM Studio / WebLLM)      |  | (POS Grammar Cadence Assembly)      |  |
+  |  +------------------+-----------------+  +------------------+------------------+  |
+  |                     |                                       |                     |
+  |                     v                                       |                     |
+  |             +---------------+                               |                     |
+  |             | Critic Council|-------------------------------+                     |
+  |             +---------------+                                                     |
+  +-----------------------------------------------------------------------------------+`,
+    databaseSchema: undefined
   }
 };
 
@@ -594,7 +696,7 @@ const ScreenshotWithSkeleton: React.FC<{
 export const App: React.FC = () => {
   // Console Role Mode: 'select' = Decision screen, 'engineer' = Coding portfolio, 'producer' = Audio mixing portfolio
   const [mode, setMode] = useState<'select' | 'engineer' | 'producer'>('select');
-  const [activeDetailProject, setActiveDetailProject] = useState<"roadwatch" | "harmony" | "jobportal" | "aijdbot" | "vibelyrics" | null>(null);
+  const [activeDetailProject, setActiveDetailProject] = useState<"roadwatch" | "harmony" | "jobportal" | "aijdbot" | "vibelyrics" | "vocalmuse" | null>(null);
   const [activeScreenshotLightbox, setActiveScreenshotLightbox] = useState<string | null>(null);
 
   // Background Preloading & Esc key listeners
@@ -1736,10 +1838,10 @@ export const App: React.FC = () => {
                 overflowX: "auto"
               }}
             >
-              {(["roadwatch", "harmony", "jobportal", "aijdbot", "vibelyrics"] as const).map((key) => {
+              {(["roadwatch", "harmony", "jobportal", "aijdbot", "vibelyrics", "vocalmuse"] as const).map((key) => {
                 const isActive = activeDetailProject === key;
-                const icon = key === "roadwatch" ? "🏍️" : key === "harmony" ? "🧠" : key === "jobportal" ? "📊" : key === "aijdbot" ? "🤖" : "🎤";
-                const label = key === "roadwatch" ? "ROADWATCH" : key === "harmony" ? "HARMONY HUB" : key === "jobportal" ? "JOB PORTAL" : key === "aijdbot" ? "AI JD BOT" : "VIBELYRICS";
+                const icon = key === "roadwatch" ? "🏍️" : key === "harmony" ? "🧠" : key === "jobportal" ? "📊" : key === "aijdbot" ? "🤖" : key === "vibelyrics" ? "🎤" : "🎛️";
+                const label = key === "roadwatch" ? "ROADWATCH" : key === "harmony" ? "HARMONY HUB" : key === "jobportal" ? "JOB PORTAL" : key === "aijdbot" ? "AI JD BOT" : key === "vibelyrics" ? "VIBELYRICS" : "VOCAL MUSE";
                 return (
                   <button
                     key={key}
