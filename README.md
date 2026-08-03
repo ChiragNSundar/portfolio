@@ -1,6 +1,6 @@
 # 📻 Dual-Role Analog Console Portfolio & Stems Studio
 
-[![Live Website](https://img.shields.io/badge/Live-Vercel-blue?style=for-the-badge)](https://portfolio-one-blue-asoaj8ivp3.vercel.app/)
+[![Live Website](https://img.shields.io/badge/Live-Vercel-blue?style=for-the-badge)](https://chiragns.vercel.app/)
 
 An immersive, skeuomorphic, and interactive developer portfolio website styled as a **1970s analog studio rack unit** in 3D. 
 
@@ -8,7 +8,7 @@ This project features a **Dual-Role Entry Portal** that custom-tailors the portf
 * **💻 Software Engineering Dossier**: Focuses on computer science credentials, internship metrics, a neobrutalist tech stack deck, live GitHub statistics, an offline semantic RAG chatbot, and 6 detailed project console breakdowns.
 * **🎚️ Music Production & Stems Studio**: Focuses on multitrack audio mixing comparison players, an Originals & Covers tabbed YouTube player, and an FL Studio-themed entry splash.
 
-Live Vercel Site: [portfolio-one-blue-asoaj8ivp3.vercel.app](https://portfolio-one-blue-asoaj8ivp3.vercel.app/)
+Live Vercel Site: [chiragns.vercel.app](https://chiragns.vercel.app/)
 
 ---
 
