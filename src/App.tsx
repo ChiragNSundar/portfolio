@@ -41,6 +41,9 @@ const PROJECT_DETAILS_DATA = {
     title: "RoadWatch: Smart Helmet & License Plate Recognition",
     github: "https://github.com/ChiragNSundar/Helmet-Violation-Detection-and-License-Plate-Recognition-Realtime",
     images: ["/rw/bike.gif"],
+    imageCaptions: [
+      { title: "1. Real-Time Detection Feed (GIF)", desc: "Live camera stream processing YOLOv8 object detection for helmet infractions, riders, and number plates." }
+    ],
     pitch: "An AI-powered traffic enforcement system designed for real-time monitoring of motorcycle helmet violations. It detects riders without helmets, recognizes their license plates via advanced OCR consensus logic, and logs violations with visual evidence.",
     techStack: [
       { component: "Language", tech: "Python 3.10.x" },
@@ -88,6 +91,13 @@ const PROJECT_DETAILS_DATA = {
       "/hm/PlotlyGraphData.png",
       "/hm/UserAuthPage.jpeg"
     ],
+    imageCaptions: [
+      { title: "1. Gemini AI Assistant Chat", desc: "Empathetic conversational interface with PDF document RAG context retrieval." },
+      { title: "2. Contextual RAG Q&A Session", desc: "Document parser pipeline retrieving personal context notes to feed custom LLM responses." },
+      { title: "3. Habit & Goal Tracker", desc: "Streamlit wellness dashboard for tracking daily routines, streak metrics, and habit milestones." },
+      { title: "4. Interactive Plotly Analytics", desc: "Visual progress graphs plotting long-term mood patterns and wellness trends." },
+      { title: "5. User Authentication & Portal", desc: "Secure user session login & personalized wellness profile portal." }
+    ],
     pitch: "A comprehensive mental health assistant helping users with mood logs, habit trackers, and personalized AI support through a generative Gemini RAG chatbot.",
     techStack: [
       { component: "Frontend / UI", tech: "Streamlit (Python)" },
@@ -133,6 +143,15 @@ const PROJECT_DETAILS_DATA = {
       "/jp/image copy 3.png",
       "/jp/image copy 4.png",
       "/jp/image copy 5.png"
+    ],
+    imageCaptions: [
+      { title: "1. Executive BI Overview", desc: "High-level KPI dashboard displaying overall applicant volume, traffic metrics, and status breakdown." },
+      { title: "2. Application Volume Timeline", desc: "Dual-axis Plotly timeline charts tracking daily and monthly job seeker activity." },
+      { title: "3. Geospatial Demographics", desc: "Regional applicant distribution maps and sunburst country breakdown charts." },
+      { title: "4. Device & Adoption Intelligence", desc: "Desktop vs mobile platform adoption graphs modeling applicant device preferences." },
+      { title: "5. Job Market Trend Analysis", desc: "Interactive category filter breakdown comparing high-demand tech skill sets." },
+      { title: "6. Data Filter & Query Console", desc: "Global multi-metric dropdown filters querying MySQL and MongoDB instances." },
+      { title: "7. Detailed Candidate Status Grid", desc: "Tabular candidate tracking grid with status filtering and export capabilities." }
     ],
     pitch: "A comprehensive, interactive data visualization dashboard querying user device preference models, application status distributions, and geo-spatial applicant locations.",
     techStack: [
@@ -195,7 +214,14 @@ const PROJECT_DETAILS_DATA = {
   aijdbot: {
     title: "AI JD Bot: Job Description Assistant",
     github: "https://github.com/ChiragNSundar/ai-jd-bot",
-    images: [],
+    images: [
+      "/aijd/image.png",
+      "/aijd/image copy.png"
+    ],
+    imageCaptions: [
+      { title: "1. AI Job Description Assistant", desc: "Interactive Flask chatbot guiding recruiters through structured JD creation with Gemini 2.0 Flash." },
+      { title: "2. Address & Location Selector", desc: "Leaflet OpenStreetMap integration with automatic address parsing and Google Maps fallback." }
+    ],
     pitch: "An AI-powered job description chatbot built with Flask and Gemini & Gemma Models. It features a modular architecture, parallel SQLite backup storage, and Pydantic validation, with zero-tolerance for unhandled exceptions.",
     techStack: [
       { component: "Core Logic", tech: "Python 3.9+" },
@@ -394,6 +420,15 @@ const PROJECT_DETAILS_DATA = {
       "/vbl/image copy 4.png",
       "/vbl/image copy 5.png",
       "/vbl/image copy 6.png"
+    ],
+    imageCaptions: [
+      { title: "1. Dreamy Lyric Writing Studio", desc: "Distraction-free glassmorphic editor featuring real-time assonance & consonance rhyme highlights." },
+      { title: "2. AI Ghostwriter 'Vibe' Assistant", desc: "Personalized LLM assistant matching headspace, journal emotions, and custom slang rules." },
+      { title: "3. Multilingual Rhyme Dictionary", desc: "Phonetic rhyme lookup engines for English, Romanized Hindi (Hinglish), and Kannada (Kanglish)." },
+      { title: "4. Syllable Stress & Cadence Timeline", desc: "Interactive syllable stress indicators aligned with rhythm and flow matching." },
+      { title: "5. Continual DPO Training Pipeline", desc: "Background line score aggregator auto-triggering multi-LoRA profile retraining." },
+      { title: "6. 3D Theme & Topic Network", desc: "Interactive Three.js visual graph mapping thematic connections and self-referential adlib callbacks." },
+      { title: "7. Offline PWA & Data Management", desc: "IndexedDB local sync queues, GGUF model exports, and offline PWA service worker asset caching." }
     ],
     pitch: "A professional-grade hip-hop lyric writing assistant and analysis suite. It combines a distraction-free writing environment with real-time rhyme highlighting, multi-LoRA continual DPO training pipelines, and interactive 3D theme networks.",
     techStack: [
