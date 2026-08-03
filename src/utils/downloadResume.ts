@@ -6,7 +6,7 @@ export const downloadSoftwareEngineerResume = () => {
   <title>Chirag_N_Sundar_Software_Engineer_Resume</title>
   <style>
     @page {
-      margin: 10mm 14mm;
+      margin: 0;
       size: letter;
     }
     
@@ -20,7 +20,7 @@ export const downloadSoftwareEngineerResume = () => {
       font-family: 'Times New Roman', Times, Georgia, serif;
       color: #000000;
       background: #ffffff;
-      padding: 10px 20px;
+      padding: 10mm 14mm;
       line-height: 1.35;
       font-size: 10.5pt;
       -webkit-print-color-adjust: exact;
