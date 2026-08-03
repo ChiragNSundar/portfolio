@@ -10,16 +10,18 @@ export const DeveloperResumeCard: React.FC<DeveloperResumeCardProps> = ({ onInte
   // Project Explorer state ('harmony' | 'roadwatch' | 'jobportal' | null)
   const [activeProject, setActiveProject] = useState<string | null>(null);
 
-  // Live GitHub stats fetching with caching
+  // Live GitHub stats fetching with serverless API & caching
   const [githubStats, setGithubStats] = useState<{
     commits: number;
     repos: number;
     followers: number;
+    levels: number[];
     loading: boolean;
   }>({
-    commits: 782,
+    commits: 788,
     repos: 20,
     followers: 5,
+    levels: [],
     loading: true
   });
 
@@ -65,10 +67,31 @@ export const DeveloperResumeCard: React.FC<DeveloperResumeCardProps> = ({ onInte
   useEffect(() => {
     const fetchStats = async () => {
       try {
+        // Try Vercel Serverless API route first (scrapes live GitHub contributions & caches for 1hr)
+        const apiRes = await fetch("/api/github-stats");
+        if (apiRes.ok) {
+          const apiData = await apiRes.json();
+          if (apiData && typeof apiData.contributions === "number") {
+            setGithubStats({
+              commits: apiData.contributions,
+              repos: apiData.repos ?? 20,
+              followers: apiData.followers ?? 5,
+              levels: Array.isArray(apiData.levels) ? apiData.levels : [],
+              loading: false
+            });
+            return;
+          }
+        }
+      } catch (_) {
+        // Ignore API fetch errors when running in local dev without Vercel CLI
+      }
+
+      // Fallback: direct GitHub REST API fetch
+      try {
         const userRes = await fetch("https://api.github.com/users/ChiragNSundar");
         let liveRepos = 20;
         let liveFollowers = 5;
-        let liveCommits = 782;
+        let liveCommits = 788;
 
         if (userRes.ok) {
           const userData = await userRes.json();
@@ -76,25 +99,11 @@ export const DeveloperResumeCard: React.FC<DeveloperResumeCardProps> = ({ onInte
           liveFollowers = userData.followers ?? 5;
         }
 
-        try {
-          const searchRes = await fetch("https://api.github.com/search/commits?q=author:ChiragNSundar", {
-            headers: { Accept: "application/vnd.github.cloak-preview+json" }
-          });
-          if (searchRes.ok) {
-            const searchData = await searchRes.json();
-            if (typeof searchData.total_count === "number" && searchData.total_count > 0) {
-              // GitHub search API returns incomplete count (667); enforce baseline of 782 total contributions
-              liveCommits = Math.max(782, searchData.total_count);
-            }
-          }
-        } catch (_) {
-          // ignore search API rate limit errors
-        }
-
         setGithubStats({
           commits: liveCommits,
           repos: liveRepos,
           followers: liveFollowers,
+          levels: [],
           loading: false
         });
       } catch (err) {
@@ -1027,20 +1036,18 @@ export const DeveloperResumeCard: React.FC<DeveloperResumeCardProps> = ({ onInte
                   {/* Hand-crafted pattern matching real contribution graph:
                       Columns map to weeks (Jul→Jul), Rows = Mon/Wed/Fri
                       Sparse Jul-Nov, heavy Dec-Mar, moderate Apr-Jul */}
-                  {[
-                    // Jul-Aug (sparse)
-                    0,0,0, 0,1,0, 0,0,0, 0,0,1, 0,0,0,
-                    // Sep-Nov (very sparse with occasional)
-                    0,0,0, 0,0,0, 0,1,0, 1,0,0, 0,0,0, 0,1,0,
-                    // Dec-Jan (heavy activity)
-                    2,3,2, 4,3,5, 3,4,3, 5,2,4, 3,5,3, 4,3,2,
-                    // Feb-Mar (heavy continued)
-                    3,2,4, 5,3,2, 2,4,3, 3,2,1, 2,3,2, 1,2,0,
-                    // Apr-May (moderate tapering)
-                    0,1,0, 0,2,1, 0,0,1, 1,0,0, 2,1,0,
-                    // Jun-Jul (some recent activity)
-                    1,2,0, 0,1,2, 1,3,1, 2,1,0, 0,1,2, 1,0,0
-                  ].map((level, i) => {
+                  {/* Contribution Grid: Uses live scraped levels from API if available, else static fallback */}
+                  {(githubStats.levels.length > 0
+                    ? githubStats.levels.slice(-105)
+                    : [
+                        0,0,0, 0,1,0, 0,0,0, 0,0,1, 0,0,0,
+                        0,0,0, 0,0,0, 0,1,0, 1,0,0, 0,0,0, 0,1,0,
+                        2,3,2, 4,3,5, 3,4,3, 5,2,4, 3,5,3, 4,3,2,
+                        3,2,4, 5,3,2, 2,4,3, 3,2,1, 2,3,2, 1,2,0,
+                        0,1,0, 0,2,1, 0,0,1, 1,0,0, 2,1,0,
+                        1,2,0, 0,1,2, 1,3,1, 2,1,0, 0,1,2, 1,0,0
+                      ]
+                  ).map((level, i) => {
                     const shades = ["#161b22", "#0e4429", "#006d32", "#26a641", "#39d353"];
                     return (
                       <div
