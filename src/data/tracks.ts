@@ -38,6 +38,18 @@ export const mixAndOriginalTracks: Track[] = [
     spotifyUrl: "https://open.spotify.com/track/1RMaBcZWrsNII3XzHLzBPK?si=e6c2e32d07b149a7"
   },
   {
+    id: "big-buck-collab",
+    title: "Big Buck Collab",
+    artist: "Bhupesh Choudhary",
+    genre: "Hip-Hop Vocal Mix",
+    type: "mix",
+    icon: "🎙️",
+    color: "#9333ea",
+    audioBefore: "/audio/mixes/big-buck-collab/before.m4a",
+    audioAfter: "/audio/mixes/big-buck-collab/after.mp3",
+    description: "Real Vocal Stem Comparison. 'Before': Raw unmixed vocal recording by Bhupesh Choudhary. 'After': Professionally tuned, EQ sculptured, compressed, saturated, and mastered final mix."
+  },
+  {
     id: "no-bitches",
     title: "No Bitches",
     artist: "Hazard Chirag",

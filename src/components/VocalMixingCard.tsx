@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import type { Track } from "../data/tracks";
+import { mixAndOriginalTracks } from "../data/tracks";
 import { audioEngine } from "../audio/audioEngine";
 
 interface VocalMixingCardProps {
@@ -12,6 +13,7 @@ interface VocalMixingCardProps {
   onVolumeChange: (vol: number) => void;
   onInteract?: () => void;
   onContactClick?: () => void;
+  onTrackSelect?: (track: Track) => void;
 }
 
 export const VocalMixingCard: React.FC<VocalMixingCardProps> = ({
@@ -23,8 +25,10 @@ export const VocalMixingCard: React.FC<VocalMixingCardProps> = ({
   onMixRatioChange,
   onVolumeChange,
   onInteract,
-  onContactClick
+  onContactClick,
+  onTrackSelect
 }) => {
+  const activeTrack = currentTrack || mixAndOriginalTracks[0];
   const [trackProgress, setTrackProgress] = useState(0);
 
   // Realtime Playhead & Duration tracking
@@ -208,7 +212,7 @@ export const VocalMixingCard: React.FC<VocalMixingCardProps> = ({
         </p>
       </div>
 
-      {/* FEATURED REAL AUDIO COMPARE PLAYER: ENTROPY */}
+      {/* FEATURED REAL AUDIO COMPARE PLAYER */}
       <div
         style={{
           display: "flex",
@@ -223,13 +227,13 @@ export const VocalMixingCard: React.FC<VocalMixingCardProps> = ({
       >
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: "12px" }}>
           <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-            <span className="bouncy-emoji" style={{ fontSize: "1.4rem" }}>🎧</span>
+            <span className="bouncy-emoji" style={{ fontSize: "1.4rem" }}>{activeTrack.icon || "🎧"}</span>
             <div>
               <span style={{ fontFamily: "var(--font-lcd)", fontSize: "0.7rem", color: "var(--color-lavender-accent)", fontWeight: "bold", textTransform: "uppercase", letterSpacing: "1px" }}>
                 LIVE VOCAL STEM COMPARISON
               </span>
               <h3 style={{ fontSize: "1.3rem", fontWeight: "900", color: "var(--text-dark)" }}>
-                Entropy &mdash; <span style={{ fontSize: "1rem", color: "var(--text-muted)", fontWeight: "600" }}>RMAN ft. CIPHER</span>
+                {activeTrack.title} &mdash; <span style={{ fontSize: "1rem", color: "var(--text-muted)", fontWeight: "600" }}>{activeTrack.artist}</span>
               </h3>
             </div>
           </div>
@@ -264,7 +268,7 @@ export const VocalMixingCard: React.FC<VocalMixingCardProps> = ({
                 transition: "all 0.2s"
               }}
             >
-              🎙️ Before Mix (RxC Draft 2)
+              🎙️ Before Mix (Raw Unmixed)
             </button>
 
             <button
@@ -381,6 +385,60 @@ export const VocalMixingCard: React.FC<VocalMixingCardProps> = ({
           <span style={{ fontFamily: "var(--font-lcd)", fontSize: "0.75rem", fontWeight: "bold", minWidth: "40px", textAlign: "right" }}>
             {Math.round(volume * 100)}%
           </span>
+        </div>
+
+        {/* Mix Selection Grid */}
+        <div style={{ display: "flex", flexDirection: "column", gap: "10px", borderTop: "1.5px dashed var(--border-color)", paddingTop: "14px" }}>
+          <span style={{ fontFamily: "var(--font-lcd)", fontSize: "0.7rem", color: "var(--color-lavender-accent)", fontWeight: "bold", textTransform: "uppercase", letterSpacing: "1px" }}>
+            SELECT MIX WORKPIECE FOR DUAL-STEM LOCKSTEP COMPARISON:
+          </span>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: "10px" }}>
+            {mixAndOriginalTracks.filter((t) => t.type === "mix").map((track) => {
+              const isSelected = activeTrack.id === track.id;
+              return (
+                <button
+                  key={track.id}
+                  onClick={() => {
+                    if (onTrackSelect) {
+                      onTrackSelect(track);
+                    } else {
+                      audioEngine.play(track);
+                    }
+                    if (onInteract) onInteract();
+                  }}
+                  style={{
+                    background: isSelected ? "var(--color-lavender)" : "var(--card-bg)",
+                    border: isSelected ? "2px solid var(--color-lavender-accent)" : "1.5px solid var(--border-color)",
+                    borderRadius: "12px",
+                    padding: "10px 14px",
+                    cursor: "pointer",
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "10px",
+                    boxShadow: isSelected ? "none" : "3px 3px 0px var(--card-shadow)",
+                    transition: "all 0.15s ease",
+                    transform: isSelected ? "translate(2px, 2px)" : "none",
+                    textAlign: "left"
+                  }}
+                >
+                  <span className="bouncy-emoji" style={{ fontSize: "1.3rem" }}>{track.icon}</span>
+                  <div style={{ display: "flex", flexDirection: "column", overflow: "hidden" }}>
+                    <span style={{ fontSize: "0.82rem", fontWeight: "900", color: "var(--text-dark)", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
+                      {track.title}
+                    </span>
+                    <span style={{ fontSize: "0.68rem", color: "var(--text-muted)", fontWeight: "600" }}>
+                      {track.artist}
+                    </span>
+                  </div>
+                  {isSelected && (
+                    <span style={{ marginLeft: "auto", fontSize: "0.65rem", fontWeight: "800", color: "var(--color-lavender-accent)", background: "var(--card-bg)", padding: "2px 6px", borderRadius: "6px", border: "1px solid var(--color-lavender-accent)" }}>
+                      {isPlaying ? "▶ PLAYING" : "LOADED"}
+                    </span>
+                  )}
+                </button>
+              );
+            })}
+          </div>
         </div>
       </div>
 

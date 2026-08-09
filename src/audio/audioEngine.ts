@@ -159,7 +159,7 @@ export class AudioEngine {
 
     let syncStarted = false;
     const startSync = () => {
-      if (syncStarted) return;
+      if (syncStarted || !this.isPlaying) return;
       syncStarted = true;
       if (this.audioBefore && this.audioAfter) {
         this.audioBefore.currentTime = 0;
