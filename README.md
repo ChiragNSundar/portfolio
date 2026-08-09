@@ -10,12 +10,17 @@ This project features a **Dual-Role Entry Portal** that custom-tailors the portf
 
 Live Vercel Site: [chiragns.vercel.app](https://chiragns.vercel.app/)
 
+### 🔗 Direct Access Links & Fiverr Services
+* **💻 Software Engineering Dossier Direct Link**: [chiragns.vercel.app/#engineer](https://chiragns.vercel.app/#engineer) (or `https://chiragns.vercel.app/engineer`)
+* **🎚️ Music Production & Mixing Studio Direct Link**: [chiragns.vercel.app/#producer](https://chiragns.vercel.app/#producer) (or `https://chiragns.vercel.app/music`)
+* **🟢 Fiverr Profile (Mixing & Vocal Processing Services)**: [fiverr.com/s/rEV8667](https://www.fiverr.com/s/rEV8667) — Book custom vocal mixing, pitch tuning, multitrack balancing, and streaming mastering.
+
 ---
 
 ## 🕹️ Interface & Key Features
 
 ### 1. Dual-Mode Landing Portal
-* Splitted skeuomorphic splash screen allowing visitors to select their target role path immediately upon loading.
+* Splitted skeuomorphic splash screen allowing visitors to select their target role path immediately upon loading, with direct link indicators for `#engineer` and `#producer`.
 * Dynamic switch button with animation transforming the layout instantly.
 * Animated hero greetings displaying **HazardChirag** with a custom scrambler text transition when loading the engineer dossier.
 * **FL Studio Entry Splash**: Entering the Music Producer console triggers the iconic FL Studio startup sound (`/audio/sfx/fl_studio_start.mp3`) with the official fruit logo animating inline below the hero section.
@@ -26,9 +31,10 @@ Live Vercel Site: [chiragns.vercel.app](https://chiragns.vercel.app/)
 * **"Ask Chirag AI" Offline Semantic RAG Engine**: Zero-latency, client-side RAG engine loaded with ~40 pre-chunked knowledge chunks. Employs TF-IDF scoring, bigram matching, category boosting, dynamic follow-up chips, and embellishment rules to handle interview Q&A and technical inquiries 100% offline without API keys.
 * **Live GitHub Activity Scraper & Heatmap**: Vercel Serverless Function (`/api/github-stats.ts`) with 1-hour CDN caching (`s-maxage=3600, stale-while-revalidate=86400`) that scrapes your exact live total contribution count (**788+**) and renders the real 52-week activity heatmap level boxes.
 
-### 3. Contact & Social Integrations
+### 3. Contact, Fiverr & Social Integrations
 * **Dedicated Contact Consoles**: Separate contact cards tailored for Software Engineering ("DEVELOPER CONTACT CONSOLE") and Music Production ("VOCAL MIXING & PRODUCER CONSOLE").
-* **Social Links**: Connected to GitHub (`github.com/ChiragNSundar`), LinkedIn (`linkedin.com/in/chiragnsundar/`), Spotify (`open.spotify.com/user/wapj86uclwiwd4n2g94v7er6u`), Instagram (`@chirag.localhost`), and email (`chiragns12@gmail.com`).
+* **Fiverr Profile Integration**: Direct booking links for mixing and vocal processing at [fiverr.com/s/rEV8667](https://www.fiverr.com/s/rEV8667).
+* **Social Links**: Connected to GitHub (`github.com/ChiragNSundar`), LinkedIn (`linkedin.com/in/chiragnsundar/`), Fiverr (`fiverr.com/s/rEV8667`), Spotify (`open.spotify.com/user/wapj86uclwiwd4n2g94v7er6u`), Instagram (`@chirag.localhost`), and email (`chiragns12@gmail.com`).
 
 ### 4. Fullscreen Detailed Project Explorer Console
 Clicking any project card launches a fullscreen console overlay modal with roomier, high-contrast tab controls to navigate across all 6 core projects:
