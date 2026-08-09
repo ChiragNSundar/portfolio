@@ -565,36 +565,60 @@ export const VocalMixingCard: React.FC<VocalMixingCardProps> = ({
               Ready to turn raw vocals into a professional record?
             </h4>
             <p style={{ fontSize: "0.8rem", color: "#a1a1aa", lineHeight: 1.4 }}>
-              Let's work together on your next single or album project. Guaranteed radio-ready quality.
+              Let's work together on your next single or album project. You can book my services for mixing and vocal processing at my Fiverr profile or contact me directly.
             </p>
           </div>
 
-          <button
-            onClick={(e) => {
-              e.preventDefault();
-              if (onContactClick) {
-                onContactClick();
-              } else {
-                const el = document.getElementById("contact-section");
-                if (el) {
-                  el.scrollIntoView({ behavior: "smooth", block: "center" });
-                  const input = el.querySelector("input");
-                  if (input) (input as HTMLInputElement).focus();
+          <div style={{ display: "flex", flexWrap: "wrap", gap: "10px" }}>
+            <a
+              href="https://www.fiverr.com/s/rEV8667"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="analog-btn active"
+              style={{
+                padding: "10px 16px",
+                justifyContent: "center",
+                background: "#1dbf73",
+                color: "#ffffff",
+                borderColor: "#ffffff",
+                textDecoration: "none",
+                fontSize: "0.82rem",
+                fontWeight: "900",
+                display: "inline-flex",
+                alignItems: "center",
+                gap: "6px"
+              }}
+            >
+              🟢 BOOK ON FIVERR ↗
+            </a>
+            <button
+              onClick={(e) => {
+                e.preventDefault();
+                if (onContactClick) {
+                  onContactClick();
+                } else {
+                  const el = document.getElementById("contact-section");
+                  if (el) {
+                    el.scrollIntoView({ behavior: "smooth", block: "center" });
+                    const input = el.querySelector("input");
+                    if (input) (input as HTMLInputElement).focus();
+                  }
                 }
-              }
-            }}
-            className="analog-btn active"
-            style={{
-              padding: "12px 20px",
-              justifyContent: "center",
-              background: "var(--color-lavender-accent)",
-              color: "#ffffff",
-              borderColor: "#ffffff",
-              cursor: "pointer"
-            }}
-          >
-            ✉️ CONTACT ME FOR MIXING &rarr;
-          </button>
+              }}
+              className="analog-btn active"
+              style={{
+                padding: "10px 16px",
+                justifyContent: "center",
+                background: "var(--color-lavender-accent)",
+                color: "#ffffff",
+                borderColor: "#ffffff",
+                cursor: "pointer",
+                fontSize: "0.82rem"
+              }}
+            >
+              ✉️ DIRECT CONTACT &rarr;
+            </button>
+          </div>
         </div>
       </div>
 

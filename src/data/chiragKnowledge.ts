@@ -380,8 +380,8 @@ export const KNOWLEDGE_BASE: KnowledgeChunk[] = [
     id: "music_creative",
     category: "identity",
     title: "Music & Creative Side",
-    keywords: ["music", "creative", "hobby", "outside work", "passion", "interest", "sing", "vocal", "spotify", "youtube", "cover"],
-    content: "Outside of engineering, I'm deeply into music. I do vocal mixing, have released tracks on Spotify, and record YouTube covers. Music production actually shares a lot of principles with software engineering — signal processing, iterative refinement, attention to detail, and understanding your audience. It keeps me creative and balanced, and honestly, some of my best debugging insights come when I step away from code and work on music."
+    keywords: ["music", "creative", "hobby", "outside work", "passion", "interest", "sing", "vocal", "spotify", "youtube", "cover", "fiverr", "mixing", "booking", "vocal processing"],
+    content: "Outside of engineering, I'm deeply into music. I do vocal mixing, have released tracks on Spotify, and record YouTube covers. Music production actually shares a lot of principles with software engineering — signal processing, iterative refinement, attention to detail, and understanding your audience. It keeps me creative and balanced. You can also book my services for mixing and vocal processing on Fiverr at https://www.fiverr.com/s/rEV8667."
   },
 ];
 

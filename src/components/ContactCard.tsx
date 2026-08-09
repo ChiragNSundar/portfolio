@@ -80,6 +80,15 @@ export const ContactCard: React.FC<ContactCardProps> = ({
     }
   ] : [
     {
+      title: "Fiverr Profile",
+      value: "Book Mixing & Vocals",
+      url: "https://www.fiverr.com/s/rEV8667",
+      icon: "🟢",
+      color: "#1dbf73",
+      badge: "MIXING & VOCALS",
+      isMail: false
+    },
+    {
       title: "Direct Email",
       value: "chiragns12@gmail.com",
       url: "https://mail.google.com/mail/?view=cm&fs=1&to=chiragns12@gmail.com&su=Vocal%20Mixing%20Inquiry",
@@ -180,7 +189,7 @@ export const ContactCard: React.FC<ContactCardProps> = ({
         </h2>
         <p style={{ fontSize: "0.92rem", color: "var(--text-muted)", lineHeight: 1.5 }}>
           {mode === "producer"
-            ? "Need professional vocal mixing, pitch correction, mastering, or beat production? Send a message below or contact me directly through email and social channels."
+            ? "Need professional vocal mixing, pitch correction, mastering, or beat production? You can book my services directly on Fiverr at https://www.fiverr.com/s/rEV8667, send a message below, or contact me via email and social channels."
             : "Looking for software development, full-stack web applications, data analytics, or Gen-AI integrations? Reach out to get started."}
         </p>
       </div>
@@ -393,6 +402,61 @@ export const ContactCard: React.FC<ContactCardProps> = ({
           </div>
         </div>
       </div>
+
+      {/* Music Producer Fiverr Booking Footer Banner */}
+      {mode === "producer" && (
+        <div
+          style={{
+            background: "linear-gradient(135deg, #1dbf73 0%, #108e52 100%)",
+            border: "2.5px solid var(--border-color)",
+            borderRadius: "18px",
+            padding: "20px 24px",
+            display: "flex",
+            flexWrap: "wrap",
+            justifyContent: "space-between",
+            alignItems: "center",
+            gap: "16px",
+            color: "#ffffff",
+            boxShadow: "6px 6px 0px var(--card-shadow)"
+          }}
+        >
+          <div style={{ display: "flex", flexDirection: "column", gap: "6px", flex: "1 1 280px" }}>
+            <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+              <span style={{ fontSize: "1.3rem" }}>💚</span>
+              <span style={{ fontSize: "0.75rem", fontFamily: "var(--font-lcd)", fontWeight: "bold", letterSpacing: "1px" }}>
+                FIVERR VERIFIED PROFILE
+              </span>
+            </div>
+            <h4 style={{ fontSize: "1.15rem", fontWeight: "900", margin: 0, color: "#ffffff", lineHeight: 1.2 }}>
+              Book My Services for Mixing & Vocal Processing
+            </h4>
+            <p style={{ fontSize: "0.82rem", margin: 0, color: "rgba(255, 255, 255, 0.9)", lineHeight: 1.4 }}>
+              Looking for professional vocal tuning, pitch alignment, multitrack audio mixing, or mastering? Book directly through my Fiverr profile.
+            </p>
+          </div>
+          <a
+            href="https://www.fiverr.com/s/rEV8667"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="analog-btn active"
+            style={{
+              padding: "12px 22px",
+              background: "#ffffff",
+              color: "#0e6238",
+              fontWeight: "900",
+              fontSize: "0.88rem",
+              borderRadius: "12px",
+              textDecoration: "none",
+              boxShadow: "4px 4px 0px rgba(0,0,0,0.25)",
+              display: "inline-flex",
+              alignItems: "center",
+              gap: "8px"
+            }}
+          >
+            🟢 BOOK SERVICES ON FIVERR ↗
+          </a>
+        </div>
+      )}
     </div>
   );
 };
