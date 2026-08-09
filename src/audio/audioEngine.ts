@@ -121,9 +121,17 @@ export class AudioEngine {
       this.ctx.resume();
     }
 
-    if (this.isPlaying) {
-      this.stop();
+    // If the requested track is already loaded and currently paused, resume it smoothly
+    if (this.currentTrack?.id === track.id && this.audioBefore && this.audioAfter) {
+      this.isPlaying = true;
+      this.audioBefore.play().catch((e) => console.log("Audio play error", e));
+      this.audioAfter.play().catch((e) => console.log("Audio play error", e));
+      if (this.onStateChange) this.onStateChange();
+      return;
     }
+
+    // If playing a different track or initializing, stop previous streams
+    this.stopAudioStreams();
 
     this.isPlaying = true;
     this.currentTrack = track;
@@ -494,7 +502,7 @@ export class AudioEngine {
     return 440 * Math.pow(2, (note - 69) / 12);
   }
 
-  public stop() {
+  public stopAudioStreams() {
     this.isPlaying = false;
 
     if (this.sequencerTimer) {
@@ -502,7 +510,6 @@ export class AudioEngine {
       this.sequencerTimer = null;
     }
 
-    // Stop streams
     if (this.audioBefore) {
       this.audioBefore.pause();
       this.audioBefore = null;
@@ -519,8 +526,16 @@ export class AudioEngine {
       this.audioSourceAfter.disconnect();
       this.audioSourceAfter = null;
     }
+  }
 
-    this.currentTrack = null;
+  public stop() {
+    if (this.audioBefore && this.audioAfter) {
+      this.isPlaying = false;
+      this.audioBefore.pause();
+      this.audioAfter.pause();
+    } else {
+      this.stopAudioStreams();
+    }
 
     if (this.onStateChange) this.onStateChange();
   }

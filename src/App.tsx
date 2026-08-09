@@ -1056,7 +1056,7 @@ export const App: React.FC = () => {
     }
   };
 
-  const [currentTrack, setCurrentTrack] = useState<Track | null>(null);
+  const [currentTrack, setCurrentTrack] = useState<Track | null>(mixAndOriginalTracks[0]);
   const [isPlaying, setIsPlaying] = useState(false);
   const [mixRatio, setMixRatio] = useState(1.0);
   const [volume, setVolume] = useState(0.85);
@@ -1088,7 +1088,9 @@ export const App: React.FC = () => {
     audioEngine.init(() => {
       const state = audioEngine.getState();
       setIsPlaying(state.isPlaying);
-      setCurrentTrack(state.currentTrack);
+      if (state.currentTrack) {
+        setCurrentTrack(state.currentTrack);
+      }
       setMixRatio(state.mixRatio);
       setVolume(state.volume);
     });
