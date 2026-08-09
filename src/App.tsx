@@ -1361,7 +1361,7 @@ export const App: React.FC = () => {
                 boxShadow: "10px 10px 0px rgba(245, 159, 0, 0.15), 10px 10px 0px var(--card-shadow)"
               }}
             >
-              <div style={{ display: "flex", flexDirection: "column", gap: "14px" }}>
+              <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
                 <div style={{ fontSize: "3.2rem" }} className="bouncy-emoji">💻</div>
                 <h2 style={{ fontSize: "1.8rem", fontWeight: "900", textTransform: "uppercase", lineHeight: 1.1 }}>
                   Software<br/>Engineering<br/>Dossier
@@ -1369,21 +1369,6 @@ export const App: React.FC = () => {
                 <p style={{ fontSize: "0.82rem", color: "var(--text-muted)", lineHeight: 1.4 }}>
                   Review my Computer Science degree from RNSIT (8.89 GPA), WhatDigital Tech Data Science internship, detailed project technical sheets (RoadWatch, Harmony Hub), and query my local AI chatbot.
                 </p>
-                <div 
-                  style={{
-                    fontSize: "0.66rem",
-                    fontFamily: "var(--font-lcd)",
-                    background: "rgba(245, 159, 0, 0.12)",
-                    color: "var(--color-amber-accent)",
-                    padding: "4px 8px",
-                    borderRadius: "6px",
-                    border: "1px dashed var(--color-amber-accent)",
-                    width: "fit-content",
-                    fontWeight: "bold"
-                  }}
-                >
-                  🔗 Direct Link: chiragns.vercel.app/#engineer
-                </div>
               </div>
               
               <button className="analog-btn active" style={{ padding: "12px 24px", justifyContent: "center" }}>
@@ -1408,7 +1393,7 @@ export const App: React.FC = () => {
                 boxShadow: "10px 10px 0px rgba(147, 51, 234, 0.15), 10px 10px 0px var(--card-shadow)"
               }}
             >
-              <div style={{ display: "flex", flexDirection: "column", gap: "14px" }}>
+              <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
                 <div style={{ fontSize: "3.2rem" }} className="bouncy-emoji">🎚️</div>
                 <h2 style={{ fontSize: "1.8rem", fontWeight: "900", textTransform: "uppercase", lineHeight: 1.1 }}>
                   Music<br/>Production &<br/>Mixing Studio
@@ -1416,21 +1401,6 @@ export const App: React.FC = () => {
                 <p style={{ fontSize: "0.82rem", color: "var(--text-muted)", lineHeight: 1.4 }}>
                   Step inside the audio mixing studio. Interact with my live synchronized before/after multitrack stems player and watch YouTube video covers demonstrating my mixing capabilities.
                 </p>
-                <div 
-                  style={{
-                    fontSize: "0.66rem",
-                    fontFamily: "var(--font-lcd)",
-                    background: "rgba(147, 51, 234, 0.12)",
-                    color: "var(--color-lavender-accent)",
-                    padding: "4px 8px",
-                    borderRadius: "6px",
-                    border: "1px dashed var(--color-lavender-accent)",
-                    width: "fit-content",
-                    fontWeight: "bold"
-                  }}
-                >
-                  🔗 Direct Link: chiragns.vercel.app/#producer
-                </div>
               </div>
               
               <button className="analog-btn active" style={{ padding: "12px 24px", justifyContent: "center" }}>
