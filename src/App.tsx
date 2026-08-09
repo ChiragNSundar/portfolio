@@ -751,9 +751,69 @@ const ScreenshotWithSkeleton: React.FC<{
   );
 };
 
+// Helper to parse initial role mode from URL hash, search params, or pathname
+const parseRoleFromURL = (): 'select' | 'engineer' | 'producer' => {
+  if (typeof window === 'undefined') return 'select';
+  const hash = window.location.hash.toLowerCase();
+  const searchParams = new URLSearchParams(window.location.search);
+  const roleParam = (searchParams.get("role") || searchParams.get("mode") || "").toLowerCase();
+  const pathname = window.location.pathname.toLowerCase();
+
+  if (
+    hash.includes("producer") || 
+    hash.includes("music") || 
+    hash.includes("audio") || 
+    roleParam === "producer" || 
+    roleParam === "music" || 
+    pathname.includes("/producer") || 
+    pathname.includes("/music")
+  ) {
+    return 'producer';
+  }
+  if (
+    hash.includes("engineer") || 
+    hash.includes("dev") || 
+    hash.includes("coding") || 
+    roleParam === "engineer" || 
+    roleParam === "dev" || 
+    pathname.includes("/engineer") || 
+    pathname.includes("/dev")
+  ) {
+    return 'engineer';
+  }
+  return 'select';
+};
+
 export const App: React.FC = () => {
   // Console Role Mode: 'select' = Decision screen, 'engineer' = Coding portfolio, 'producer' = Audio mixing portfolio
-  const [mode, setMode] = useState<'select' | 'engineer' | 'producer'>('select');
+  const [mode, setModeState] = useState<'select' | 'engineer' | 'producer'>(parseRoleFromURL);
+
+  const setMode = (newMode: 'select' | 'engineer' | 'producer') => {
+    setModeState(newMode);
+    if (typeof window !== 'undefined') {
+      if (newMode === 'producer') {
+        window.history.replaceState(null, "", "#producer");
+      } else if (newMode === 'engineer') {
+        window.history.replaceState(null, "", "#engineer");
+      } else {
+        window.history.replaceState(null, "", window.location.pathname);
+      }
+    }
+  };
+
+  // Sync mode state on hashchange or popstate
+  useEffect(() => {
+    const handleUrlChange = () => {
+      setModeState(parseRoleFromURL());
+    };
+    window.addEventListener("hashchange", handleUrlChange);
+    window.addEventListener("popstate", handleUrlChange);
+    return () => {
+      window.removeEventListener("hashchange", handleUrlChange);
+      window.removeEventListener("popstate", handleUrlChange);
+    };
+  }, []);
+
   const [activeDetailProject, setActiveDetailProject] = useState<"roadwatch" | "harmony" | "jobportal" | "aijdbot" | "vibelyrics" | "vocalmuse" | null>(null);
   const [activeScreenshotLightbox, setActiveScreenshotLightbox] = useState<string | null>(null);
   const [activeLegalModal, setActiveLegalModal] = useState<"privacy" | "terms" | null>(null);
