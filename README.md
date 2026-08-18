@@ -19,11 +19,11 @@ Live Vercel Site: [chiragns.vercel.app](https://chiragns.vercel.app/)
 
 ## 🕹️ Interface & Key Features
 
-### 1. Dual-Mode Landing Portal
+### 1. Dual-Mode Landing Portal & Soothing Aesthetics
 * Splitted skeuomorphic splash screen allowing visitors to select their target role path immediately upon loading, with direct link indicators for `#engineer` and `#producer`.
-* Dynamic switch button with animation transforming the layout instantly.
-* Animated hero greetings displaying **HazardChirag** with a custom scrambler text transition when loading the engineer dossier.
-* **FL Studio Entry Splash**: Entering the Music Producer console triggers the iconic FL Studio startup sound (`/audio/sfx/fl_studio_start.mp3`) with the official fruit logo animating inline below the hero section.
+* **Cozy Software Engineering Pixel Art**: High-resolution pixel art developer desk setup asset (`/software_engineer_art.png`) embedded in the Software Engineering dossier selector and console badges.
+* **FL Studio Entry Splash**: Entering the Music Producer console triggers the iconic FL Studio startup sound (`/audio/sfx/fl_studio_start.mp3`) with the official fruit logo (`/fl_logo.png`) animating inline below the hero section.
+* **Soothing Micro-Hover Interactions**: Replaced aggressive jittery bouncing keyframes with smooth, eye-pleasing micro-hover transitions (`transform: translateY(-2px) scale(1.04)`).
 
 ### 2. Software Engineer Dossier & Offline Semantic RAG
 * **Professional Bio**: "Result-driven Software Engineer specializing in Web App Development, Data Science/Analytics, and GenAI/AI Agents."
@@ -31,10 +31,10 @@ Live Vercel Site: [chiragns.vercel.app](https://chiragns.vercel.app/)
 * **"Ask Chirag AI" Offline Semantic RAG Engine**: Zero-latency, client-side RAG engine loaded with ~40 pre-chunked knowledge chunks. Employs TF-IDF scoring, bigram matching, category boosting, dynamic follow-up chips, and embellishment rules to handle interview Q&A and technical inquiries 100% offline without API keys.
 * **Live GitHub Activity Scraper & Heatmap**: Vercel Serverless Function (`/api/github-stats.ts`) with 1-hour CDN caching (`s-maxage=3600, stale-while-revalidate=86400`) that scrapes your exact live total contribution count (**788+**) and renders the real 52-week activity heatmap level boxes.
 
-### 3. Contact, Fiverr & Social Integrations
+### 3. Contact, Fiverr & Official Social Branding
+* **Official Transparent PNG Assets**: Integrated clean, background-noise-free official logos for YouTube, Instagram, Spotify, Fiverr, Gmail, GitHub, and LinkedIn (`public/icons/`).
 * **Dedicated Contact Consoles**: Separate contact cards tailored for Software Engineering ("DEVELOPER CONTACT CONSOLE") and Music Production ("VOCAL MIXING & PRODUCER CONSOLE").
 * **Fiverr Profile Integration**: Direct booking links for mixing and vocal processing at [fiverr.com/s/rEV8667](https://www.fiverr.com/s/rEV8667).
-* **Social Links**: Connected to GitHub (`github.com/ChiragNSundar`), LinkedIn (`linkedin.com/in/chiragnsundar/`), Fiverr (`fiverr.com/s/rEV8667`), Spotify (`open.spotify.com/user/wapj86uclwiwd4n2g94v7er6u`), Instagram (`@chirag.localhost`), and email (`chiragns12@gmail.com`).
 
 ### 4. Fullscreen Detailed Project Explorer Console
 Clicking any project card launches a fullscreen console overlay modal with roomier, high-contrast tab controls to navigate across all 6 core projects:
@@ -45,24 +45,27 @@ Clicking any project card launches a fullscreen console overlay modal with roomi
 * 🎤 **VibeLyrics**: Professional hip-hop writing suite (React 19 + Zustand 5 + FastAPI + Librosa + Continual LoRA DPO training).
 * 🎛️ **Vocal Muse (VoxScript)**: Open-source, local-first studio workspace for vocalists & producers (React 19 + TanStack Start + Tailwind v4 + Web Audio API + faster-whisper-server + Reciprocal Rank Fusion RRF Hybrid RAG + 31,021-entry KEED 2018 Kannada-English & Hinglish dictionaries + OPFS audio storage + Graphify AST index).
 
-### 5. Rich Image Captions & Fullscreen Lightbox
-* **Portfolio-Wide Image Captions**: Every project in the modal visual gallery features custom amber-highlighted titles and feature descriptions beneath each screenshot.
-* **Fullscreen Lightbox**: Click any project screenshot to launch a high-resolution lightbox viewer with spring-in transitions and skeleton shimmer preloaders.
+### 5. Multi-Layered Security & Anti-DDoS Architecture
+* **Client-Side & Storage Rate Limiter (`src/utils/security.ts`)**: Sliding window rate-limiting for guestbook submissions (max 3 per 10 mins) and AI Chatbot queries (max 10 per min).
+* **Automated Bot Protection**: Browser bot detection heuristics (`isLikelyBot`) blocking headless web drivers and automated spam scripts.
+* **Input Sanitization**: XSS payload sanitizer stripping `<script>`, `onerror=`, `javascript:` URIs, and raw HTML tags before sending inputs to database.
+* **Serverless IP Rate Limiter (`api/github-stats.ts`)**: IP-based rate limiting (15 requests/min per IP), HTTP method guard (405 for non-GET), and rate limit response headers (`X-RateLimit-Limit`, `Retry-After: 60`).
+* **Vercel Security Headers (`vercel.json`)**: Configured `X-Content-Type-Options: nosniff`, `X-Frame-Options: DENY`, `X-XSS-Protection: 1; mode=block`, `Referrer-Policy: strict-origin-when-cross-origin`, and `Permissions-Policy`.
+* **Database RLS Constraints (`supabase-migration.sql`)**: PostgreSQL Row Level Security (RLS) constraints enforcing non-empty trimmed payloads and strict length validation (name <= 50, message <= 300).
 
-### 6. Moderated Supabase Guestbook Footer
-* Full-width neobrutalist guestbook signature log card at the bottom of the page.
-* Submits signatures dynamically to Supabase databases with client-side content moderation, email validation, and local-storage fallback queueing.
+### 6. Real-Time Vercel Web Analytics
+* Integrated `@vercel/analytics` to track live web traffic, visitor pageviews, and performance metrics across both portfolio consoles.
 
 ---
 
 ## 🛠️ Technology Stack
 
-- **Frontend & Core**: React 19 + TypeScript + Vite 7 + TanStack Start + Zustand 5 + Framer Motion 12 + Tailwind CSS v4
+- **Frontend & Core**: React 19 + TypeScript + Vite 7 + TanStack Start + Zustand 5 + Framer Motion 12 + Tailwind CSS v4 + `@vercel/analytics`
 - **Audio Processing**: Web Audio API (oscilloscope waveform, metronome sync, gain-fading, sound synthesizers)
 - **AI/ML & NLP Orchestration**: Gemini 2.0/2.5 Pro & Flash, Gemma 2, faster-whisper-server, Reciprocal Rank Fusion (RRF) Hybrid RAG, POS-Grammar engines, Spacy, NLTK, Librosa
 - **Dictionaries & Datasets**: KEED 2018 Kannada-English Dictionary (31,021 entries) + Hinglish Rap Vocabulary
 - **Database & Persistence**: Supabase (PostgreSQL), MongoDB, MySQL, SQLite (WAL Mode), IndexedDB, OPFS (Origin Private File System)
-- **APM & Reliability**: Vercel Serverless API, OpenTelemetry distributed tracing, pybreaker circuit breakers, rate limiters
+- **Security & APM**: Custom rate-limiter, anti-XSS sanitizer, bot protection, Vercel Serverless API IP rate-limiting, OpenTelemetry, pybreaker circuit breakers
 - **AST Knowledge Graph**: Graphify AST indexing & community detection graph
 
 ---
@@ -71,7 +74,7 @@ Clicking any project card launches a fullscreen console overlay modal with roomi
 
 ### 1. Database Configuration (Supabase)
 1. Initialize a new project on your [Supabase Dashboard](https://supabase.com/).
-2. Run [supabase-migration.sql](./supabase-migration.sql) in the SQL Editor to set up the `guestbook` table and Row Level Security (RLS) policies.
+2. Run [supabase-migration.sql](./supabase-migration.sql) in the SQL Editor to set up the `guestbook` table, payload constraints, and Row Level Security (RLS) policies.
 
 ### 2. Local Environment Configuration
 Create a `.env.local` file in the root directory:
