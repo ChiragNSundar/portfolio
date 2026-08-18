@@ -1,8 +1,51 @@
+// Serverless sliding window rate limiter for DDoS & mass-request mitigation
+const ipCache: Map<string, { count: number; windowStart: number }> = new Map();
+const RATE_LIMIT_WINDOW_MS = 60 * 1000; // 1 minute
+const MAX_REQUESTS_PER_WINDOW = 15; // Max 15 requests per minute per IP
+
 export default async function handler(req: any, res: any) {
   try {
-    // Enable CORS for client fetching if needed
+    // 1. Guard HTTP method (DDoS mitigation against POST/PUT/DELETE floods)
+    if (req.method && req.method !== "GET" && req.method !== "HEAD") {
+      res.setHeader("Allow", "GET, HEAD");
+      return res.status(405).json({ error: "Method Not Allowed" });
+    }
+
+    // 2. Extract Client IP
+    const clientIp =
+      req.headers["x-forwarded-for"]?.split(",")[0]?.trim() ||
+      req.headers["x-real-ip"] ||
+      req.socket?.remoteAddress ||
+      "127.0.0.1";
+
+    // 3. Sliding Window Rate Limiter
+    const now = Date.now();
+    const clientRecord = ipCache.get(clientIp);
+
+    if (!clientRecord) {
+      ipCache.set(clientIp, { count: 1, windowStart: now });
+    } else if (now - clientRecord.windowStart > RATE_LIMIT_WINDOW_MS) {
+      ipCache.set(clientIp, { count: 1, windowStart: now });
+    } else {
+      clientRecord.count += 1;
+      if (clientRecord.count > MAX_REQUESTS_PER_WINDOW) {
+        res.setHeader("Retry-After", "60");
+        res.setHeader("X-RateLimit-Limit", MAX_REQUESTS_PER_WINDOW.toString());
+        res.setHeader("X-RateLimit-Remaining", "0");
+        res.setHeader("X-RateLimit-Reset", Math.ceil((clientRecord.windowStart + RATE_LIMIT_WINDOW_MS) / 1000).toString());
+        return res.status(429).json({ error: "Too Many Requests. Rate limit exceeded. Please wait a minute before retrying." });
+      }
+    }
+
+    const currentCount = ipCache.get(clientIp)?.count || 1;
+    res.setHeader("X-RateLimit-Limit", MAX_REQUESTS_PER_WINDOW.toString());
+    res.setHeader("X-RateLimit-Remaining", (MAX_REQUESTS_PER_WINDOW - currentCount).toString());
+
+    // Security & CORS Headers
     res.setHeader("Access-Control-Allow-Origin", "*");
-    res.setHeader("Access-Control-Allow-Methods", "GET");
+    res.setHeader("Access-Control-Allow-Methods", "GET, HEAD");
+    res.setHeader("X-Content-Type-Options", "nosniff");
+    res.setHeader("X-Frame-Options", "DENY");
 
     // Fetch user basic profile (repos, followers) from official REST API
     const userRes = await fetch("https://api.github.com/users/ChiragNSundar", {
