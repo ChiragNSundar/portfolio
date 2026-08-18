@@ -1040,7 +1040,7 @@ export const App: React.FC = () => {
 
     try {
       const { error } = await supabase!.from("guestbook").insert([
-        { name: guestName.trim(), email: guestEmail.trim(), message: guestMessage.trim(), role: mode }
+        { name: cleanName, email: cleanEmail, message: cleanMessage, role: mode }
       ]);
       if (error) throw error;
       
