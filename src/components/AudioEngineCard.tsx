@@ -251,7 +251,7 @@ export const AudioEngineCard: React.FC<AudioEngineCardProps> = ({
                   textDecoration: "none"
                 }}
               >
-                📺 Stream on YouTube
+                <img src="/icons/youtube.png" alt="YouTube" style={{ width: "16px", height: "16px", objectFit: "contain" }} /> Stream on YouTube
               </a>
             )}
           </div>

@@ -5,12 +5,9 @@ interface YoutubeCoversCardProps {
   onInteract?: () => void;
 }
 
-// Inline SVG YouTube play-button logo component
-const YoutubeLogo: React.FC<{ size?: number; color?: string; style?: React.CSSProperties }> = ({ size = 20, color = "#ff0000", style }) => (
-  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" style={style}>
-    <rect x="1" y="4" width="22" height="16" rx="4" ry="4" fill={color} />
-    <polygon points="10,8.5 16,12 10,15.5" fill="#fff" />
-  </svg>
+// YouTube logo component using official logo image
+const YoutubeLogo: React.FC<{ size?: number; color?: string; style?: React.CSSProperties }> = ({ size = 20, style }) => (
+  <img src="/icons/youtube.png" alt="YouTube" style={{ width: `${size}px`, height: `${size}px`, objectFit: "contain", ...style }} />
 );
 
 export const YoutubeCoversCard: React.FC<YoutubeCoversCardProps> = ({ onInteract }) => {
@@ -56,9 +53,8 @@ export const YoutubeCoversCard: React.FC<YoutubeCoversCardProps> = ({ onInteract
       </div>
 
       {/* Category Tag & Title */}
-      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", position: "relative", zIndex: 1 }}>
-        <div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
-          <span className="bouncy-emoji" style={{ fontSize: "1.2rem" }}>📺</span>
+        <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+          <img src="/icons/youtube.png" alt="YouTube" style={{ width: "22px", height: "22px", objectFit: "contain" }} />
           <span 
             style={{ 
               fontFamily: "var(--font-lcd)", 
