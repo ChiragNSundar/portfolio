@@ -22,6 +22,9 @@ export interface ResumeData {
   experience: Experience[];
   education: {
     institution: string;
+    affiliation?: string;
+    rnsitUrl?: string;
+    vtuUrl?: string;
     degree: string;
     location: string;
     gpa: string;
@@ -69,7 +72,10 @@ export const resumeData: ResumeData = {
     }
   ],
   education: {
-    institution: "RNS Institute of Technology",
+    institution: "RNS Institute of Technology (RNSIT)",
+    affiliation: "Affiliated to VTU, Karnataka",
+    rnsitUrl: "https://www.rnsit.ac.in/",
+    vtuUrl: "https://vtu.ac.in/",
     degree: "Bachelor of Engineering in Computer Science",
     location: "Bengaluru, India",
     gpa: "8.89/10.0",

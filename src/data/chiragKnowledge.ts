@@ -21,14 +21,14 @@ export const KNOWLEDGE_BASE: KnowledgeChunk[] = [
     category: "identity",
     title: "Who is Chirag / Introduction",
     keywords: ["who", "chirag", "introduce", "yourself", "about", "tell me about", "who are you", "name"],
-    content: "Hi, my name is Chirag. I'm a Software Engineer specializing in Web App Development, Data Analytics, and Generative AI workflows. I recently completed my B.E. in Computer Science & Engineering from RNSIT (GPA 8.89) and worked as a Data Science & AI Intern at WhatDigital Technologies for 5 months. I've built scalable, production-ready solutions including real-time analytics dashboards, chatbots, and computer vision applications, and I really enjoy taking projects from initial idea all the way to deployment. Currently, I work as an AI Operations Specialist at Rural Bank of Calbayog City, Inc. (RBCCI), where I architect core banking systems with AMLA compliance and edge AI biometric verification."
+    content: "Hi, my name is Chirag. I'm a Software Engineer specializing in Web App Development, Data Analytics, and Generative AI workflows. I recently completed my B.E. in Computer Science & Engineering from RNSIT (affiliated to VTU, Karnataka, GPA 8.89) and worked as a Data Science & AI Intern at WhatDigital Technologies for 5 months. I've built scalable, production-ready solutions including real-time analytics dashboards, chatbots, and computer vision applications, and I really enjoy taking projects from initial idea all the way to deployment. Currently, I work as an AI Operations Specialist at Rural Bank of Calbayog City, Inc. (RBCCI), where I architect core banking systems with AMLA compliance and edge AI biometric verification."
   },
   {
     id: "education",
     category: "identity",
     title: "Education & Academic Background",
-    keywords: ["education", "college", "university", "rnsit", "degree", "gpa", "graduated", "study", "coursework", "academic", "school", "bachelor"],
-    content: "I graduated with a Bachelor of Engineering (B.E.) in Computer Science & Engineering from RNS Institute of Technology (RNSIT), Bengaluru, India. My aggregate GPA was 8.89 out of 10.0, and I was there from December 2021 to June 2025. My relevant coursework included Machine Learning, Software Engineering, and Data Science and Visualization. The program gave me a solid foundation in algorithms, database systems, AI, and computer vision — but honestly, most of my real learning came from building projects and working on production systems."
+    keywords: ["education", "college", "university", "rnsit", "vtu", "karnataka", "degree", "gpa", "graduated", "study", "coursework", "academic", "school", "bachelor"],
+    content: "I graduated with a Bachelor of Engineering (B.E.) in Computer Science & Engineering from RNS Institute of Technology (RNSIT - https://www.rnsit.ac.in/), affiliated to Visvesvaraya Technological University (VTU - https://vtu.ac.in/), Karnataka, Bengaluru, India. My aggregate GPA was 8.89 out of 10.0, and I was there from December 2021 to June 2025. My relevant coursework included Machine Learning, Software Engineering, and Data Science and Visualization. The program gave me a solid foundation in algorithms, database systems, AI, and computer vision — but honestly, most of my real learning came from building projects and working on production systems."
   },
   {
     id: "certifications",
@@ -274,7 +274,7 @@ export const KNOWLEDGE_BASE: KnowledgeChunk[] = [
     category: "meta",
     title: "Quick Summary of Everything",
     keywords: ["summary", "everything", "overview", "tell me everything", "all about", "quick summary", "brief", "tldr"],
-    content: "Chirag N Sundar — Software Engineer & AI Specialist. B.E. in CS from RNSIT (GPA 8.89). Currently an AI Operations Specialist at RBCCI, building core banking ecosystems with AMLA compliance monitoring and edge AI biometric verification. Previously interned at WhatDigital Technologies (5 months) building AI chatbots and BI dashboards.\n\nKey projects: RoadWatch (YOLOv8 real-time helmet detection + license plate OCR), AI JD Bot (enterprise Flask app with Gemini/Gemma, 490+ tests, circuit breakers), Harmony Hub (RAG mental health chatbot), Job Portal Analytics Dashboard (Plotly/Dash with MongoDB/MySQL).\n\nCore skills: Python, React/TypeScript, Node.js, computer vision, generative AI, database optimization. Strong problem-solver who takes projects from idea to deployment."
+    content: "Chirag N Sundar — Software Engineer & AI Specialist. B.E. in CS from RNSIT (VTU Affiliated, Karnataka, GPA 8.89). Currently an AI Operations Specialist at RBCCI, building core banking ecosystems with AMLA compliance monitoring and edge AI biometric verification. Previously interned at WhatDigital Technologies (5 months) building AI chatbots and BI dashboards.\n\nKey projects: RoadWatch (YOLOv8 real-time helmet detection + license plate OCR), AI JD Bot (enterprise Flask app with Gemini/Gemma, 490+ tests, circuit breakers), Harmony Hub (RAG mental health chatbot), Job Portal Analytics Dashboard (Plotly/Dash with MongoDB/MySQL).\n\nCore skills: Python, React/TypeScript, Node.js, computer vision, generative AI, database optimization. Strong problem-solver who takes projects from idea to deployment."
   },
   {
     id: "vocalmuse_overview",

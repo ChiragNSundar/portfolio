@@ -203,7 +203,7 @@ export const downloadSoftwareEngineerResume = () => {
     <div class="section">
       <div class="section-title">EDUCATION</div>
       <div class="entry-header">
-        <span>RNS Institute of Technology</span>
+        <span><a href="https://www.rnsit.ac.in/" target="_blank" style="color: inherit; text-decoration: underline; font-weight: bold;">RNS Institute of Technology (RNSIT)</a> &middot; Affiliated to <a href="https://vtu.ac.in/" target="_blank" style="color: inherit; text-decoration: underline; font-weight: bold;">VTU</a>, Karnataka</span>
         <span>Bengaluru, India</span>
       </div>
       <div class="entry-subheader">

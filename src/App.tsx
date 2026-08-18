@@ -1389,7 +1389,7 @@ export const App: React.FC = () => {
                   Software<br/>Engineering<br/>Dossier
                 </h2>
                 <p style={{ fontSize: "0.82rem", color: "var(--text-muted)", lineHeight: 1.4 }}>
-                  Review my Computer Science degree from RNSIT (8.89 GPA), WhatDigital Tech Data Science internship, detailed project technical sheets (RoadWatch, Harmony Hub), and query my local AI chatbot.
+                  Review my Computer Science degree from RNSIT (VTU Affiliated, Karnataka - 8.89 GPA), WhatDigital Tech Data Science internship, detailed project technical sheets (RoadWatch, Harmony Hub), and query my local AI chatbot.
                 </p>
               </div>
               

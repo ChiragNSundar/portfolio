@@ -220,7 +220,7 @@ export const DeveloperResumeCard: React.FC<DeveloperResumeCardProps> = ({ onInte
 
         <div style={{ display: "flex", alignItems: "center", gap: "12px", flexWrap: "wrap" }}>
           <span style={{ fontSize: "0.7rem", color: "var(--text-muted)", letterSpacing: "1px" }}>
-            [RNSIT GRADUATE // 8.89 GPA // DATA & GEN-AI FOCUS]
+            [<a href="https://www.rnsit.ac.in/" target="_blank" rel="noopener noreferrer" style={{ color: "var(--color-amber-accent)", textDecoration: "underline" }} title="RNSIT Official Website">RNSIT</a> GRADUATE &middot; <a href="https://vtu.ac.in/" target="_blank" rel="noopener noreferrer" style={{ color: "var(--color-amber-accent)", textDecoration: "underline" }} title="VTU Official Website">VTU</a> AFFILIATED KARNATAKA // 8.89 GPA // DATA & GEN-AI FOCUS]
           </span>
 
           <button
@@ -287,8 +287,27 @@ export const DeveloperResumeCard: React.FC<DeveloperResumeCardProps> = ({ onInte
                   <span>🎓 B.E. Computer Science & Engineering</span>
                   <span style={{ color: "var(--color-amber-accent)" }}>GPA: 8.89</span>
                 </div>
-                <div style={{ fontSize: "0.75rem", color: "var(--text-muted)", fontWeight: "600" }}>
-                  RNS Institute of Technology (RNSIT)
+                <div style={{ fontSize: "0.75rem", color: "var(--text-muted)", fontWeight: "600", marginTop: "4px" }}>
+                  <a
+                    href="https://www.rnsit.ac.in/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    style={{ color: "var(--color-amber-accent)", textDecoration: "underline", fontWeight: "700" }}
+                    title="Visit official RNSIT website"
+                  >
+                    RNS Institute of Technology (RNSIT)
+                  </a>
+                  {" "}&middot; Affiliated to{" "}
+                  <a
+                    href="https://vtu.ac.in/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    style={{ color: "var(--color-amber-accent)", textDecoration: "underline", fontWeight: "700" }}
+                    title="Visit official VTU website"
+                  >
+                    VTU
+                  </a>
+                  , Karnataka
                 </div>
               </div>
 
