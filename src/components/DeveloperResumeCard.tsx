@@ -220,7 +220,7 @@ export const DeveloperResumeCard: React.FC<DeveloperResumeCardProps> = ({ onInte
 
         <div style={{ display: "flex", alignItems: "center", gap: "12px", flexWrap: "wrap" }}>
           <span style={{ fontSize: "0.7rem", color: "var(--text-muted)", letterSpacing: "1px" }}>
-            [<a href="https://www.rnsit.ac.in/" target="_blank" rel="noopener noreferrer" style={{ color: "var(--color-amber-accent)", textDecoration: "underline" }} title="RNSIT Official Website">RNSIT</a> GRADUATE &middot; <a href="https://vtu.ac.in/" target="_blank" rel="noopener noreferrer" style={{ color: "var(--color-amber-accent)", textDecoration: "underline" }} title="VTU Official Website">VTU</a> AFFILIATED KARNATAKA // 8.89 GPA // DATA & GEN-AI FOCUS]
+            [RNSIT GRADUATE // 8.89 GPA // DATA & GEN-AI FOCUS]
           </span>
 
           <button
