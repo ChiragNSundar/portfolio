@@ -801,6 +801,18 @@ export const App: React.FC = () => {
     };
   }, []);
 
+  // Dynamic SEO title updates on role mode switch
+  useEffect(() => {
+    if (typeof document === "undefined") return;
+    if (mode === "engineer") {
+      document.title = "Chirag N Sundar — Software Engineering Dossier & GenAI Specialist";
+    } else if (mode === "producer") {
+      document.title = "HazardChirag — Vocal Mixing & Audio Production Studio";
+    } else {
+      document.title = "Chirag N Sundar — Software Engineer & Music Producer Portfolio";
+    }
+  }, [mode]);
+
   const [activeDetailProject, setActiveDetailProject] = useState<"roadwatch" | "harmony" | "jobportal" | "aijdbot" | "vibelyrics" | "vocalmuse" | null>(null);
   const [activeScreenshotLightbox, setActiveScreenshotLightbox] = useState<string | null>(null);
   const [activeLegalModal, setActiveLegalModal] = useState<"privacy" | "terms" | null>(null);
