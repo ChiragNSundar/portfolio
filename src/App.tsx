@@ -11,6 +11,7 @@ import { supabase, isSupabaseConfigured } from "./lib/supabaseClient";
 import type { Track } from "./data/tracks";
 import { mixAndOriginalTracks } from "./data/tracks";
 import { audioEngine } from "./audio/audioEngine";
+import { checkPersistentRateLimit, sanitizeInput, isLikelyBot } from "./utils/security";
 
 interface GuestbookEntry {
   id: string;
@@ -958,15 +959,33 @@ export const App: React.FC = () => {
     setModerationError(null);
     unlockAudioContext();
 
+    // 1. Anti-bot automated script guard
+    if (isLikelyBot()) {
+      setModerationError("Security protection: Automated bot request blocked.");
+      return;
+    }
+
+    // 2. Strict Rate Limiting Guard: Max 3 signatures per 10 minutes
+    const rateCheck = checkPersistentRateLimit("guestbook_submit", 3, 10);
+    if (!rateCheck.allowed) {
+      setModerationError(`Security Protection: Maximum 3 guestbook entries per 10 minutes. Please retry in ${rateCheck.remainingMinutes} min.`);
+      return;
+    }
+
+    // 3. XSS & Payload Sanitization
+    const cleanName = sanitizeInput(guestName, 50);
+    const cleanEmail = sanitizeInput(guestEmail, 100);
+    const cleanMessage = sanitizeInput(guestMessage, 300);
+
     // Email validation
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(guestEmail.trim())) {
+    if (!emailRegex.test(cleanEmail)) {
       setModerationError("Please enter a valid email address.");
       return;
     }
 
     // Content moderation
-    const modResult = moderateContent(guestName.trim(), guestMessage.trim());
+    const modResult = moderateContent(cleanName, cleanMessage);
     if (modResult) {
       setModerationError(modResult);
       return;
@@ -975,13 +994,13 @@ export const App: React.FC = () => {
     setIsGuestbookSubmitting(true);
 
     // Record throttle timestamp
-    const recentKey = `gb_last_${guestName.trim().toLowerCase().replace(/\s/g, "")}`;
+    const recentKey = `gb_last_${cleanName.toLowerCase().replace(/\s/g, "")}`;
     localStorage.setItem(recentKey, String(Date.now()));
 
     const entryData = {
-      name: guestName.trim(),
-      email: guestEmail.trim(),
-      message: guestMessage.trim(),
+      name: cleanName,
+      email: cleanEmail,
+      message: cleanMessage,
       role: mode,
       created_at: new Date().toISOString()
     };
