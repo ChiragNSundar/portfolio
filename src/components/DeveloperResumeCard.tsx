@@ -154,6 +154,8 @@ export const DeveloperResumeCard: React.FC<DeveloperResumeCardProps> = ({ onInte
     if (el) el.scrollTop = el.scrollHeight;
   }, [chatLog, isTyping]);
 
+import { checkRateLimit, sanitizeInput } from "../utils/security";
+
   // RAG-powered Chatbot Query Resolver
   const handleChatSubmit = (e?: React.FormEvent, customQuery?: string) => {
     if (e) e.preventDefault();
@@ -163,8 +165,18 @@ export const DeveloperResumeCard: React.FC<DeveloperResumeCardProps> = ({ onInte
 
     if (onInteract) onInteract();
 
+    // Rate limit check: max 10 queries per minute per user session
+    const rateCheck = checkRateLimit("ai_chat_query", { windowMs: 60000, maxRequests: 10 });
+    if (!rateCheck.allowed) {
+      setChatLog(prev => [...prev, { sender: "user" as const, text: rawQuery }, { sender: "bot" as const, text: "⚠️ System Security: Rate limit reached (Max 10 queries/min). Please wait a moment before sending more messages." }]);
+      setChatInput("");
+      return;
+    }
+
+    const cleanQuery = sanitizeInput(rawQuery, 200);
+
     // Add user message to log immediately
-    setChatLog(prev => [...prev, { sender: "user" as const, text: rawQuery }]);
+    setChatLog(prev => [...prev, { sender: "user" as const, text: cleanQuery }]);
     setChatInput("");
     setIsTyping(true);
 
