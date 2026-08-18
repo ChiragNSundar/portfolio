@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { askChiragAI } from "../lib/ragEngine";
 import { downloadSoftwareEngineerResume } from "../utils/downloadResume";
+import { checkRateLimit, sanitizeInput } from "../utils/security";
 
 interface DeveloperResumeCardProps {
   onInteract?: () => void;
@@ -153,8 +154,6 @@ export const DeveloperResumeCard: React.FC<DeveloperResumeCardProps> = ({ onInte
     const el = chatContainerRef.current;
     if (el) el.scrollTop = el.scrollHeight;
   }, [chatLog, isTyping]);
-
-import { checkRateLimit, sanitizeInput } from "../utils/security";
 
   // RAG-powered Chatbot Query Resolver
   const handleChatSubmit = (e?: React.FormEvent, customQuery?: string) => {
