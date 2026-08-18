@@ -1368,7 +1368,9 @@ export const App: React.FC = () => {
               }}
             >
               <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
-                <div style={{ fontSize: "3.2rem" }} className="bouncy-emoji">💻</div>
+                <div className="bouncy-emoji" style={{ width: "54px", height: "54px", display: "flex", alignItems: "center", borderRadius: "10px", overflow: "hidden", border: "1.5px solid var(--border-color)", boxShadow: "2px 2px 0px var(--card-shadow)" }}>
+                  <img src="/software_engineer_art.png" alt="Software Engineering" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+                </div>
                 <h2 style={{ fontSize: "1.8rem", fontWeight: "900", textTransform: "uppercase", lineHeight: 1.1 }}>
                   Software<br/>Engineering<br/>Dossier
                 </h2>
@@ -1646,7 +1648,7 @@ export const App: React.FC = () => {
                   boxShadow: "3px 3px 0px var(--card-shadow)"
                 }}
               >
-                ROLE: {mode === 'engineer' ? "SOFTWARE ENGINEER" : "MUSIC PRODUCER"} CONSOLE {mode === 'engineer' ? <span className="bouncy-emoji">💻</span> : <img src="/fl_logo.png" alt="FL Studio" style={{ width: "20px", height: "20px", objectFit: "contain", verticalAlign: "middle", marginLeft: "4px" }} />}
+                ROLE: {mode === 'engineer' ? "SOFTWARE ENGINEER" : "MUSIC PRODUCER"} CONSOLE {mode === 'engineer' ? <img src="/software_engineer_art.png" alt="Software Engineer" style={{ width: "20px", height: "20px", objectFit: "cover", borderRadius: "4px", verticalAlign: "middle", marginLeft: "4px" }} /> : <img src="/fl_logo.png" alt="FL Studio" style={{ width: "20px", height: "20px", objectFit: "contain", verticalAlign: "middle", marginLeft: "4px" }} />}
               </div>
               
               <h1 
