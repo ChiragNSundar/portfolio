@@ -55,8 +55,8 @@ export const ContactCard: React.FC<ContactCardProps> = ({
       title: "Direct Email",
       value: "chiragns12@gmail.com",
       url: "https://mail.google.com/mail/?view=cm&fs=1&to=chiragns12@gmail.com&su=Software%20Engineering%20Inquiry",
-      icon: "✉️",
-      color: "var(--color-amber-accent)",
+      iconImg: "/icons/gmail.png",
+      color: "#ea4335",
       badge: "EMAIL DIRECT",
       isMail: true
     },
@@ -64,7 +64,7 @@ export const ContactCard: React.FC<ContactCardProps> = ({
       title: "GitHub Profile",
       value: "ChiragNSundar",
       url: "https://github.com/ChiragNSundar",
-      icon: "🐙",
+      iconImg: "/icons/github.png",
       color: "#24292e",
       badge: "CODE REPOS",
       isMail: false
@@ -73,7 +73,7 @@ export const ContactCard: React.FC<ContactCardProps> = ({
       title: "LinkedIn Profile",
       value: "Chirag N Sundar",
       url: "https://www.linkedin.com/in/chiragnsundar/",
-      icon: "💼",
+      iconImg: "/icons/linkedin.png",
       color: "#0a66c2",
       badge: "PROFESSIONAL",
       isMail: false
@@ -92,8 +92,8 @@ export const ContactCard: React.FC<ContactCardProps> = ({
       title: "Direct Email",
       value: "chiragns12@gmail.com",
       url: "https://mail.google.com/mail/?view=cm&fs=1&to=chiragns12@gmail.com&su=Vocal%20Mixing%20Inquiry",
-      icon: "✉️",
-      color: "var(--color-amber-accent)",
+      iconImg: "/icons/gmail.png",
+      color: "#ea4335",
       badge: "EMAIL DIRECT",
       isMail: true
     },
@@ -228,7 +228,11 @@ export const ContactCard: React.FC<ContactCardProps> = ({
               className="tech-badge"
             >
               <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                <span style={{ fontSize: "1.5rem" }}>{item.icon}</span>
+                {"iconImg" in item && item.iconImg ? (
+                  <img src={item.iconImg} alt={item.title} style={{ width: "26px", height: "26px", objectFit: "contain" }} />
+                ) : (
+                  <span style={{ fontSize: "1.5rem" }}>{"icon" in item ? item.icon : ""}</span>
+                )}
                 <span
                   style={{
                     fontSize: "0.62rem",
