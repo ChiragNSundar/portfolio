@@ -1400,7 +1400,9 @@ export const App: React.FC = () => {
               }}
             >
               <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
-                <div style={{ fontSize: "3.2rem" }} className="bouncy-emoji">🎚️</div>
+                <div className="bouncy-emoji" style={{ width: "54px", height: "54px", display: "flex", alignItems: "center" }}>
+                  <img src="/fl_logo.png" alt="FL Studio" style={{ width: "100%", height: "auto", objectFit: "contain" }} />
+                </div>
                 <h2 style={{ fontSize: "1.8rem", fontWeight: "900", textTransform: "uppercase", lineHeight: 1.1 }}>
                   Music<br/>Production &<br/>Mixing Studio
                 </h2>
@@ -1644,7 +1646,7 @@ export const App: React.FC = () => {
                   boxShadow: "3px 3px 0px var(--card-shadow)"
                 }}
               >
-                ROLE: {mode === 'engineer' ? "SOFTWARE ENGINEER" : "MUSIC PRODUCER"} CONSOLE <span className="bouncy-emoji">{mode === 'engineer' ? "💻" : "🎚️"}</span>
+                ROLE: {mode === 'engineer' ? "SOFTWARE ENGINEER" : "MUSIC PRODUCER"} CONSOLE {mode === 'engineer' ? <span className="bouncy-emoji">💻</span> : <img src="/fl_logo.png" alt="FL Studio" style={{ width: "20px", height: "20px", objectFit: "contain", verticalAlign: "middle", marginLeft: "4px" }} />}
               </div>
               
               <h1 

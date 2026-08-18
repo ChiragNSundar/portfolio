@@ -143,7 +143,7 @@ export const VocalMixingCard: React.FC<VocalMixingCardProps> = ({
       {/* Header Tag & Section Title */}
       <div style={{ display: "flex", flexWrap: "wrap", justifyContent: "space-between", alignItems: "center", gap: "12px" }}>
         <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-          <span className="bouncy-emoji" style={{ fontSize: "1.4rem" }}>🎛️</span>
+          <img src="/fl_logo.png" alt="FL Studio" style={{ width: "24px", height: "24px", objectFit: "contain" }} />
           <span
             style={{
               fontFamily: "var(--font-lcd)",
