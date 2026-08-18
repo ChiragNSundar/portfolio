@@ -240,7 +240,15 @@ interface ContactLinkItem {
             >
               <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
                 {item.iconImg ? (
-                  <img src={item.iconImg} alt={item.title} style={{ width: "26px", height: "26px", objectFit: "contain" }} />
+                  <img
+                    src={item.iconImg}
+                    alt={item.title}
+                    style={{
+                      width: item.title.toLowerCase().includes("youtube") ? "36px" : "28px",
+                      height: item.title.toLowerCase().includes("youtube") ? "30px" : "28px",
+                      objectFit: "contain"
+                    }}
+                  />
                 ) : (
                   <span style={{ fontSize: "1.5rem" }}>{item.icon || ""}</span>
                 )}
