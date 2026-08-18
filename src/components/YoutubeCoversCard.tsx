@@ -53,6 +53,7 @@ export const YoutubeCoversCard: React.FC<YoutubeCoversCardProps> = ({ onInteract
       </div>
 
       {/* Category Tag & Title */}
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", position: "relative", zIndex: 1 }}>
         <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
           <img src="/icons/youtube.png" alt="YouTube" style={{ width: "22px", height: "22px", objectFit: "contain" }} />
           <span 
