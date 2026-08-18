@@ -647,7 +647,7 @@ export const VocalMixingCard: React.FC<VocalMixingCardProps> = ({
                 gap: "6px"
               }}
             >
-              🟢 BOOK ON FIVERR ↗
+              <img src="/icons/fiverr.png" alt="Fiverr" style={{ width: "16px", height: "16px", objectFit: "contain" }} /> BOOK ON FIVERR ↗
             </a>
             <button
               onClick={(e) => {

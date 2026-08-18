@@ -426,7 +426,7 @@ export const ContactCard: React.FC<ContactCardProps> = ({
         >
           <div style={{ display: "flex", flexDirection: "column", gap: "6px", flex: "1 1 280px" }}>
             <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-              <span style={{ fontSize: "1.3rem" }}>💚</span>
+              <img src="/icons/fiverr.png" alt="Fiverr" style={{ width: "22px", height: "22px", objectFit: "contain" }} />
               <span style={{ fontSize: "0.75rem", fontFamily: "var(--font-lcd)", fontWeight: "bold", letterSpacing: "1px" }}>
                 FIVERR VERIFIED PROFILE
               </span>
@@ -457,7 +457,7 @@ export const ContactCard: React.FC<ContactCardProps> = ({
               gap: "8px"
             }}
           >
-            🟢 BOOK SERVICES ON FIVERR ↗
+            <img src="/icons/fiverr.png" alt="Fiverr" style={{ width: "18px", height: "18px", objectFit: "contain" }} /> BOOK SERVICES ON FIVERR ↗
           </a>
         </div>
       )}
