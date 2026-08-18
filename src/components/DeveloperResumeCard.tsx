@@ -204,7 +204,7 @@ export const DeveloperResumeCard: React.FC<DeveloperResumeCardProps> = ({ onInte
       {/* Dossier Header */}
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: "10px" }}>
         <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-          <span className="bouncy-emoji" style={{ fontSize: "1.2rem" }}>💼</span>
+          <img src="/software_engineer_art.png" alt="Software Engineering" style={{ width: "24px", height: "24px", objectFit: "cover", borderRadius: "5px" }} />
           <span 
             style={{ 
               fontFamily: "var(--font-lcd)", 

@@ -98,24 +98,15 @@ body {
   filter: blur(0);
 }
 
-/* Bouncy Emoji Keyframes */
-@keyframes emoji-bounce {
-  0%, 100% {
-    transform: translateY(0) scale(1);
-  }
-  50% {
-    transform: translateY(-14px) scale(1.18);
-  }
-}
-
+/* Smooth, Soothing Icon & Badge Micro-Transitions */
 .bouncy-emoji {
   display: inline-block;
   cursor: pointer;
-  transition: transform 0.2s;
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), filter 0.25s ease;
 }
 
 .bouncy-emoji:hover {
-  animation: emoji-bounce 0.55s ease infinite;
+  transform: translateY(-2px) scale(1.04);
 }
 
 /* Playful Analog-styled Buttons (Flat modern) */
@@ -332,7 +323,7 @@ a:focus-visible {
 
 @keyframes fl-logo-pulse {
   0%, 100% { transform: scale(1); }
-  50% { transform: scale(1.08); }
+  50% { transform: scale(1.02); }
 }
 
 @keyframes pulse {
