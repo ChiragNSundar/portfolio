@@ -83,7 +83,7 @@ export const ContactCard: React.FC<ContactCardProps> = ({
       title: "Fiverr Profile",
       value: "Book Mixing & Vocals",
       url: "https://www.fiverr.com/s/rEV8667",
-      icon: "🟢",
+      iconImg: "/icons/fiverr.png",
       color: "#1dbf73",
       badge: "MIXING & VOCALS",
       isMail: false
@@ -101,7 +101,7 @@ export const ContactCard: React.FC<ContactCardProps> = ({
       title: "Instagram",
       value: "@chirag.localhost",
       url: "https://instagram.com/chirag.localhost",
-      icon: "📸",
+      iconImg: "/icons/instagram.png",
       color: "var(--color-rose-accent)",
       badge: "SOCIAL",
       isMail: false
@@ -110,7 +110,7 @@ export const ContactCard: React.FC<ContactCardProps> = ({
       title: "YouTube Channel",
       value: "HazardChirag",
       url: "https://youtube.com/@HazardChirag",
-      icon: "📺",
+      iconImg: "/icons/youtube.png",
       color: "#ff0000",
       badge: "VIDEOS & MIXES",
       isMail: false
@@ -119,7 +119,7 @@ export const ContactCard: React.FC<ContactCardProps> = ({
       title: "Spotify Profile",
       value: "HazardChirag",
       url: "https://open.spotify.com/user/wapj86uclwiwd4n2g94v7er6u",
-      icon: "🎵",
+      iconImg: "/icons/spotify.png",
       color: "#1DB954",
       badge: "SPOTIFY",
       isMail: false
