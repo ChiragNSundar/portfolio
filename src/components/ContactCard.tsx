@@ -50,7 +50,18 @@ export const ContactCard: React.FC<ContactCardProps> = ({
     window.open("https://mail.google.com/mail/?view=cm&fs=1&to=chiragns12@gmail.com", "_blank");
   };
 
-  const contactLinks = mode === "engineer" ? [
+interface ContactLinkItem {
+  title: string;
+  value: string;
+  url: string;
+  icon?: string;
+  iconImg?: string;
+  color: string;
+  badge: string;
+  isMail: boolean;
+}
+
+  const contactLinks: ContactLinkItem[] = mode === "engineer" ? [
     {
       title: "Direct Email",
       value: "chiragns12@gmail.com",
@@ -228,10 +239,10 @@ export const ContactCard: React.FC<ContactCardProps> = ({
               className="tech-badge"
             >
               <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                {"iconImg" in item && item.iconImg ? (
+                {item.iconImg ? (
                   <img src={item.iconImg} alt={item.title} style={{ width: "26px", height: "26px", objectFit: "contain" }} />
                 ) : (
-                  <span style={{ fontSize: "1.5rem" }}>{"icon" in item ? item.icon : ""}</span>
+                  <span style={{ fontSize: "1.5rem" }}>{item.icon || ""}</span>
                 )}
                 <span
                   style={{
