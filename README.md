@@ -56,6 +56,12 @@ Clicking any project card launches a fullscreen console overlay modal with roomi
 ### 6. Real-Time Vercel Web Analytics
 * Integrated `@vercel/analytics` to track live web traffic, visitor pageviews, and performance metrics across both portfolio consoles.
 
+### 7. Search Engine Optimization (SEO) & Social Sharing Architecture
+* **Schema.org JSON-LD Structured Data**: Embedded `Person` and `WebSite` schemas providing search engines (Google, Bing, Perplexity, ChatGPT) with verified identity data, degrees, technical skills, and social profiles.
+* **OpenGraph & Twitter Card Banners**: High-res 1200x630 visual preview banner (`public/og-image.png`) with `summary_large_image` support for LinkedIn, X/Twitter, WhatsApp, and Discord sharing.
+* **Search Engine Crawling Suite**: Configured [public/robots.txt](./public/robots.txt) and [public/sitemap.xml](./public/sitemap.xml) for fast search indexing.
+* **Dynamic Tab Titles**: Automated document title updates when switching role modes (`#engineer` vs `#producer`).
+
 ---
 
 ## 🛠️ Technology Stack
