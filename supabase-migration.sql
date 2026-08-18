@@ -2,14 +2,19 @@
 CREATE TABLE IF NOT EXISTS public.guestbook (
     id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
     created_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL,
-    name TEXT NOT NULL CHECK (char_length(trim(name)) >= 1 AND char_length(name) <= 50),
-    email TEXT CHECK (email IS NULL OR char_length(email) <= 100),
-    message TEXT NOT NULL CHECK (char_length(trim(message)) >= 3 AND char_length(message) <= 300),
+    name TEXT NOT NULL,
+    email TEXT,
+    message TEXT NOT NULL,
     role TEXT
 );
 
 -- Enable Row Level Security (RLS) to secure the table
 ALTER TABLE public.guestbook ENABLE ROW LEVEL SECURITY;
+
+-- Drop old existing policies so script can run cleanly multiple times
+DROP POLICY IF EXISTS "Allow public read access" ON public.guestbook;
+DROP POLICY IF EXISTS "Allow public insert access" ON public.guestbook;
+DROP POLICY IF EXISTS "Allow public insert with payload constraints" ON public.guestbook;
 
 -- Policy 1: Allow anyone to read guestbook messages (public read)
 CREATE POLICY "Allow public read access" 
