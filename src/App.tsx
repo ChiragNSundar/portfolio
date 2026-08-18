@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { createPortal } from "react-dom";
 import { Analytics } from "@vercel/analytics/react";
+import { SpeedInsights } from "@vercel/speed-insights/react";
 import { YoutubeCoversCard } from "./components/YoutubeCoversCard";
 import { DeveloperResumeCard } from "./components/DeveloperResumeCard";
 import { PolaroidCertificates } from "./components/PolaroidCertificates";
@@ -2408,6 +2409,7 @@ export const App: React.FC = () => {
         onSelectTab={(tab) => setActiveLegalModal(tab)}
       />
       <Analytics />
+      <SpeedInsights />
     </div>
   );
 };
